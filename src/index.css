@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-void text-white font-body antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #7c5cff;
+  color: white;
+}
+
+/* SplitText default state — GSAP tweens each .char to white on scroll */
+.char {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
