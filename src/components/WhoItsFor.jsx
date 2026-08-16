@@ -1,9 +1,11 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PEOPLE = [
   {
     image: "/images/article1.jpg",
     title: "Knowledge Workers",
+    slug: "knowledge-workers",
     tags: ["Developers", "Designers", "Writers", "Analysts"],
     description:
       "For people whose output depends on sustained, uninterrupted concentration.",
@@ -11,6 +13,7 @@ const PEOPLE = [
   {
     image: "/images/article2.png",
     title: "Students & Aspirants",
+    slug: "students-aspirants",
     tags: ["UPSC", "CAT", "NEET", "CA"],
     description:
       "For people turning disciplined study into a real advantage.",
@@ -18,6 +21,7 @@ const PEOPLE = [
   {
     image: "/images/article3.png",
     title: "Founders & Leaders",
+    slug: "founders-leaders",
     tags: ["Operators", "Builders", "Decision-makers"],
     description:
       "For people who protect clear thinking when everyone needs an answer.",
@@ -25,6 +29,7 @@ const PEOPLE = [
   {
     image: "/images/article4.png",
     title: "Creators",
+    slug: "creators",
     tags: ["Writers", "Artists", "Filmmakers", "Musicians"],
     description:
       "For people who need enough quiet to follow an idea all the way through.",
@@ -33,12 +38,10 @@ const PEOPLE = [
 
 export default function WhoItsFor() {
   return (
-    <section className="relative w-full overflow-hidden bg-black text-white">
+    <section  id="who-its-for" className="relative w-full overflow-hidden bg-black text-white">
       <div className="mx-auto w-full max-w-[1500px] px-6 py-20 sm:px-8 lg:px-[3.3vw] lg:py-[100px]">
 
-        {/* ==================================================
-            HEADER
-        ================================================== */}
+        {/* HEADER */}
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.28fr_1.35fr_0.9fr] lg:items-start">
 
@@ -103,9 +106,7 @@ export default function WhoItsFor() {
           </div>
         </div>
 
-        {/* ==================================================
-            CARDS
-        ================================================== */}
+        {/* CARDS */}
 
         <div
           className="
@@ -135,12 +136,28 @@ export default function WhoItsFor() {
    PERSON CARD
 ============================================================ */
 
-function PersonCard({ person, index }) {
+function PersonCard({ person }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/blog/${person.slug}`);
+  };
+
   return (
     <article
+   
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
       className="
         group
         relative
+        cursor-pointer
         overflow-hidden
         rounded-[13px]
         bg-[#171717]
@@ -150,9 +167,8 @@ function PersonCard({ person, index }) {
         hover:-translate-y-1
       "
     >
-      {/* ==================================================
-          IMAGE
-      ================================================== */}
+
+      {/* IMAGE */}
 
       <div
         className="
@@ -178,8 +194,6 @@ function PersonCard({ person, index }) {
           "
         />
 
-        {/* IMAGE DARK GRADIENT */}
-
         <div
           className="
             pointer-events-none
@@ -193,9 +207,8 @@ function PersonCard({ person, index }) {
         />
       </div>
 
-      {/* ==================================================
-          CONTENT
-      ================================================== */}
+
+      {/* CONTENT */}
 
       <div
         className="
@@ -205,6 +218,7 @@ function PersonCard({ person, index }) {
           py-4
         "
       >
+
         {/* TITLE */}
 
         <h3
@@ -217,6 +231,7 @@ function PersonCard({ person, index }) {
         >
           {person.title}
         </h3>
+
 
         {/* TAGS */}
 
@@ -239,6 +254,7 @@ function PersonCard({ person, index }) {
           ))}
         </div>
 
+
         {/* DESCRIPTION */}
 
         <p
@@ -253,10 +269,10 @@ function PersonCard({ person, index }) {
           {person.description}
         </p>
 
+
         {/* LEARN MORE */}
 
-        <button
-          type="button"
+        <div
           className="
             mt-3
             flex
@@ -266,7 +282,7 @@ function PersonCard({ person, index }) {
             text-white
             transition-all
             duration-300
-            hover:gap-2
+            group-hover:gap-2
           "
         >
           Learn more
@@ -275,7 +291,8 @@ function PersonCard({ person, index }) {
             size={12}
             strokeWidth={1.5}
           />
-        </button>
+        </div>
+
       </div>
     </article>
   );
