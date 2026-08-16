@@ -7,7 +7,7 @@ import AvailableNowBadges from './Availablenowbadges.jsx'
 
 export default function Hero() {
   return (
-    <section id="home" className="relative h-screen  pt-40 pb-32 px-6  bg-[url('bg.png')] bg-cover bg-center bg-no-repeat overflow-hidden">
+    <section id="home" className="relative h-screen  pt-40 pb-32 px-6  bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat overflow-hidden">
       {/* ambient glow behind the phone */}
   
 
