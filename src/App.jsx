@@ -13,6 +13,8 @@ import FAQSection from "./components/FAQSection.jsx";
 import BlogDetails from "./pages/BlogDetails.jsx";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import RealFrictionSection from "./components/RealFrictionSection.jsx";
+import BusinessFocusSection from "./components/BusinessFocusSection.jsx";
 
 
 
@@ -55,7 +57,10 @@ function Home() {
           <ProcessSection />
           <FeaturesSection />
           <BenefitsSection />
+          <RealFrictionSection/>
           <WhoItsFor />
+          <BusinessFocusSection/>     
+
           <FAQSection />
         </main>
 

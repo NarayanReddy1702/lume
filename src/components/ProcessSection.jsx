@@ -16,14 +16,16 @@ const STEPS = [
     </>
   ),
     body: "Choose the apps that pull you away from what matters. Once locked, they stay locked.",
-    img:"/iPhone2.png"
+    // img:"/iPhone2.png"
+    img:"/videos/video.gif"
   },
   {
     n: "02",
     title: (<>
     Unlock with <br /> intention</>),
     body: "Instead of another tap, reach for your Lume Card. That small pause turns every unlock into a choice.",
-    img:"/iPhone4.png"
+    // img:"/iPhone4.png"
+    img:"/videos/video.gif"
   },
   {
     n: "03",
@@ -31,7 +33,8 @@ const STEPS = [
   Watch better <br /> habits <br /> take shape
     </>),
     body: "Track your sessions, streaks, and progress over time. Small choices today, lasting change tomorrow.",
-    img:"/iPhone3.png"
+    // img:"/iPhone3.png"
+    img:"/videos/video.gif"
   },
 ];
 
@@ -445,7 +448,7 @@ export default function ProcessSection() {
                     {/* Phone */}
 
                     <div className="flex-1 relative ">
-                      <img className="absolute bottom-0  w-[290px]" src={step.img} alt="" />
+                      <img className="absolute bottom-0  w-[390px]" src={step.img} alt="" />
                     </div>
                   </div>
                 ))}
