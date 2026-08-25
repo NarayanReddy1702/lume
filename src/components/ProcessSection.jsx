@@ -203,7 +203,7 @@ export default function ProcessSection() {
   return (
     <section
       ref={sectionRef}
-      id="benefits"
+      id="how-it-works"
       className="relative w-full bg-black"
       style={{
         height: "300vh",

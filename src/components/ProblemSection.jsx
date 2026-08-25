@@ -22,9 +22,11 @@ export default function LumeChoiceSection() {
 
   const topCardRef = useRef(null);
   const topFloatRef = useRef(null);
+  const topNumberRef = useRef(null);
 
   const bottomCardRef = useRef(null);
   const bottomFloatRef = useRef(null);
+  const bottomNumberRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -36,9 +38,11 @@ export default function LumeChoiceSection() {
 
       const topCard = topCardRef.current;
       const topFloat = topFloatRef.current;
+      const topNumber = topNumberRef.current;
 
       const bottomCard = bottomCardRef.current;
       const bottomFloat = bottomFloatRef.current;
+      const bottomNumber = bottomNumberRef.current;
 
       /* =====================================================
          INITIAL STATES
@@ -81,6 +85,14 @@ export default function LumeChoiceSection() {
         y: 30,
         scale: 0.92,
         rotate: 4,
+      });
+
+      gsap.set(topNumber, {
+        textContent: "0%",
+      });
+
+      gsap.set(bottomNumber, {
+        textContent: "0%",
       });
 
       /* =====================================================
@@ -145,6 +157,27 @@ export default function LumeChoiceSection() {
         },
       });
 
+      gsap.to(
+        { value: 0 },
+        {
+          value: 87,
+          duration: 1.1,
+          delay: 0.25,
+          ease: "power2.out",
+          snap: {
+            value: 1,
+          },
+          onUpdate() {
+            topNumber.textContent = `${this.targets()[0].value}%`;
+          },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 72%",
+            once: true,
+          },
+        }
+      );
+
       /* =====================================================
          BOTTOM CARD ENTRANCE
       ===================================================== */
@@ -169,6 +202,27 @@ export default function LumeChoiceSection() {
         },
       });
 
+      gsap.to(
+        { value: 0 },
+        {
+          value: -47,
+          duration: 1.1,
+          delay: 0.4,
+          ease: "power2.out",
+          snap: {
+            value: 1,
+          },
+          onUpdate() {
+            bottomNumber.textContent = `${this.targets()[0].value}%`;
+          },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            once: true,
+          },
+        }
+      );
+
       /* =====================================================
          CARD FLIP ON SCROLL
       ===================================================== */
@@ -182,10 +236,10 @@ export default function LumeChoiceSection() {
           trigger: sectionRef.current,
 
           // Front card visible here
-          start: "top 45%",
+          start: "top 70%",
 
           // Back card fully visible here
-          end: "65% 40%",
+          end: "center center",
 
           scrub: 1.2,
 
@@ -699,8 +753,11 @@ export default function LumeChoiceSection() {
                     Focus Impact
                   </p>
 
-                  <p className="mt-5 text-[25px] font-light text-white">
-                    87%
+                  <p
+                    ref={topNumberRef}
+                    className="mt-5 text-[25px] font-light text-white"
+                  >
+                    0%
                   </p>
 
                   <p className="mt-1 text-[12px] text-white/90">
@@ -781,8 +838,11 @@ export default function LumeChoiceSection() {
                     Focus Impact
                   </p>
 
-                  <p className="mt-5 text-[23px] font-light text-white">
-                    −47%
+                  <p
+                    ref={bottomNumberRef}
+                    className="mt-5 text-[23px] font-light text-white"
+                  >
+                    0%
                   </p>
 
                   <p className="mt-1 text-[11px] text-white/90">

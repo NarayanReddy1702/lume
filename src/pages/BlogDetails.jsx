@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BLOGS } from "../data/blogData";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function BlogDetails() {
@@ -17,6 +18,8 @@ useEffect(() => {
   if (!blog) {
     return (
       <main className="min-h-screen bg-black px-6 py-32 text-white">
+        <Navbar />
+
         <div className="mx-auto max-w-[760px]">
           <h1 className="text-4xl font-medium">
             Article not found
@@ -40,6 +43,7 @@ useEffect(() => {
 
   return (
     <main className="min-h-screen bg-black text-white">
+      <Navbar />
 
       {/* ========================================================
           ARTICLE

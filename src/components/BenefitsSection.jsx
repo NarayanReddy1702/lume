@@ -4,33 +4,33 @@ import gsap from "gsap";
 const BENEFITS = [
   {
     id: "focus",
-    label: "Focus",
+    label: "Intentional Living",
     icon: "✣",
-    image: "/focus.jpg",
-    title: "Deep Focus",
-    subtitle: "Stay with what matters.",
+    image: "./images/benefits/benefit1.png",
+    title: "Be here. Not everywhere.",
+    subtitle: "",
     description:
-      "Cut through the noise and give your best work your full attention. Lume helps create the space to study, build, create, or simply finish what you started.",
+      "Put the phone down and give the people, places, and moments in front of you your full attention.",
     points: [
-      "Deeper concentration",
-      "Better work quality",
-      "Finish what you start",
+      "Better conversations",
+      "Fewer “just one second” moments",
+      "More memories worth keeping",
     ],
   },
 
   {
     id: "mindful",
-    label: "Mindful Use",
+    label: "Control",
     icon: "☯",
-    image: "/mindful.avif",
-    title: "Mindful Use",
-    subtitle: "Use technology with intention.",
+    image: "./images/benefits/benefit2.png",
+    title: "Choose. Don’t react.",
+    subtitle: "",
     description:
-      "Create healthier boundaries with your phone and make every interaction more intentional instead of falling into endless scrolling.",
+      "Your attention shouldn’t belong to whatever notification appears next. Lume gives you the friction to make the choice yourself.",
     points: [
-      "Less mindless scrolling",
-      "More intentional usage",
-      "Better digital habits",
+      "Interrupt impulsive scrolling",
+      "Make intentional choices",
+      "Stay in control of your attention",
     ],
   },
 
@@ -38,15 +38,15 @@ const BENEFITS = [
     id: "sleep",
     label: "Sleep",
     icon: "◔",
-    image: "/sleep.avif",
-    title: "Better Sleep",
-    subtitle: "Give your mind time to switch off.",
+    image: "./images/benefits/benefit3.png",
+    title: "Put the day down.",
+    subtitle: "",
     description:
-      "Create distraction-free evenings and protect your nighttime routine so your mind can slow down and prepare for better rest.",
+      "Your brain doesn’t need another scroll before bed. Lume helps you create a real boundary between your screen and your sleep.",
     points: [
-      "Less nighttime scrolling",
-      "Calmer evenings",
-      "Better sleep routine",
+      "Wind down without endless scrolling",
+      "Keep your phone out of the bedroom routine",
+      "Wake up feeling more rested",
     ],
   },
 
@@ -54,15 +54,15 @@ const BENEFITS = [
     id: "presence",
     label: "Presence",
     icon: "◒",
-    image: "/presence.avif",
-    title: "Be More Present",
-    subtitle: "Put your attention where you are.",
+    image: "./images/benefits/benefit4.png",
+    title: "Make time for your life.",
+    subtitle: "",
     description:
-      "Spend less time checking your phone and more time being present with the people, experiences, and moments that actually matter.",
+      "Reclaimed time only matters when you do something meaningful with it. Lume helps you turn empty scrolling hours into things you actually care about.",
     points: [
-      "More meaningful moments",
-      "Better conversations",
-      "Less phone checking",
+      "Read more",
+      "Learn something new",
+      "Make something real",
     ],
   },
 
@@ -72,7 +72,7 @@ const BENEFITS = [
     icon: "♨",
     image: "/living.avif",
     title: "Intentional Living",
-    subtitle: "Make space for what matters.",
+    subtitle: "",
     description:
       "Turn small daily choices into better habits and create more room for the work, relationships, and experiences you genuinely care about.",
     points: [
@@ -162,6 +162,7 @@ export default function BenefitsSection() {
 
   return (
     <section
+      id="benefits"
       className="
         relative
         min-h-screen

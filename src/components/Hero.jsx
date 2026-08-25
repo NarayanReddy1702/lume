@@ -4,12 +4,11 @@ import AvailableNowBadges from "./Availablenowbadges.jsx";
 
 export default function Hero() {
   return (
-    <>
+    <div id="home">
       {/* =====================================================
           MOBILE VERSION
       ====================================================== */}
       <section
-        id="home"
         className="
           relative
           block
@@ -235,7 +234,6 @@ export default function Hero() {
           DESKTOP VERSION
       ====================================================== */}
       <section
-        id="home-desktop"
         className="
           relative
           hidden
@@ -355,6 +353,6 @@ export default function Hero() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

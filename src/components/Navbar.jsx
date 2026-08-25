@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LINKS = [
   {
@@ -26,6 +27,8 @@ const LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   /* ============================================================
      NAVBAR BACKGROUND
@@ -154,6 +157,11 @@ useEffect(() => {
   ============================================================ */
 
   const handleNavigation = (target) => {
+    if (location.pathname !== "/") {
+      navigate(target === "home" ? "/" : `/#${target}`);
+      return;
+    }
+
     const section = document.getElementById(target);
 
     if (!section) return;
