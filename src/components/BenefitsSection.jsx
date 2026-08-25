@@ -65,22 +65,6 @@ const BENEFITS = [
       "Make something real",
     ],
   },
-
-  {
-    id: "living",
-    label: "Intentional Living",
-    icon: "♨",
-    image: "/living.avif",
-    title: "Intentional Living",
-    subtitle: "",
-    description:
-      "Turn small daily choices into better habits and create more room for the work, relationships, and experiences you genuinely care about.",
-    points: [
-      "Stronger daily habits",
-      "More time for yourself",
-      "Live with intention",
-    ],
-  },
 ];
 
 export default function BenefitsSection() {

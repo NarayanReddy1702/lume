@@ -49,7 +49,7 @@ function Home() {
 
         <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,92,255,0.15),_transparent_60%)]" />
 
-        <Navbar />
+        <Navbar animateOnMount={false} />
 
         <main className="relative">
           <Hero />

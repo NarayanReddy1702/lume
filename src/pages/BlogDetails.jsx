@@ -18,7 +18,7 @@ useEffect(() => {
   if (!blog) {
     return (
       <main className="min-h-screen bg-black px-6 py-32 text-white">
-        <Navbar />
+        <Navbar animateOnMount={false} />
 
         <div className="mx-auto max-w-[760px]">
           <h1 className="text-4xl font-medium">
@@ -43,7 +43,7 @@ useEffect(() => {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <Navbar />
+      <Navbar animateOnMount={false} />
 
       {/* ========================================================
           ARTICLE

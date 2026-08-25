@@ -25,7 +25,9 @@ const LINKS = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar({
+  animateOnMount = true,
+}) {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -193,18 +195,30 @@ useEffect(() => {
 
   return (
     <motion.header
-      initial={{
-        y: -40,
-        opacity: 0,
-      }}
-      animate={{
-        y: 0,
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
-      }}
+      initial={
+        animateOnMount
+          ? {
+              y: -40,
+              opacity: 0,
+            }
+          : false
+      }
+      animate={
+        animateOnMount
+          ? {
+              y: 0,
+              opacity: 1,
+            }
+          : false
+      }
+      transition={
+        animateOnMount
+          ? {
+              duration: 0.6,
+              ease: "easeOut",
+            }
+          : undefined
+      }
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-void/70 backdrop-blur-xl border-b border-white/5"
