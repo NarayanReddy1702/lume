@@ -3,7 +3,7 @@ import { Check, Send, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://lume-backend-sy6r.onrender.com/api";
 const CATEGORY_BY_AUDIENCE = {
   me: "For me",
   family: "For Family",
