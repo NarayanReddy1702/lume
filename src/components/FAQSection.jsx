@@ -1,4 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import {
+  BadgeHelp,
+  CreditCard,
+  HelpCircle,
+  Lock,
+  MessageSquareText,
+  Receipt,
+  Search,
+  ShieldCheck,
+  Zap,
+} from "lucide-react";
 
 const FAQ_DATA = {
   "Getting Started": [
@@ -8,27 +19,70 @@ const FAQ_DATA = {
         "Lume is a physical and digital focus system designed to help you take control of your attention. The Lume Card works with the app to create intentional focus sessions and reduce access to distracting apps and websites.",
     },
     {
-      question: "Why was Lume created?",
-      answer:
-        "Lume is built around a simple idea: attention is easier to protect when the decision to focus is made deliberately, instead of being left to the same screen that can distract you.",
-    },
-    {
-      question: "How does Lume work?",
-      answer:
-        "You choose what you want to stay away from, define the focus experience you want, and start a session. The app applies your rules, while the physical card adds a deliberate step between your intention and the distraction.",
-    },
-    {
-      question: "What happens when I tap the Lume Card?",
+      question: "How does the Lume Card work?",
       answer:
         "The card uses NFC to communicate with your phone and trigger the Lume action connected to your selected mode or session.",
     },
+    {
+      question: "What happens when I don't have my Lume Card?",
+      answer:
+        "Locked apps remain protected until you use your Lume Card, depending on the blocking mode you've selected.",
+    },
+    {
+      question: "Can I completely block distracting apps?",
+      answer:
+        "Lume is designed to restrict selected apps during focus sessions. The exact strength of the block depends on the operating system and the mode you choose.",
+    },
+    {
+      question: "Can I set automatic focus schedules?",
+      answer:
+        "You can create repeatable focus routines so Lume helps you protect the same hours without rebuilding your setup every day.",
+    },
+  ],
+  "How to use": [
     {
       question: "What do I need to start using Lume?",
       answer:
         "You need a compatible phone, the Lume app, and your Lume Card where the selected experience requires it. Setup connects the card with the app and lets you choose your first focus settings.",
     },
+    {
+      question: "How do I start a focus session?",
+      answer:
+        "Choose the apps or websites you want to stay away from, pick your focus mode, then tap the Lume Card to begin.",
+    },
+    {
+      question: "Can I use different modes?",
+      answer:
+        "Yes. Lume is designed for different contexts such as study, deep work, family time, workouts, reading, and creating.",
+    },
+    {
+      question: "What happens when my focus session ends?",
+      answer:
+        "The selected restrictions end according to your session rules, and your normal phone access returns.",
+    },
   ],
-
+  "Focus & Blocking": [
+    {
+      question: "Can I block apps and websites at the same time?",
+      answer:
+        "Where supported, yes. This helps prevent the common workaround of blocking an app but opening the same service in a browser.",
+    },
+    {
+      question: "What happens if I try to bypass Lume?",
+      answer:
+        "Lume is designed to create friction, not imprison you. Depending on the mode, bypassing may require an intentional action, the Lume Card, an emergency path, or another permitted exit.",
+    },
+    {
+      question: "Can I use my phone for important things while Lume is blocking?",
+      answer:
+        "Essential functions should remain accessible where technically supported, while the apps you explicitly choose to restrict stay protected.",
+    },
+    {
+      question: "Why was Lume created?",
+      answer:
+        "Lume is built around a simple idea: attention is easier to protect when the decision to focus is made deliberately, instead of being left to the same screen that can distract you.",
+    },
+  ],
   "Lume Card": [
     {
       question: "Why does Lume need a physical card?",
@@ -46,45 +100,11 @@ const FAQ_DATA = {
         "The Lume Card is designed as a passive NFC object, so it is not intended to need charging like a battery-powered device.",
     },
     {
-      question: "What happens if I don't have my Lume Card?",
-      answer:
-        "Behavior depends on the blocking mode you choose. In modes that require the card for access, protected apps remain restricted until the permitted unlock or recovery method is used.",
-    },
-    {
       question: "Will Lume work through my phone case?",
       answer:
         "Most standard cases should allow NFC. Very thick, metal, or certain magnetic cases may interfere with the tap.",
     },
   ],
-
-  "Focus & Blocking": [
-    {
-      question: "Can I completely block distracting apps?",
-      answer:
-        "Lume is designed to restrict selected apps during focus sessions. The exact strength of the block depends on the operating system and the mode you choose.",
-    },
-    {
-      question: "Can I block apps and websites at the same time?",
-      answer:
-        "Where supported, yes. This helps prevent the common workaround of blocking an app but opening the same service in a browser.",
-    },
-    {
-      question: "What happens if I try to bypass Lume?",
-      answer:
-        "Lume is designed to create friction, not imprison you. Depending on the mode, bypassing may require an intentional action, the Lume Card, an emergency path, or another permitted exit.",
-    },
-    {
-      question: "Can I use my phone for important things while Lume is blocking?",
-      answer:
-        "Essential functions should remain accessible where technically supported, while the apps you explicitly choose to restrict stay protected.",
-    },
-    {
-      question: "What happens when my focus session ends?",
-      answer:
-        "The selected restrictions end according to your session rules, and your normal phone access returns.",
-    },
-  ],
-
   Privacy: [
     {
       question: "What data does Lume collect?",
@@ -106,13 +126,7 @@ const FAQ_DATA = {
       answer:
         "Lume's privacy policy explains how your data is handled and whether any third-party services are used to operate the product.",
     },
-    {
-      question: "Can I delete my data?",
-      answer:
-        "Users should have a clear way to delete their account and applicable stored data, with an explanation of anything that must be retained for legal or transaction reasons.",
-    },
   ],
-
   Billing: [
     {
       question: "How much does Lume cost?",
@@ -134,382 +148,203 @@ const FAQ_DATA = {
       answer:
         "Returns follow the window, eligibility, and process listed at purchase, with a support path for return requests.",
     },
-    {
-      question: "What if I cannot find my question?",
-      answer:
-        "Use the FAQ search or Ask a Question flow. If no answer is found, Lume can preserve your question and send it directly to the team.",
-    },
   ],
 };
 
-const CATEGORIES = Object.keys(FAQ_DATA);
+const CATEGORIES = [
+  "Getting Started",
+  "How to use",
+  "Focus & Blocking",
+  "Lume Card",
+  "Privacy",
+  "Billing",
+];
+
+const CATEGORY_ICONS = {
+  "Getting Started": Zap,
+  "How to use": HelpCircle,
+  "Focus & Blocking": ShieldCheck,
+  "Lume Card": CreditCard,
+  Privacy: Lock,
+  Billing: Receipt,
+};
 
 export default function FAQSection() {
-  const [activeCategory, setActiveCategory] =
-    useState("Getting Started");
-
+  const [activeCategory, setActiveCategory] = useState("Getting Started");
   const [openIndex, setOpenIndex] = useState(2);
+  const [query, setQuery] = useState("");
 
-  const faqs = FAQ_DATA[activeCategory];
+  const faqs = useMemo(() => {
+    const activeFaqs = FAQ_DATA[activeCategory] || [];
+    const searchTerm = query.trim().toLowerCase();
+
+    if (!searchTerm) return activeFaqs;
+
+    return activeFaqs.filter((faq) =>
+      `${faq.question} ${faq.answer}`.toLowerCase().includes(searchTerm)
+    );
+  }, [activeCategory, query]);
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
-
-    // Keep first/initial FAQ closed when changing category
-    setOpenIndex(-1);
+    setOpenIndex(category === "Getting Started" ? 2 : -1);
   };
 
   const handleFAQClick = (index) => {
-    setOpenIndex((current) =>
-      current === index ? -1 : index
-    );
+    setOpenIndex((current) => (current === index ? -1 : index));
   };
 
   return (
-    <section
-      className="
-        relative
-        min-h-screen
-        w-full
-        overflow-hidden
-        bg-black
-        text-white
-      "
-    >
-      {/* =====================================================
-          BACKGROUND GLOW
-      ====================================================== */}
+    <section id="faq" className="faq-exact-section">
+      <div className="faq-exact-glow" />
+      <div className="faq-exact-top-glow" />
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[-180px]
-          h-[500px]
-          w-[700px]
-          -translate-x-1/2
-          rounded-full
-          bg-purple-950/30
-          blur-[140px]
-        "
-      />
-
-      <div
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          h-[350px]
-          w-[500px]
-          -translate-x-1/2
-          bg-gradient-to-b
-          from-purple-950/20
-          to-transparent
-          blur-[80px]
-        "
-      />
-
-      {/* =====================================================
-          MAIN CONTAINER
-      ====================================================== */}
-
-      <div
-        className="
-          relative
-          z-10
-          mx-auto
-          w-full
-          max-w-[1100px]
-          px-5
-          py-16
-          sm:px-8
-          md:py-20
-          lg:py-16
-        "
-      >
-        {/* =====================================================
-            HEADER
-        ====================================================== */}
-
-        <div className="flex flex-col items-center text-center">
-          {/* FAQ PILL */}
-
-          <span
-            className="
-              inline-flex
-              rounded-full
-              border
-              border-white/50
-              px-5
-              py-1.5
-              text-[9px]
-              font-medium
-              tracking-wide
-              text-white
-            "
-          >
+      <div className="faq-exact-shell">
+        <header className="faq-exact-header mt-10">
+          <span className="faq-exact-pill">
             FAQ
           </span>
 
-          {/* TITLE */}
-
-          <h2
-            className="
-              mt-5
-              text-[clamp(38px,4vw,58px)]
-              font-medium
-              leading-[0.95]
-              tracking-[-0.045em]
-            "
-          >
-            Questions?
-            <br />
-            We've got answers.
+          <h2 className="faq-exact-title">
+            Questions? We've got answers.
           </h2>
 
-          {/* DESCRIPTION */}
+          <label className="faq-exact-search">
+            <Search
+              size={16}
+              strokeWidth={1.7}
+              className="faq-exact-search-icon"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search your question"
+              className="faq-exact-search-input"
+            />
+          </label>
+        </header>
 
-          <p
-            className="
-              mt-4
-              max-w-[520px]
-              text-[11px]
-              leading-[1.55]
-              text-white/45
-            "
-          >
-            Everything you need to know about Lume, the
-            Lume Card, and how physical friction, smarter
-            boundaries, and intentional habits can help you
-            take back control of your attention.
-          </p>
-        </div>
-
-        {/* =====================================================
-            CATEGORY TABS
-        ====================================================== */}
-
-        <div
-          className="
-            mt-12
-            flex
-            flex-wrap
-            items-center
-            justify-center
-            gap-2
-            md:gap-5
-          "
-        >
+        <div className="faq-exact-tabs">
           {CATEGORIES.map((category) => {
-            const active =
-              activeCategory === category;
+            const active = activeCategory === category;
+            const Icon = CATEGORY_ICONS[category] || BadgeHelp;
 
             return (
               <button
                 key={category}
                 type="button"
-                onClick={() =>
-                  handleCategoryChange(category)
-                }
-                className={`
-                  rounded-full
-                  px-4
-                  py-2.5
-                  text-[10px]
-                  transition-all
-                  duration-300
-                  md:px-5
-                  ${
-                    active
-                      ? `
-                        bg-white
-                        text-black
-                        shadow-[0_8px_25px_rgba(255,255,255,0.08)]
-                      `
-                      : `
-                        bg-transparent
-                        text-white/40
-                        hover:text-white/70
-                      `
-                  }
-                `}
+                onClick={() => handleCategoryChange(category)}
+                className={`faq-exact-tab ${
+                  active
+                    ? "faq-exact-tab-active"
+                    : ""
+                }`}
               >
-                {category}
+                <Icon
+                  size={18}
+                  strokeWidth={1.6}
+                />
+                <span>{category}</span>
               </button>
             );
           })}
         </div>
 
-        {/* =====================================================
-            FAQ LIST
-        ====================================================== */}
-
-        <div className="mx-auto mt-9 max-w-[900px]">
-          <div className="flex flex-col gap-2">
-            {faqs.map((faq, index) => {
-              const isOpen = openIndex === index;
-
-              return (
+        <div className="faq-exact-content">
+          <div className="faq-exact-list">
+            {faqs.length > 0 ? (
+              faqs.map((faq, index) => (
                 <FAQItem
                   key={faq.question}
                   faq={faq}
-                  isOpen={isOpen}
-                  onClick={() =>
-                    handleFAQClick(index)
-                  }
+                  isOpen={openIndex === index}
+                  onClick={() => handleFAQClick(index)}
                 />
-              );
-            })}
+              ))
+            ) : (
+              <div className="faq-exact-empty">
+                No questions found in this category.
+              </div>
+            )}
           </div>
+
+          <HelpCard />
         </div>
       </div>
     </section>
   );
 }
 
+function HelpCard() {
+  return (
+    <aside className="faq-exact-help">
+      <span className="faq-exact-help-icon">
+        <MessageSquareText size={18} strokeWidth={1.7} />
+      </span>
 
-/* ============================================================
-   FAQ ITEM
-============================================================ */
+      <h3 className="faq-exact-help-title">
+        Still need help?
+      </h3>
+      <p className="faq-exact-help-copy">
+        Can't find what you're looking for? Ask us directly and we'll get back
+        to you within 24 hours.
+      </p>
 
-function FAQItem({
-  faq,
-  isOpen,
-  onClick,
-}) {
+      <div className="faq-exact-help-actions">
+        <a
+          href="mailto:support@lume.com"
+          className="faq-exact-help-button"
+        >
+          Get in touch
+        </a>
+        <a
+          href="#contact"
+          className="faq-exact-help-button"
+        >
+          Connect on WhatsApp
+          <span className="faq-exact-whatsapp-dot">
+            ✓
+          </span>
+        </a>
+      </div>
+    </aside>
+  );
+}
+
+function FAQItem({ faq, isOpen, onClick }) {
   return (
     <div
-      className={`
-        overflow-hidden
-        rounded-[7px]
-        border
-        transition-all
-        duration-300
-        ${
-          isOpen
-            ? "border-purple-500/20 bg-[#170027]"
-            : "border-transparent bg-[#13001f]"
-        }
-      `}
+      className={`faq-exact-item ${
+        isOpen ? "faq-exact-item-open" : ""
+      }`}
     >
-      {/* ==================================================
-          QUESTION
-      ================================================== */}
-
       <button
         type="button"
         onClick={onClick}
-        className="
-          flex
-          w-full
-          items-center
-          justify-between
-          gap-5
-          px-4
-          py-4
-          text-left
-          md:px-5
-          md:py-4
-        "
+        className="faq-exact-question"
       >
-        <span
-          className="
-            text-[12px]
-            font-normal
-            leading-relaxed
-            text-white
-            md:text-[13px]
-          "
-        >
+        <span>
           {faq.question}
         </span>
 
-        {/* ==================================================
-            PLUS / CLOSE ICON
-        ================================================== */}
-
         <span
-          className={`
-            relative
-            flex
-            h-5
-            w-5
-            shrink-0
-            items-center
-            justify-center
-            text-white
-            transition-transform
-            duration-300
-            ${
-              isOpen
-                ? "rotate-0"
-                : "rotate-0"
-            }
-          `}
+          className={`faq-exact-plus ${
+            isOpen ? "rotate-45" : "rotate-0"
+          }`}
         >
-          {/* Horizontal line */}
-
-          <span
-            className="
-              absolute
-              h-px
-              w-2.5
-              bg-white
-            "
-          />
-
-          {/* Vertical line */}
-
-          <span
-            className={`
-              absolute
-              h-2.5
-              w-px
-              bg-white
-              transition-transform
-              duration-300
-              ${
-                isOpen
-                  ? "scale-y-0"
-                  : "scale-y-100"
-              }
-            `}
-          />
+          <span />
+          <span />
         </span>
       </button>
 
-      {/* ==================================================
-          ANSWER
-      ================================================== */}
-
       <div
-        className={`
-          grid
-          transition-[grid-template-rows,opacity]
-          duration-300
-          ease-out
-          ${
-            isOpen
-              ? "grid-rows-[1fr] opacity-100"
-              : "grid-rows-[0fr] opacity-0"
-          }
-        `}
+        className={`faq-exact-answer-wrap ${
+          isOpen ? "faq-exact-answer-open" : ""
+        }`}
       >
         <div className="overflow-hidden">
-          <div
-            className="
-              px-4
-              pb-4
-              pr-12
-              text-[9px]
-              leading-[1.6]
-              text-white/40
-              md:px-5
-              md:pb-5
-            "
-          >
+          <div className="faq-exact-answer">
             {faq.answer}
           </div>
         </div>

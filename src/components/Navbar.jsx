@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -16,21 +16,29 @@ const LINKS = [
     target: "benefits",
   },
   {
+    name: "Business",
+    path: "/business",
+  },
+  {
     name: "Pricing",
     target: "pricing",
   },
   {
     name: "Contact",
-    target: "contact",
+    path: "/contact",
   },
 ];
 
 export default function Navbar({
   animateOnMount = true,
+  theme = "dark",
 }) {
   const [scrolled, setScrolled] = useState(false);
+  const [showGetLumeMenu, setShowGetLumeMenu] = useState(false);
+  const menuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const isLight = theme === "light";
 
   /* ============================================================
      NAVBAR BACKGROUND
@@ -47,6 +55,23 @@ export default function Navbar({
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setShowGetLumeMenu(false);
+      }
+    };
+
+    window.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -158,9 +183,18 @@ useEffect(() => {
      NAVIGATION CLICK
   ============================================================ */
 
-  const handleNavigation = (target) => {
+  const handleNavigation = (link) => {
+    if (link.path) {
+      navigate(link.path);
+      setShowGetLumeMenu(false);
+      return;
+    }
+
+    const target = link.target;
+
     if (location.pathname !== "/") {
       navigate(target === "home" ? "/" : `/#${target}`);
+      setShowGetLumeMenu(false);
       return;
     }
 
@@ -191,6 +225,8 @@ useEffect(() => {
       behavior: "smooth",
       block: "start",
     });
+
+    setShowGetLumeMenu(false);
   };
 
   return (
@@ -220,8 +256,10 @@ useEffect(() => {
           : undefined
       }
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-void/70 backdrop-blur-xl border-b border-white/5"
+        scrolled || isLight
+          ? isLight
+            ? "border-b border-black/5 bg-white/90 backdrop-blur-xl"
+            : "bg-void/70 backdrop-blur-xl border-b border-white/5"
           : "bg-transparent"
       }`}
     >
@@ -230,26 +268,34 @@ useEffect(() => {
         {/* LOGO */}
 
         <button
-          onClick={() => handleNavigation("home")}
+          onClick={() => handleNavigation({ target: "home" })}
           className="flex items-center"
         >
           <img
             className="w-20"
-            src="/logo.png"
+            src={isLight ? "/black-logo.png" : "/logo.png"}
             alt="Lume"
           />
         </button>
 
         {/* NAV LINKS */}
 
-        <ul className="hidden md:flex items-center gap-8 text-sm text-white/60">
+        <ul
+          className={`hidden md:flex items-center gap-8 text-sm ${
+            isLight ? "text-[#27272f]/70" : "text-white/60"
+          }`}
+        >
           {LINKS.map((link) => (
             <li key={link.name}>
               <button
                 onClick={() =>
-                  handleNavigation(link.target)
+                  handleNavigation(link)
                 }
-                className="hover:text-white transition-colors"
+                className={`transition-colors ${
+                  isLight
+                    ? "hover:text-[#27272f]"
+                    : "hover:text-white"
+                }`}
               >
                 {link.name}
               </button>
@@ -259,24 +305,84 @@ useEffect(() => {
 
         {/* GET LUME */}
 
-        <button
-          onClick={() =>
-            handleNavigation("pricing")
-          }
-          className="
-            text-sm
-            font-medium
-            bg-white
-            text-void
-            rounded-full
-            px-5
-            py-2
-            hover:bg-white/90
-            transition-colors
-          "
-        >
-          Get Lume
-        </button>
+        <div ref={menuRef} className="relative">
+          <button
+            onClick={() =>
+              setShowGetLumeMenu((open) => !open)
+            }
+            className={`
+              text-sm
+              font-medium
+              rounded-full
+              px-5
+              py-2
+              transition-colors
+              ${
+                isLight
+                  ? "bg-black text-white hover:bg-[#202024]"
+                  : "bg-white text-void hover:bg-white/90"
+              }
+            `}
+          >
+            Get Lume
+          </button>
+
+          {showGetLumeMenu && (
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: -8,
+                scale: 0.98,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              transition={{
+                duration: 0.18,
+                ease: "easeOut",
+              }}
+              className={`absolute -right-32 mt-3 flex w-[360px] gap-1.5 rounded-[8px] border p-1.5 shadow-[0_14px_34px_rgba(10,10,15,0.14)] ${
+                isLight
+                  ? "border-black/10 bg-white text-[#27272f]"
+                  : "border-white/10 bg-[#101015]/95 text-white backdrop-blur-xl"
+              }`}
+            >
+              {[
+                {
+                  label: "For me",
+                  path: "/for-me",
+                },
+                {
+                  label: "For Family",
+                  path: "/for-family",
+                },
+                {
+                  label: "Business",
+                  path: "/business",
+                },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() =>
+                    handleNavigation({
+                      path: item.path,
+                    })
+                  }
+                  className={`flex min-h-10 flex-1 items-center justify-center rounded-[6px] px-3 text-center text-[12px] font-medium transition-colors ${
+                    isLight
+                      ? "hover:bg-[#f3f0ff] hover:text-[#7137ff]"
+                      : "bg-white/5 hover:bg-white hover:text-[#101015]"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </div>
 
       </nav>
     </motion.header>
