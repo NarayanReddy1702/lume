@@ -1,8 +1,32 @@
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const LIFE_EXPECTANCY = 80;
+const STEP_ORDER = ["intro", "calculating", "result", "reclaim"];
+const CALCULATION_DURATION = 2300;
+const RESULT_SETTLE_DELAY = 280;
+const stepVariants = {
+  enter: (direction) => ({
+    opacity: 0,
+    y: direction > 0 ? 18 : -18,
+    scale: 0.985,
+    filter: "blur(4px)",
+  }),
+  center: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+  },
+  exit: (direction) => ({
+    opacity: 0,
+    y: direction > 0 ? -18 : 18,
+    scale: 0.985,
+    filter: "blur(4px)",
+  }),
+};
+const stepTransition = { duration: 0.62, ease: [0.16, 1, 0.3, 1] };
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -19,9 +43,11 @@ function formatNumber(value) {
 export default function CalculatorPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState("intro");
+  const [direction, setDirection] = useState(1);
   const [age, setAge] = useState(22);
   const [hours, setHours] = useState(6);
   const [saveHours, setSaveHours] = useState(1.5);
+  const [animatedYears, setAnimatedYears] = useState(0);
 
   const result = useMemo(() => {
     const safeAge = clamp(Number(age) || 22, 13, 79);
@@ -49,20 +75,69 @@ export default function CalculatorPage() {
     setAge(result.safeAge);
     setHours(result.safeHours);
     setSaveHours(Math.min(result.safeHours, Math.max(1, nice(result.safeHours * 0.25))));
-    setStep("result");
+    setAnimatedYears(0);
+    goToStep("calculating");
+  }
+
+  function goToStep(nextStep) {
+    setDirection(STEP_ORDER.indexOf(nextStep) > STEP_ORDER.indexOf(step) ? 1 : -1);
+    setStep(nextStep);
   }
 
   function setQuickSave(value) {
     setSaveHours(clamp(value, 0, result.safeHours));
   }
 
+  useEffect(() => {
+    if (step !== "calculating") return undefined;
+
+    let frameId;
+    let finishTimeout;
+    const startedAt = performance.now();
+    const targetYears = result.yearsLost;
+
+    const animateYears = (currentTime) => {
+      const progress = clamp((currentTime - startedAt) / CALCULATION_DURATION, 0, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+      setAnimatedYears(nice(targetYears * easedProgress));
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animateYears);
+        return;
+      }
+
+      setAnimatedYears(targetYears);
+      finishTimeout = window.setTimeout(() => {
+        goToStep("result");
+      }, RESULT_SETTLE_DELAY);
+    };
+
+    frameId = requestAnimationFrame(animateYears);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.clearTimeout(finishTimeout);
+    };
+  }, [result.yearsLost, step]);
+
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#07070a] px-5 py-32 text-[#f4f1eb]">
       <div className="pointer-events-none absolute h-[min(72vw,820px)] w-[min(72vw,820px)] rounded-full bg-[#a875ff]/10 blur-3xl" />
 
       <div className="relative z-10 w-full max-w-[720px]">
-        {step === "intro" ? (
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mx-auto text-center">
+        <AnimatePresence mode="wait" custom={direction}>
+          {step === "intro" ? (
+            <motion.div
+              key="intro"
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={stepTransition}
+              className="mx-auto text-center"
+            >
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">
               A different way to look at screen time
             </p>
@@ -121,11 +196,90 @@ export default function CalculatorPage() {
               See what it costs
             </button>
             <p className="mt-4 text-[11px] text-white/40">No sign-up. No data stored.</p>
-          </motion.div>
-        ) : null}
+            </motion.div>
+          ) : null}
 
-        {step === "result" ? (
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mx-auto text-center">
+          {step === "calculating" ? (
+            <motion.div
+              key="calculating"
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={stepTransition}
+              className="mx-auto flex min-h-[520px] flex-col items-center justify-center text-center"
+            >
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.12, ease: "easeOut" }}
+                className="text-[10px] uppercase tracking-[0.38em] text-white/55"
+              >
+                Calculating your time
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-16 text-[78px] font-extralight leading-none tracking-[-0.075em] text-[#d4b7ff] sm:text-[112px]"
+              >
+                {animatedYears.toFixed(1)}
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.34, ease: "easeOut" }}
+                className="mt-10 text-[14px] text-white/45"
+              >
+                Years calculated
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0.86 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.5, delay: 0.42, ease: "easeOut" }}
+                className="mt-12 h-px w-full max-w-[290px] overflow-hidden bg-white/15"
+              >
+                <motion.div
+                  className="h-full origin-left bg-[#a875ff]"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: CALCULATION_DURATION / 1000, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </motion.div>
+
+              <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                <span className="h-1 w-1 rounded-full bg-white/30" />
+                <motion.span
+                  className="h-1 w-7 rounded-full bg-[#a875ff]"
+                  initial={{ scaleX: 0.45, opacity: 0.65 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.6,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                  }}
+                />
+                <span className="h-1 w-1 rounded-full bg-white/30" />
+              </div>
+            </motion.div>
+          ) : null}
+
+          {step === "result" ? (
+            <motion.div
+              key="result"
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={stepTransition}
+              className="mx-auto text-center"
+            >
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">Here is the truth</p>
             <h1 className="mx-auto mt-7 max-w-[570px] text-[28px] font-light leading-[1.2] tracking-[-0.035em] sm:text-[39px]">
               At your current pace, you are on track to spend
@@ -145,16 +299,25 @@ export default function CalculatorPage() {
             </p>
             <button
               type="button"
-              onClick={() => setStep("reclaim")}
+              onClick={() => goToStep("reclaim")}
               className="mt-8 h-14 w-full max-w-[520px] rounded-[4px] border border-[#a875ff] bg-[#f4f1eb] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#07070a] transition hover:-translate-y-0.5"
             >
               See how much Lume could give back
             </button>
-          </motion.div>
-        ) : null}
+            </motion.div>
+          ) : null}
 
-        {step === "reclaim" ? (
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mx-auto text-center">
+          {step === "reclaim" ? (
+            <motion.div
+              key="reclaim"
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={stepTransition}
+              className="mx-auto text-center"
+            >
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">Now take some of it back</p>
             <h1 className="mx-auto mt-7 max-w-[620px] text-[34px] font-light leading-[1.08] tracking-[-0.045em] sm:text-[49px]">
               How much time would you like to reclaim?
@@ -218,13 +381,14 @@ export default function CalculatorPage() {
             >
               Get these years back
             </button>
-          </motion.div>
-        ) : null}
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
-        {step !== "intro" ? (
+        {step !== "intro" && step !== "calculating" ? (
           <button
             type="button"
-            onClick={() => setStep(step === "reclaim" ? "result" : "intro")}
+            onClick={() => goToStep(step === "reclaim" ? "result" : "intro")}
             className="mt-8 text-[11px] uppercase tracking-[0.12em] text-white/45 transition hover:text-white"
           >
             Back
