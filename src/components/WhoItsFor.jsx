@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "./SplitText";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const API_URL = import.meta.env.VITE_API_URL || "https://lume-backend-sy6r.onrender.com/api";
 
 const PEOPLE = [
   {
@@ -50,6 +52,50 @@ const PEOPLE = [
 export default function WhoItsFor() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
+  const [blogs, setBlogs] = useState([]);
+  const [apiFailed, setApiFailed] = useState(false);
+  const [loadingBlogs, setLoadingBlogs] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+
+    async function loadBlogs() {
+      setLoadingBlogs(true);
+      setApiFailed(false);
+      try {
+        const response = await fetch(`${API_URL}/blogs`);
+        if (!response.ok) throw new Error("Blog request failed");
+        const data = await response.json();
+        if (alive) setBlogs(Array.isArray(data) ? data : []);
+      } catch {
+        if (alive) {
+          setBlogs([]);
+          setApiFailed(true);
+        }
+      } finally {
+        if (alive) setLoadingBlogs(false);
+      }
+    }
+
+    loadBlogs();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const people = useMemo(() => {
+    if (apiFailed) return PEOPLE;
+
+    return blogs.map((blog) => ({
+      image: blog.heroImage || "/images/article1.jpg",
+      title: blog.title,
+      slug: blog.slug,
+      tags: blog.tags || [],
+      description: blog.excerpt || blog.intro?.[0] || "Read the latest from Lume.",
+      author: blog.author || "Lume",
+      date: formatBlogDate(blog),
+    }));
+  }, [apiFailed, blogs]);
 
   /* ============================================================
      HEADING TEXT COLOR SCROLL ANIMATION
@@ -257,13 +303,46 @@ export default function WhoItsFor() {
             lg:grid-cols-4
           "
         >
-          {PEOPLE.map((person, index) => (
+          {loadingBlogs ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={`blog-loading-${index}`}
+                className="
+                  h-[405px]
+                  animate-pulse
+                  rounded-[13px]
+                  bg-[#171717]
+                "
+              />
+            ))
+          ) : null}
+
+          {!loadingBlogs && people.map((person, index) => (
             <PersonCard
-              key={person.title}
+              key={person.slug || person.title}
               person={person}
               index={index}
             />
           ))}
+
+          {!loadingBlogs && !people.length ? (
+            <div
+              className="
+                col-span-full
+                rounded-[13px]
+                border
+                border-white/10
+                bg-[#171717]
+                px-6
+                py-10
+                text-center
+                text-[12px]
+                text-white/45
+              "
+            >
+              No published blogs yet.
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
@@ -403,6 +482,26 @@ function PersonCard({ person }) {
           {person.title}
         </h3>
 
+        <div
+          className="
+            mt-1.5
+            flex
+            flex-wrap
+            items-center
+            gap-1.5
+            text-[8px]
+            text-white/35
+          "
+        >
+          <span>{person.author || "Lume"}</span>
+          {person.date ? (
+            <>
+              <span>•</span>
+              <span>{person.date}</span>
+            </>
+          ) : null}
+        </div>
+
         {/* TAGS */}
 
         <div
@@ -490,4 +589,14 @@ function PersonCard({ person }) {
       </div>
     </article>
   );
+}
+
+function formatBlogDate(blog) {
+  const value = blog.publishedAt || blog.createdAt;
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }

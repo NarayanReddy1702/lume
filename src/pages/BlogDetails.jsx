@@ -1,20 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BLOGS } from "../data/blogData";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://lume-backend-sy6r.onrender.com/api";
+
 export default function BlogDetails() {
   const { slug } = useParams();
+  const [remoteBlog, setRemoteBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const blog = BLOGS[slug];
-useEffect(() => {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "instant",
-  });
-}, []);
+  const fallbackBlog = BLOGS[slug];
+  const blog = remoteBlog || fallbackBlog;
+
+  useEffect(() => {
+    let alive = true;
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+
+    async function loadBlog() {
+      setLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/blogs/${slug}`);
+        if (!response.ok) throw new Error("Blog request failed");
+        const data = await response.json();
+        if (alive) setRemoteBlog(data);
+      } catch {
+        if (alive) setRemoteBlog(null);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    }
+
+    loadBlog();
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
+
   if (!blog) {
     return (
       <main className="min-h-screen bg-black px-6 py-32 text-white">
@@ -87,7 +115,7 @@ useEffect(() => {
 
         </div>
         <div className="flex flex-wrap gap-2">
-          {blog.tags.map((tag) => (
+          {(blog.tags || []).map((tag) => (
             <span
               key={tag}
               className="
@@ -150,7 +178,7 @@ useEffect(() => {
 
           <span>•</span>
 
-          <span>{blog.date}</span>
+          <span>{formatBlogDate(blog)}</span>
         </div>
 
 
@@ -166,7 +194,7 @@ useEffect(() => {
           "
         >
           <img
-            src={blog.heroImage}
+            src={blog.heroImage || "/images/article1.jpg"}
             alt={blog.title}
             className="
               block
@@ -191,7 +219,7 @@ useEffect(() => {
             text-white/60
           "
         >
-          {blog.intro.map((paragraph, index) => (
+          {(blog.intro || []).map((paragraph, index) => (
             <p key={index}>
               {paragraph}
             </p>
@@ -205,7 +233,7 @@ useEffect(() => {
 
         <div className="mt-8">
 
-          {blog.sections.map((section, index) => (
+          {(blog.sections || []).map((section, index) => (
             <section
               key={section.title}
               className="mb-7"
@@ -232,7 +260,7 @@ useEffect(() => {
                   text-white/60
                 "
               >
-                {section.paragraphs.map(
+                {(section.paragraphs || []).map(
                   (paragraph, paragraphIndex) => (
                     <p key={paragraphIndex}>
                       {paragraph}
@@ -251,23 +279,25 @@ useEffect(() => {
             QUOTE
         ====================================================== */}
 
-        <blockquote
-          className="
-            my-6
-            rounded-[6px]
-            border-l-2
-            border-[#9d5cff]
-            bg-[#242536]
-            px-5
-            py-5
-            text-[13px]
-            italic
-            leading-[1.5]
-            text-white/80
-          "
-        >
-          “ {blog.quote} ”
-        </blockquote>
+        {blog.quote && (
+          <blockquote
+            className="
+              my-6
+              rounded-[6px]
+              border-l-2
+              border-[#9d5cff]
+              bg-[#242536]
+              px-5
+              py-5
+              text-[13px]
+              italic
+              leading-[1.5]
+              text-white/80
+            "
+          >
+            “ {blog.quote} ”
+          </blockquote>
+        )}
 
 
         {/* ======================================================
@@ -347,19 +377,21 @@ useEffect(() => {
               text-white/60
             "
           >
-            {blog.closing.split("Get Lume.")[0]}
+            {(blog.closing || "").split("Get Lume.")[0]}
 
-            <Link
-              to="/"
-              className="
-                text-[#9d5cff]
-                transition-colors
-                hover:text-[#b77aff]
-                hover:underline
-              "
-            >
-              Get Lume.
-            </Link>
+            {(blog.closing || "").includes("Get Lume.") && (
+              <Link
+                to="/"
+                className="
+                  text-[#9d5cff]
+                  transition-colors
+                  hover:text-[#b77aff]
+                  hover:underline
+                "
+              >
+                Get Lume.
+              </Link>
+            )}
           </p>
 
         </section>
@@ -371,4 +403,15 @@ useEffect(() => {
       <Footer/>
     </main>
   );
+}
+
+function formatBlogDate(blog) {
+  const value = blog.publishedAt || blog.date || blog.createdAt;
+  if (!value) return "";
+  if (blog.date && !blog.publishedAt && !blog.createdAt) return blog.date;
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 }
