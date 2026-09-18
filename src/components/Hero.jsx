@@ -18,8 +18,9 @@ export default function Hero() {
           bg-center
           bg-no-repeat
           px-5
-          pt-10
-          pb-12
+          pt-24
+          pb-14
+          sm:pt-28
 
           md:hidden
         "
@@ -95,11 +96,13 @@ export default function Hero() {
             className="
               relative
               z-30
-              mt-8
+              mt-4
+              sm:mt-6
               max-w-[370px]
               text-left
-              text-[15px]
-              leading-[1.55]
+              text-[14px]
+              sm:text-[15px]
+              leading-[1.5]
               text-white/55
 
               max-[390px]:text-[13px]
@@ -116,7 +119,8 @@ export default function Hero() {
             className="
               relative
               z-10
-              mt-6
+              mt-1
+              sm:mt-2
               flex
               justify-center
             "
@@ -124,12 +128,12 @@ export default function Hero() {
             <motion.div
               initial={{
                 opacity: 0,
-                y: 40,
+                y: 20,
                 scale: 0.95,
               }}
               animate={{
                 opacity: 1,
-                y: 0,
+                y: -25,
                 scale: 1,
               }}
               transition={{
@@ -140,15 +144,17 @@ export default function Hero() {
               className="relative z-10"
             >
               <img
-                src="/video.gif"
+                src="/videos/video1.gif"
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  w-[280px]
+                  w-[335px]
+                  sm:w-[370px]
+                  max-w-[92vw]
                   object-contain
 
-                  max-[390px]:w-[245px]
-                  max-[350px]:w-[220px]
+                  max-[390px]:w-[305px]
+                  max-[350px]:w-[275px]
                 "
               />
             </motion.div>
@@ -237,14 +243,16 @@ export default function Hero() {
         className="
           relative
           hidden
-          h-screen
+          min-h-screen
           overflow-hidden
           bg-cover
           bg-center
           bg-no-repeat
           px-6
-          pt-40
-          pb-32
+          pt-36
+          pb-24
+          lg:pt-40
+          lg:pb-32
 
           md:block
         "
@@ -315,12 +323,12 @@ export default function Hero() {
             <motion.div
               initial={{
                 opacity: 0,
-                y: 40,
+                y: -210,
                 scale: 0.95,
               }}
               animate={{
                 opacity: 1,
-                y: -230,
+                y: -260,
                 scale: 1,
               }}
               transition={{
@@ -331,7 +339,7 @@ export default function Hero() {
               className="relative z-10"
             >
               <img
-                src="/videos/video.gif"
+                src="/videos/video1.gif"
                 alt="Lume App Preview"
                 className="
                   h-auto
@@ -342,12 +350,12 @@ export default function Hero() {
             </motion.div>
 
             {/* AVAILABLE NOW */}
-            <div className="absolute bottom-60 left-0">
+            <div className="absolute bottom-[28rem] left-0 xl:-left-6">
               <AvailableNowBadges />
             </div>
 
             {/* FOCUS IMPACT */}
-            <div className="absolute right-0 top-36 md:-right-14">
+            <div className="absolute right-0 top-36 md:right-0 lg:-right-6 xl:-right-14">
               <FocusImpactCard />
             </div>
           </div>

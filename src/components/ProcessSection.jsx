@@ -9,32 +9,32 @@ const STEPS = [
   {
     n: "01",
     title: (
-    <>
-      Lock distractions before they
-      <br />
-      begin
-    </>
-  ),
+      <>
+        Lock distractions before they
+        <br />
+        begin
+      </>
+    ),
     body: "Choose the apps that pull you away from what matters. Once locked, they stay locked.",
     // img:"/iPhone2.png"
-    img:"/videos/video.gif"
+    img: "./images/works/3.gif"
   },
   {
     n: "02",
     title: (<>
-    Unlock with <br /> intention</>),
+      Unlock with <br /> intention</>),
     body: "Instead of another tap, reach for your Lume Card. That small pause turns every unlock into a choice.",
     // img:"/iPhone4.png"
-    img:"/videos/video.gif"
+    img: "./images/works/4.gif"
   },
   {
     n: "03",
     title: (<>
-  Watch better <br /> habits <br /> take shape
+      Watch better <br /> habits <br /> take shape
     </>),
     body: "Track your sessions, streaks, and progress over time. Small choices today, lasting change tomorrow.",
     // img:"/iPhone3.png"
-    img:"/videos/video.gif"
+    img: "./images/works/5.gif"
   },
 ];
 
@@ -241,7 +241,8 @@ export default function ProcessSection() {
               w-full
               grid-cols-1
               items-center
-              gap-12
+              gap-6
+              sm:gap-8
               lg:grid-cols-[0.8fr_1.2fr]
               lg:gap-20
             "
@@ -258,11 +259,13 @@ export default function ProcessSection() {
                   rounded-full
                   border
                   border-white/20
-                  px-4
-                  py-2
+                  px-3
+                  py-1.5
                   text-[10px]
                   tracking-wide
                   text-white/70
+                  sm:px-4
+                  sm:py-2
                 "
               >
                 How it works
@@ -270,13 +273,15 @@ export default function ProcessSection() {
 
               <h2
                 className="
-                  mt-6
+                  mt-4
                   max-w-[520px]
-                  text-4xl
+                  text-2xl
                   font-semibold
-                  leading-[1.02]
+                  leading-[1.05]
                   tracking-[-0.03em]
                   text-white
+                  sm:mt-6
+                  sm:text-4xl
                   md:text-5xl
                 "
               >
@@ -290,11 +295,13 @@ export default function ProcessSection() {
 
               <p
                 className="
-                  mt-5
+                  mt-3
                   max-w-[430px]
-                  text-sm
+                  text-xs
                   leading-relaxed
                   text-white/40
+                  sm:mt-5
+                  sm:text-sm
                 "
               >
                 Lume combines smart software with a
@@ -312,7 +319,11 @@ export default function ProcessSection() {
               className="
                 relative
                 flex
-                h-[460px]
+                h-[440px]
+                sm:h-[500px]
+                md:h-[540px]
+                lg:h-[600px]
+                xl:h-[540px]
                 w-full
                 items-center
               "
@@ -365,11 +376,10 @@ export default function ProcessSection() {
                         index === 0
                           ? "0%"
                           : index === STEPS.length - 1
-                          ? "100%"
-                          : `${
-                              (index /
-                                (STEPS.length - 1)) *
-                              100
+                            ? "100%"
+                            : `${(index /
+                              (STEPS.length - 1)) *
+                            100
                             }%`,
                     }}
                   />
@@ -383,12 +393,12 @@ export default function ProcessSection() {
               <div
                 className="
                   relative
-                  ml-8
+                  ml-4
+                  sm:ml-8
                   h-full
                   flex-1
                   border border-zinc-800 
                   rounded-md
-
                 "
               >
                 {STEPS.map((step, index) => (
@@ -401,17 +411,24 @@ export default function ProcessSection() {
                       absolute
                       inset-0
                       flex
-                      justify-center
-                      gap-8
+                      flex-col
+                      md:flex-row
+                      justify-between
+                      items-center
                       overflow-hidden
+                      p-6
+                      sm:p-8
+                      md:p-8
+                      lg:p-10
                     "
                   >
                     {/* Text */}
 
-                    <div className="w-[250px] shrink-0 ml-10 mt-10">
+                    <div className="w-full md:w-[280px] lg:w-[320px] shrink-0 text-left z-10">
                       <span
                         className="
-                          text-xl
+                          text-lg
+                          sm:text-xl
                           font-medium
                           tracking-wide
                           text-white/30
@@ -422,8 +439,10 @@ export default function ProcessSection() {
 
                       <h3
                         className="
-                          mt-3
-                          text-2xl
+                          mt-1
+                          sm:mt-3
+                          text-lg
+                          sm:text-2xl
                           font-semibold
                           leading-[1.05]
                           tracking-tight
@@ -435,8 +454,10 @@ export default function ProcessSection() {
 
                       <p
                         className="
-                          mt-4
-                          text-xs
+                          mt-2
+                          sm:mt-4
+                          text-[11px]
+                          sm:text-xs
                           leading-relaxed
                           text-white/40
                         "
@@ -447,8 +468,12 @@ export default function ProcessSection() {
 
                     {/* Phone */}
 
-                    <div className="flex-1 relative ">
-                      <img className="absolute bottom-0  w-[390px]" src={step.img} alt="" />
+                    <div className="flex-1 relative w-full h-[220px] sm:h-[280px] md:h-full flex justify-center md:justify-end items-end">
+                      <img
+                        className="bottom-0 max-h-[210px] sm:max-h-[270px] md:max-h-[96%] lg:max-h-[98%] h-auto md:h-[94%] lg:h-[96%] w-auto max-w-full object-contain select-none"
+                        src={step.img}
+                        alt="Lume app preview"
+                      />
                     </div>
                   </div>
                 ))}

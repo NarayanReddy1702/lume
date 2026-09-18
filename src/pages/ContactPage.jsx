@@ -64,7 +64,7 @@ export default function ContactPage() {
         <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#4a4a55]">
           Get in touch
         </p>
-        <h1 className="mt-4 text-[42px] font-semibold leading-none tracking-[-0.04em] text-[#373741] sm:text-[64px]">
+        <h1 className="mt-4 text-[clamp(32px,7vw,64px)] font-semibold leading-tight tracking-[-0.04em] text-[#373741]">
           Let&apos;s talk about Lume.
         </h1>
         <p className="mx-auto mt-6 max-w-[650px] text-[16px] leading-relaxed text-[#666878]">

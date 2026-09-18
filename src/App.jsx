@@ -12,6 +12,7 @@ import StatsSection from "./components/StatsSection.jsx";
 import WhoItsFor from "./components/WhoItsFor.jsx";
 import FAQSection from "./components/FAQSection.jsx";
 import BlogDetails from "./pages/BlogDetails.jsx";
+import BlogPage from "./pages/BlogPage.jsx";
 import PurchasePage from "./pages/PurchasePage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import CalculatorPage from "./pages/CalculatorPage.jsx";
@@ -213,6 +214,30 @@ function OrderSuccessRoute() {
 }
 
 
+function BlogRoute() {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, []);
+
+  return (
+    <SmoothScroll>
+      <div className="relative min-h-screen bg-[#07070a] overflow-hidden">
+        <Navbar animateOnMount={false} />
+
+        <main className="relative">
+          <BlogPage />
+        </main>
+
+        <Footer />
+      </div>
+    </SmoothScroll>
+  );
+}
+
+
 /* ============================================================
    APP ROUTES
 ============================================================ */
@@ -267,6 +292,16 @@ export default function App() {
       <Route
         path="/for-family"
         element={<PurchaseRoute audience="family" />}
+      />
+
+      {/* BLOG LISTING */}
+      <Route
+        path="/blog"
+        element={<BlogRoute />}
+      />
+      <Route
+        path="/blogs"
+        element={<BlogRoute />}
       />
 
       {/* BLOG DETAILS */}

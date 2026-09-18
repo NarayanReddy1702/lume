@@ -17,7 +17,7 @@ const FEATURES = [
     title: "Daily Time Limit",
     description:
       'Set a hard cap on the apps that eat your day. Once you hit your limit, Lume steps in — no more "just five more minutes".',
-    image: "/iPhone2.png",
+    image: "./images/feature/first.png",
   },
 
   {
@@ -25,7 +25,7 @@ const FEATURES = [
     title: "Scheduling",
     description:
       "Plan your focus windows in advance. Lume automatically locks distractions during the hours you tell it matter most.",
-    image: "/iPhone4.png",
+    image: "./images/feature/second.png",
   },
 
   {
@@ -33,7 +33,7 @@ const FEATURES = [
     title: "Quick Session",
     description:
       "Need to lock in right now? Start a focus session in one tap — no setup, no scrolling through settings, just instant quiet.",
-    image: "/iPhone3.png",
+    image: "./images/feature/third.png",
   },
 
   {
@@ -41,7 +41,7 @@ const FEATURES = [
     title: "Habit Tracker",
     description:
       'Set a hard cap on the apps that eat your day. Once you hit your limit, Lume steps in — no more "just five more minutes".',
-    image: "/iPhone2.png",
+    image: "./images/feature/4th.png",
   },
 
   {
@@ -49,7 +49,7 @@ const FEATURES = [
     title: "Challenges",
     description:
       "Build consistency with daily and weekly focus challenges that turn staying off your phone into something you actually want to do.",
-    image: "/iPhone4.png",
+    image: "./images/feature/five.png",
   },
 ];
 
@@ -109,64 +109,59 @@ export default function FeaturesSection() {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const total = FEATURES.length;
+    const mm = gsap.matchMedia(sectionRef);
 
-      gsap.set(progressRef.current, {
-        scaleX: 0,
-        transformOrigin: "left center",
-      });
+    mm.add(
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
+      },
+      (context) => {
+        const { isDesktop } = context.conditions;
+        const total = FEATURES.length;
 
-      const trigger = ScrollTrigger.create({
-        trigger: sectionRef.current,
+        gsap.set(progressRef.current, {
+          scaleX: 0,
+          transformOrigin: "left center",
+        });
 
-        start: "top top",
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top top",
+          end: isDesktop ? `+=${total * 850}` : `+=${total * 480}`,
+          pin: true,
+          scrub: isDesktop ? 1 : 0.6,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const progress = self.progress;
 
-        end: `+=${total * 850}`,
+            /* PROGRESS BAR */
+            gsap.set(progressRef.current, {
+              scaleX: progress,
+            });
 
-        pin: true,
+            /* ACTIVE ITEM */
+            const index = Math.min(
+              total - 1,
+              Math.floor(progress * total)
+            );
 
-        scrub: 1,
+            setActiveIndex((current) => {
+              if (current === index) {
+                return current;
+              }
+              return index;
+            });
+          },
+        });
 
-        anticipatePin: 1,
-
-        invalidateOnRefresh: true,
-
-        onUpdate: (self) => {
-          const progress = self.progress;
-
-          /* PROGRESS BAR */
-
-          gsap.set(progressRef.current, {
-            scaleX: progress,
-          });
-
-          /* ACTIVE ITEM */
-
-          const index = Math.min(
-            total - 1,
-            Math.floor(progress * total)
-          );
-
-          setActiveIndex((current) => {
-            if (current === index) {
-              return current;
-            }
-
-            return index;
-          });
-        },
-      });
-
-      ScrollTrigger.refresh();
-
-      return () => {
-        trigger.kill();
-      };
-    }, sectionRef);
+        ScrollTrigger.refresh();
+      }
+    );
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, []);
 
@@ -360,21 +355,19 @@ export default function FeaturesSection() {
         className="
           relative
           flex
-          min-h-[430px]
           w-full
           items-center
           justify-center
-          px-6
-          py-20
-
-          max-lg:min-h-[400px]
-
-          max-md:min-h-[500px]
-          max-md:py-16
-
-          max-sm:min-h-[460px]
-          max-sm:px-5
-          max-sm:py-12
+          px-5
+          py-10
+          sm:px-6
+          sm:py-14
+          md:py-20
+          lg:min-h-[360px]
+          max-md:py-6
+          max-md:pb-1
+          max-sm:py-4
+          max-sm:pb-0
         "
       >
         <div
@@ -385,17 +378,17 @@ export default function FeaturesSection() {
             items-center
             justify-between
             gap-x-20
-            px-8
-
+            px-4
+            sm:px-8
             lg:px-16
 
             max-lg:gap-x-10
 
             max-md:flex-col
             max-md:items-start
-            max-md:gap-y-8
-            max-md:px-4
-
+            max-md:gap-y-3.5
+            max-sm:gap-y-2.5
+            max-md:px-2
             max-sm:px-0
           "
         >
@@ -505,57 +498,102 @@ export default function FeaturesSection() {
         <div
           className="
             relative
-
             flex
-
             h-screen
-            min-h-[650px]
-
+            min-h-[560px]
             w-full
-
             items-center
-
+            justify-center
             overflow-hidden
-
             bg-white
+            pt-20
+            pb-4
+            sm:pt-20
+            md:pt-20
+            md:pb-8
           "
         >
           <div
             className="
               mx-auto
-
-              grid
-
+              flex
+              flex-col
+              justify-center
+              items-center
               h-full
               w-full
-
               max-w-[1400px]
-
-              grid-cols-1
-
-              gap-8
-
-              px-8
-              py-10
-
+              gap-2.5
+              sm:gap-4
+              px-4
+              sm:px-8
+              md:grid
               md:grid-cols-[0.9fr_1.1fr]
+              md:gap-8
               md:px-12
-
               lg:px-16
             "
           >
             {/* ==================================================
-                LEFT FEATURE LIST
+                MOBILE ACTIVE FEATURE CONTROLLER (<md)
+            ================================================== */}
+            <div className="order-2 flex w-full flex-col items-center text-center md:hidden mt-1 sm:mt-2">
+              {/* STEP PILLS */}
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-3">
+                {FEATURES.map((feat, idx) => {
+                  const isCur = activeIndex === idx;
+                  return (
+                    <button
+                      key={feat.number}
+                      type="button"
+                      onClick={() => setActiveIndex(idx)}
+                      className={`
+                        h-8 px-3 rounded-full text-[12px] font-semibold transition-all duration-300 flex items-center gap-1.5
+                        ${
+                          isCur
+                            ? "bg-gradient-to-r from-[#9747ff] to-[#7437ff] text-white shadow-md shadow-purple-500/30 scale-105"
+                            : "bg-black/5 text-[#85859a] hover:bg-black/10"
+                        }
+                      `}
+                    >
+                      <span>{feat.number}</span>
+                      {isCur && (
+                        <span className="max-[360px]:hidden text-[11px]">
+                          {feat.title}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* ACTIVE TITLE & DESCRIPTION */}
+              <div className="max-w-md px-4">
+                <h3 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
+                  {FEATURES[activeIndex].title}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-sm text-[#85859a] leading-relaxed line-clamp-3">
+                  {FEATURES[activeIndex].description}
+                </p>
+              </div>
+            </div>
+
+            {/* ==================================================
+                DESKTOP FEATURE LIST (>=md)
             ================================================== */}
 
             <div
               className="
-                flex
+                hidden
+                md:flex
+                order-1
                 flex-col
                 justify-center
+                h-full
+                max-h-[82vh]
               "
             >
-              <div className="flex flex-col gap-y-5">
+              <div className="flex flex-col gap-y-2.5 lg:gap-y-4 xl:gap-y-5">
                 {FEATURES.map(
                   (feature, index) => {
                     const isActive =
@@ -566,14 +604,13 @@ export default function FeaturesSection() {
                         key={feature.number}
                         className="
                           relative
-
                           flex
-
-                          min-h-[72px]
-
+                          min-h-[44px]
+                          lg:min-h-[58px]
+                          xl:min-h-[70px]
                           items-center
-
-                          gap-5
+                          gap-3.5
+                          lg:gap-5
                         "
                       >
                         {/* ACTIVE BAR */}
@@ -581,13 +618,12 @@ export default function FeaturesSection() {
                         <div
                           className="
                             relative
-
                             flex
-
-                            h-[72px]
-
-                            w-[5px]
-
+                            h-[44px]
+                            lg:h-[58px]
+                            xl:h-[70px]
+                            w-[4px]
+                            lg:w-[5px]
                             shrink-0
                           "
                         >
@@ -596,9 +632,7 @@ export default function FeaturesSection() {
                               className="
                                 absolute
                                 inset-0
-
                                 bg-gradient-to-b
-
                                 from-[#9747ff]
                                 to-[#7437ff]
                               "
@@ -610,18 +644,14 @@ export default function FeaturesSection() {
 
                         <span
                           className={`
-                            mt-1
-
-                            w-6
-
+                            mt-0.5
+                            w-5
+                            lg:w-6
                             shrink-0
-
-                            text-[14px]
-
+                            text-[12px]
+                            lg:text-[14px]
                             transition-colors
-
                             duration-300
-
                             ${
                               isActive
                                 ? "text-[#7c3aed]"
@@ -637,16 +667,13 @@ export default function FeaturesSection() {
                         <div>
                           <h3
                             className={`
-                              text-[25px]
-
+                              text-[17px]
+                              lg:text-[22px]
+                              xl:text-[25px]
                               font-semibold
-
                               leading-tight
-
                               transition-colors
-
                               duration-300
-
                               ${
                                 isActive
                                   ? "text-black"
@@ -659,18 +686,16 @@ export default function FeaturesSection() {
 
                           <p
                             className={`
-                              mt-1
-
+                              mt-0.5
+                              lg:mt-1
                               max-w-[480px]
-
-                              text-[16px]
-
-                              leading-[1.5]
-
+                              text-[12px]
+                              lg:text-[14px]
+                              xl:text-[16px]
+                              leading-[1.4]
+                              lg:leading-[1.5]
                               transition-colors
-
                               duration-300
-
                               ${
                                 isActive
                                   ? "text-[#85859a]"
@@ -689,20 +714,33 @@ export default function FeaturesSection() {
             </div>
 
             {/* ==================================================
-                RIGHT IMAGE
+                PHONE IMAGE & PURPLE BACKGROUND
             ================================================== */}
 
             <div
               className="
+                order-1
+                md:order-2
+
                 relative
 
                 flex
 
                 items-center
-
                 justify-center
 
                 [perspective:1200px]
+
+                h-[310px]
+                sm:h-[370px]
+                md:h-full
+                max-h-[82vh]
+
+                w-full
+
+                max-w-[320px]
+                sm:max-w-[400px]
+                md:max-w-none
               "
             >
               {/* PURPLE BACKGROUND */}
@@ -712,18 +750,18 @@ export default function FeaturesSection() {
                 className="
                   absolute
 
-                  left-0
-                  top-1/2
+                  inset-0
+                  m-auto
 
-                  h-[76%]
+                  h-[88%]
+                  sm:h-[90%]
+                  md:h-[80%]
 
                   w-full
 
-                  -translate-y-1/2
-
                   overflow-hidden
 
-                  rounded-[18px]
+                  rounded-[24px]
 
                   bg-gradient-to-br
 
@@ -732,6 +770,9 @@ export default function FeaturesSection() {
                   via-[#d7cbff]
 
                   to-[#cbbbff]
+
+                  shadow-lg
+                  shadow-purple-500/10
 
                   will-change-transform
                 "
@@ -744,21 +785,20 @@ export default function FeaturesSection() {
                 className="
                   relative
 
-                  bottom-2
-
                   z-10
 
                   flex
 
-                  h-[78%]
+                  h-[94%]
+                  md:h-[84%]
 
                   w-full
 
-                  items-end
+                  items-center
 
                   justify-center
 
-                  rounded-[18px]
+                  rounded-[24px]
 
                   [transform-style:preserve-3d]
 
@@ -781,7 +821,9 @@ export default function FeaturesSection() {
 
                     w-auto
 
-                    max-w-[75%]
+                    max-w-[85%]
+                    sm:max-w-[80%]
+                    md:max-w-[75%]
 
                     origin-bottom
 

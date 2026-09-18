@@ -410,7 +410,10 @@ export default function RealFrictionSection() {
                 max-md:w-[180px]
 
                 max-sm:h-[240px]
-                max-sm:w-[145px]
+                max-sm:w-[135px]
+
+                max-[360px]:h-[210px]
+                max-[360px]:w-[115px]
               "
             >
               <img
@@ -453,7 +456,7 @@ export default function RealFrictionSection() {
               items-center
               justify-center
 
-              max-md:min-w-[40px]
+              max-md:min-w-[28px]
             "
           >
             <span
@@ -517,8 +520,8 @@ export default function RealFrictionSection() {
 
                 flex
 
-                h-[420px]
-                w-[380px]
+                h-[390px]
+                w-[260px]
 
                 items-center
                 justify-center
@@ -530,11 +533,14 @@ export default function RealFrictionSection() {
                 max-md:w-[180px]
 
                 max-sm:h-[240px]
-                max-sm:w-[145px]
+                max-sm:w-[135px]
+
+                max-[360px]:h-[210px]
+                max-[360px]:w-[115px]
               "
             >
               <img
-                src="/videos/video.gif"
+                src="/videos/video1.gif"
                 alt="Lume App"
                 className="
                   h-full
@@ -543,6 +549,8 @@ export default function RealFrictionSection() {
                   object-contain
 
                   select-none
+
+                  scale-[1.58]
                 "
                 draggable="false"
               />

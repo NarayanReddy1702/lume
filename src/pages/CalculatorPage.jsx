@@ -141,7 +141,7 @@ export default function CalculatorPage() {
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">
               A different way to look at screen time
             </p>
-            <h1 className="mt-7 text-[42px] font-light leading-[1.02] tracking-[-0.045em] sm:text-[70px]">
+            <h1 className="mt-7 text-[clamp(32px,8vw,70px)] font-light leading-[1.04] tracking-[-0.045em]">
               How much of your
               <br />
               <span className="font-serif italic text-[#d4b7ff]">life</span> goes to your phone?
@@ -284,7 +284,7 @@ export default function CalculatorPage() {
             <h1 className="mx-auto mt-7 max-w-[570px] text-[28px] font-light leading-[1.2] tracking-[-0.035em] sm:text-[39px]">
               At your current pace, you are on track to spend
             </h1>
-            <div className="mt-8 text-[86px] font-extralight leading-none tracking-[-0.075em] sm:text-[122px]">
+            <div className="mt-8 text-[clamp(72px,18vw,122px)] font-extralight leading-none tracking-[-0.075em]">
               {result.yearsLost.toFixed(1)}
             </div>
             <p className="mt-4 text-[11px] uppercase tracking-[0.42em] text-[#d4b7ff]">Years</p>
@@ -319,7 +319,7 @@ export default function CalculatorPage() {
               className="mx-auto text-center"
             >
             <p className="text-[10px] uppercase tracking-[0.28em] text-white/45">Now take some of it back</p>
-            <h1 className="mx-auto mt-7 max-w-[620px] text-[34px] font-light leading-[1.08] tracking-[-0.045em] sm:text-[49px]">
+            <h1 className="mx-auto mt-7 max-w-[620px] text-[clamp(26px,6.5vw,49px)] font-light leading-[1.1] tracking-[-0.04em]">
               How much time would you like to reclaim?
             </h1>
             <div className="mt-8 text-[64px] font-extralight leading-none tracking-[-0.06em]">
@@ -352,7 +352,7 @@ export default function CalculatorPage() {
                   key={choice}
                   type="button"
                   onClick={() => setQuickSave(choice)}
-                  className={`border-r border-white/15 px-3 py-3 text-[10px] transition ${result.reclaimedHours === choice ? "bg-[#a875ff]/15 text-white" : "text-white/45 hover:bg-white/5 hover:text-white"}`}
+                  className={`border-r border-white/15 px-1.5 sm:px-3 py-3 text-[9px] sm:text-[10px] whitespace-nowrap transition ${result.reclaimedHours === choice ? "bg-[#a875ff]/15 text-white" : "text-white/45 hover:bg-white/5 hover:text-white"}`}
                 >
                   {choice} hrs
                 </button>
@@ -360,13 +360,13 @@ export default function CalculatorPage() {
               <button
                 type="button"
                 onClick={() => setQuickSave(result.safeHours / 2)}
-                className="px-3 py-3 text-[10px] text-white/45 transition hover:bg-white/5 hover:text-white"
+                className="px-1.5 sm:px-3 py-3 text-[9px] sm:text-[10px] whitespace-nowrap text-white/45 transition hover:bg-white/5 hover:text-white"
               >
                 50%
               </button>
             </div>
 
-            <div className="mt-7 text-[78px] font-extralight leading-none tracking-[-0.075em] sm:text-[96px]">
+            <div className="mt-7 text-[clamp(64px,16vw,96px)] font-extralight leading-none tracking-[-0.075em]">
               {result.yearsBack.toFixed(1)}
             </div>
             <p className="mt-3 text-[10px] uppercase tracking-[0.42em] text-[#d4b7ff]">Years back</p>

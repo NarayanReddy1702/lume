@@ -530,8 +530,11 @@ function Comparison() {
         <h2 className="text-center text-[28px] font-semibold tracking-[-0.03em] text-[#3a3a44]">
           Choose what you want to compare with
         </h2>
+        <p className="mt-2 text-center text-[11px] text-[#9b9ba5] sm:hidden">
+          ← Swipe horizontally to view full comparison →
+        </p>
 
-        <div className="mt-8 overflow-x-auto rounded-[8px] border border-[#dfdfe5] bg-white">
+        <div className="mt-6 overflow-x-auto rounded-[8px] border border-[#dfdfe5] bg-white">
           <div className="grid min-w-[760px] grid-cols-[1.3fr_1fr_1fr_1fr_1.8fr]">
             <HeaderCell align="left">
               <span className="block text-[9px] font-medium text-[#9d9da8]">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Mail,
   Phone,
@@ -254,6 +255,14 @@ export default function Footer() {
 ============================================================ */
 
 function FooterColumn({ title, links }) {
+  const getHref = (link) => {
+    if (link === "Blog") return "/blog";
+    if (link === "Contact us") return "/contact";
+    if (link === "Features") return "/#features";
+    if (link === "Pricing") return "/#pricing";
+    return null;
+  };
+
   return (
     <div>
       <h3
@@ -267,22 +276,33 @@ function FooterColumn({ title, links }) {
       </h3>
 
       <ul className="mt-4 flex flex-col gap-2">
-        {links.map((link) => (
-          <li key={link}>
-            <a
-              href="#"
-              className="
-                text-[12px]
-                text-[#777784]
-                transition-colors
-                duration-200
-                hover:text-[#7137ff]
-              "
-            >
-              {link}
-            </a>
-          </li>
-        ))}
+        {links.map((link) => {
+          const path = getHref(link);
+          const linkClass = "text-[12px] text-[#777784] transition-colors duration-200 hover:text-[#7137ff]";
+
+          return (
+            <li key={link}>
+              {path ? (
+                path.startsWith("/") && !path.includes("#") ? (
+                  <Link to={path} className={linkClass}>
+                    {link}
+                  </Link>
+                ) : (
+                  <a href={path} className={linkClass}>
+                    {link}
+                  </a>
+                )
+              ) : (
+                <a
+                  href="#"
+                  className={linkClass}
+                >
+                  {link}
+                </a>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

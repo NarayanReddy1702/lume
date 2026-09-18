@@ -124,7 +124,7 @@ function BusinessHero() {
           className="flex justify-center md:justify-end"
         >
           <img
-            src="/videos/video.gif"
+            src="/videos/video1.gif"
             alt="Lume app preview"
             className="h-auto w-[280px] select-none object-contain sm:w-[340px] lg:w-[410px]"
             draggable="false"
@@ -475,12 +475,12 @@ function TrustStrip() {
           ease: "easeOut",
         }}
       >
-      <p className="text-sm font-medium text-[#45454f]">
-        Trusted by teams who take focus seriously
-      </p>
-      <div className="mx-auto mt-8 flex max-w-[820px] flex-wrap items-center justify-center gap-4">
-        {logos.length
-          ? logos.map((logo) => (
+        <p className="text-sm font-medium text-[#45454f]">
+          Trusted by teams who take focus seriously
+        </p>
+        <div className="mx-auto mt-8 flex max-w-[820px] flex-wrap items-center justify-center gap-4">
+          {logos.length
+            ? logos.map((logo) => (
               <span
                 key={logo._id}
                 className="flex h-16 min-w-[132px] items-center justify-center rounded-[8px] border border-[#eeeeef] bg-white px-5"
@@ -493,7 +493,7 @@ function TrustStrip() {
                 />
               </span>
             ))
-          : TRUSTED_TEAMS.map((team) => (
+            : TRUSTED_TEAMS.map((team) => (
               <span
                 key={team}
                 className="text-[10px] font-semibold tracking-[0.12em] text-[#b0b0b9]"
@@ -501,19 +501,19 @@ function TrustStrip() {
                 {team}
               </span>
             ))}
-      </div>
-
-      <div className="mt-9 flex items-center justify-center gap-3">
-        <Building2 size={18} className="text-[#7c5cff]" />
-        <div>
-          <p className="text-[36px] font-semibold leading-none tracking-[-0.035em] text-[#30303a]">
-            2,418,905
-          </p>
-          <p className="mt-2 text-[11px] text-[#9696a0]">
-            Hours of focus reclaimed by Lume teams, together
-          </p>
         </div>
-      </div>
+
+        <div className="mt-9 flex items-center justify-center gap-3">
+          <Building2 size={18} className="text-[#7c5cff]" />
+          <div>
+            <p className="text-[36px] font-semibold leading-none tracking-[-0.035em] text-[#30303a]">
+              2,418,905
+            </p>
+            <p className="mt-2 text-[11px] text-[#9696a0]">
+              Hours of focus reclaimed by Lume teams, together
+            </p>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

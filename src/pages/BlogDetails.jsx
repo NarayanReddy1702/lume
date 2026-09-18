@@ -53,17 +53,21 @@ export default function BlogDetails() {
             Article not found
           </h1>
 
-          <Link
-  to="/#who-its-for"
-  className="
-    text-[11px]
-    text-white/50
-    transition-colors
-    hover:text-white
-  "
->
-  ← Back to Lume
-</Link>
+          <div className="mt-4 flex items-center gap-3">
+            <Link
+              to="/blog"
+              className="text-[12px] font-medium text-[#9d5cff] transition-colors hover:text-[#c49aff]"
+            >
+              ← Back to All Articles
+            </Link>
+            <span className="text-white/25">•</span>
+            <Link
+              to="/"
+              className="text-[12px] text-white/50 transition-colors hover:text-white"
+            >
+              Home
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -99,20 +103,21 @@ export default function BlogDetails() {
         ====================================================== */}
 
         <div className="mt-10 border-b border-white/10 pb-6 mb-10">
-
-           <Link
-  to="/#who-its-for"
-  className="
-    text-[11px]
-    text-white/50
-    transition-colors
-    hover:text-white
-  "
->
-  ← Back to Lume
-</Link>
-        
-
+          <div className="flex items-center gap-3">
+            <Link
+              to="/blog"
+              className="text-[11px] font-medium text-[#9d5cff] transition-colors hover:text-[#c49aff]"
+            >
+              ← Back to All Articles
+            </Link>
+            <span className="text-white/25">•</span>
+            <Link
+              to="/"
+              className="text-[11px] text-white/50 transition-colors hover:text-white"
+            >
+              Home
+            </Link>
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {(blog.tags || []).map((tag) => (
@@ -321,6 +326,42 @@ export default function BlogDetails() {
                 object-cover
               "
             />
+          </div>
+        )}
+
+
+        {/* ======================================================
+            ADDITIONAL ARTICLE IMAGES & CONTENT
+        ====================================================== */}
+
+        {Array.isArray(blog.contentImages) && blog.contentImages.length > 0 && (
+          <div className="my-10 space-y-8">
+            {blog.contentImages.map((item, idx) => (
+              <figure
+                key={idx}
+                className="overflow-hidden rounded-[8px] border border-white/10 bg-[#12131e]/70 p-4 sm:p-6 transition-all duration-300 hover:border-white/20"
+              >
+                {item.url && (
+                  <div className="overflow-hidden rounded-[6px]">
+                    <img
+                      src={item.url}
+                      alt={item.caption || `Article image ${idx + 1}`}
+                      className="block w-full max-h-[500px] object-cover transition-transform duration-500 hover:scale-[1.01]"
+                    />
+                  </div>
+                )}
+                {item.caption && (
+                  <figcaption className="mt-4 text-[15px] font-medium tracking-tight text-white/95">
+                    {item.caption}
+                  </figcaption>
+                )}
+                {item.content && (
+                  <p className="mt-2.5 text-[12px] leading-[1.7] text-white/65 whitespace-pre-line">
+                    {item.content}
+                  </p>
+                )}
+              </figure>
+            ))}
           </div>
         )}
 
