@@ -12,7 +12,7 @@ import {
 export default function Footer() {
   return (
     <footer className="w-full bg-white text-[#30303a]">
-      <div className="mx-auto max-w-[1400px] px-8 py-12 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-5 py-10 sm:px-8 sm:py-12 lg:px-8">
 
         {/* =====================================================
             TOP FOOTER
@@ -43,7 +43,7 @@ export default function Footer() {
             <p
               className="
                 mt-4
-                max-w-[260px]
+                max-w-[320px]
                 text-[15px]
                 leading-[1.65]
                 text-[#777784]
@@ -111,6 +111,7 @@ export default function Footer() {
             links={[
               "About",
               "Contact us",
+              "Privacy Policy",
               "Careers",
               "Culture",
               "Blog",
@@ -154,9 +155,12 @@ export default function Footer() {
               <ContactItem
                 icon={<Mail size={12} />}
                 text={
-                  <>
-                    contact@company.com
-                  </>
+                  <a
+                    href="mailto:support@lumeapp.in"
+                    className="hover:text-[#7137ff] transition-colors"
+                  >
+                    support@lumeapp.in
+                  </a>
                 }
               />
 
@@ -206,6 +210,7 @@ export default function Footer() {
             pt-4
             text-[12px]
             text-[#85858f]
+            leading-relaxed
             md:flex-row
             md:items-center
             md:justify-between
@@ -214,7 +219,7 @@ export default function Footer() {
           {/* COPYRIGHT */}
 
           <p>
-            Copyright © 2026 Lume
+            Copyright © 2026 SARWANA NOVAFUTURA TECHWORK LLP. All rights reserved.
           </p>
 
           {/* LEGAL */}
@@ -232,8 +237,8 @@ export default function Footer() {
               Terms and Conditions
             </a>
             {" | "}
-            <a
-              href="#"
+            <Link
+              to="/privacy-policy"
               className="
                 text-[#7137ff]
                 transition-colors
@@ -241,7 +246,7 @@ export default function Footer() {
               "
             >
               Privacy Policy
-            </a>
+            </Link>
           </p>
         </div>
       </div>
@@ -258,6 +263,7 @@ function FooterColumn({ title, links }) {
   const getHref = (link) => {
     if (link === "Blog") return "/blog";
     if (link === "Contact us") return "/contact";
+    if (link === "Privacy Policy") return "/privacy-policy";
     if (link === "Features") return "/#features";
     if (link === "Pricing") return "/#pricing";
     return null;

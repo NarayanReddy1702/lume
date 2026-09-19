@@ -39,10 +39,7 @@ export default function Navbar({
   theme = "dark",
 }) {
   const [scrolled, setScrolled] = useState(false);
-  const [showGetLumeMenu, setShowGetLumeMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-  const mobileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const isLight = theme === "light";
@@ -79,23 +76,6 @@ export default function Navbar({
     };
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target)
-      ) {
-        setShowGetLumeMenu(false);
-      }
-    };
-
-    window.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   /* ============================================================
      UPDATE URL WHILE SCROLLING
   ============================================================ */
@@ -106,7 +86,6 @@ useEffect(() => {
     "features",
     "benefits",
     "who-its-for",
-    "pricing",
     "contact",
   ];
 
@@ -205,7 +184,6 @@ useEffect(() => {
   ============================================================ */
 
   const handleNavigation = (link) => {
-    setShowGetLumeMenu(false);
     setMobileMenuOpen(false);
 
     if (link.path) {
@@ -214,9 +192,24 @@ useEffect(() => {
     }
 
     const target = link.target;
+    const hashOnlyTargets = new Set(["pricing"]);
+
+    if (hashOnlyTargets.has(target)) {
+      window.history.replaceState(null, "", `${window.location.pathname}#${target}`);
+      return;
+    }
 
     if (location.pathname !== "/") {
       navigate(target === "home" ? "/" : `/#${target}`);
+      return;
+    }
+
+    if (target === "home") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      window.history.replaceState(null, "", window.location.pathname);
       return;
     }
 
@@ -228,10 +221,7 @@ useEffect(() => {
       Update URL immediately
     */
 
-    const newUrl =
-      target === "home"
-        ? window.location.pathname
-        : `${window.location.pathname}#${target}`;
+    const newUrl = `${window.location.pathname}#${target}`;
 
     window.history.replaceState(
       null,
@@ -283,7 +273,7 @@ useEffect(() => {
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
 
         {/* LOGO */}
 
@@ -301,7 +291,7 @@ useEffect(() => {
         {/* NAV LINKS */}
 
         <ul
-          className={`hidden md:flex items-center gap-8 text-sm ${
+          className={`hidden lg:flex items-center gap-6 xl:gap-8 text-sm ${
             isLight ? "text-[#27272f]/70" : "text-white/60"
           }`}
         >
@@ -339,95 +329,37 @@ useEffect(() => {
         {/* RIGHT CONTROLS (GET LUME + MOBILE TOGGLE) */}
 
         <div className="flex items-center gap-3">
-          <div ref={menuRef} className="relative">
-            <button
-              onClick={() => {
-                setShowGetLumeMenu((open) => !open);
-                setMobileMenuOpen(false);
-              }}
-              className={`
-                text-sm
-                font-medium
-                rounded-full
-                px-5
-                py-2
-                transition-colors
-                ${
-                  isLight
-                    ? "bg-black text-white hover:bg-[#202024]"
-                    : "bg-white text-void hover:bg-white/90"
-                }
-              `}
-            >
-              Get Lume
-            </button>
-
-            {showGetLumeMenu && (
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: -8,
-                  scale: 0.98,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 0.18,
-                  ease: "easeOut",
-                }}
-                className={`fixed right-4 sm:right-6 top-[68px] md:absolute md:top-full md:mt-3 md:right-0 w-[min(340px,calc(100vw-32px))] flex gap-1 sm:gap-1.5 rounded-[8px] border p-1 sm:p-1.5 shadow-[0_14px_34px_rgba(10,10,15,0.14)] z-50 ${
-                  isLight
-                    ? "border-black/10 bg-white text-[#27272f]"
-                    : "border-white/10 bg-[#101015]/95 text-white backdrop-blur-xl"
-                }`}
-              >
-                {[
-                  {
-                    label: "For me",
-                    path: "/for-me",
-                  },
-                  {
-                    label: "For Family",
-                    path: "/for-family",
-                  },
-                  {
-                    label: "Business",
-                    path: "/business",
-                  },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() =>
-                      handleNavigation({
-                        path: item.path,
-                      })
-                    }
-                    className={`flex min-h-10 flex-1 items-center justify-center rounded-[6px] px-2 sm:px-3 text-center text-[11px] sm:text-[12px] font-medium whitespace-nowrap transition-colors ${
-                      isLight
-                        ? "hover:bg-[#f3f0ff] hover:text-[#7137ff]"
-                        : "bg-white/5 hover:bg-white hover:text-[#101015]"
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </div>
+          <button
+            onClick={() => {
+              navigate("/forme");
+              setMobileMenuOpen(false);
+            }}
+            className={`
+              text-sm
+              font-medium
+              rounded-full
+              px-4
+              py-2
+              sm:px-5
+              transition-colors
+              ${
+                isLight
+                  ? "bg-black text-white hover:bg-[#202024]"
+                  : "bg-white text-void hover:bg-white/90"
+              }
+            `}
+          >
+            Get Lume
+          </button>
 
           {/* MOBILE TOGGLE BUTTON */}
           <button
             type="button"
             onClick={() => {
               setMobileMenuOpen((o) => !o);
-              setShowGetLumeMenu(false);
             }}
             aria-label="Toggle Navigation Menu"
-            className={`flex md:hidden items-center justify-center p-2 rounded-full border transition-colors ${
+            className={`flex lg:hidden items-center justify-center p-2 rounded-full border transition-colors ${
               isLight
                 ? "border-black/10 text-[#27272f] hover:bg-black/5"
                 : "border-white/10 text-white hover:bg-white/10"
@@ -447,7 +379,7 @@ useEffect(() => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: "easeInOut" }}
-            className={`md:hidden border-t px-6 py-5 overflow-hidden ${
+            className={`lg:hidden border-t px-6 py-5 overflow-hidden ${
               isLight
                 ? "border-black/10 bg-white/98 text-[#27272f]"
                 : "border-white/10 bg-[#0c0c12]/98 text-white backdrop-blur-2xl"
@@ -479,29 +411,20 @@ useEffect(() => {
             </ul>
 
             <div className={`mt-5 border-t pt-4 ${isLight ? "border-black/10" : "border-white/10"}`}>
-              <div className={`text-[10px] font-semibold uppercase tracking-wider mb-2 ${isLight ? "text-black/50" : "text-white/40"}`}>
+              <button
+                type="button"
+                onClick={() => {
+                  navigate("/forme");
+                  setMobileMenuOpen(false);
+                }}
+                className={`w-full rounded-full py-2.5 text-center text-sm font-medium transition-colors ${
+                  isLight
+                    ? "bg-black text-white hover:bg-[#202024]"
+                    : "bg-white text-void hover:bg-white/90"
+                }`}
+              >
                 Get Lume
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { label: "For me", path: "/for-me" },
-                  { label: "For Family", path: "/for-family" },
-                  { label: "Business", path: "/business" },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => handleNavigation({ path: item.path })}
-                    className={`rounded-lg py-2 text-center text-[11px] font-medium transition-colors ${
-                      isLight
-                        ? "bg-black/5 hover:bg-[#7137ff] hover:text-white"
-                        : "bg-white/5 hover:bg-white hover:text-black"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              </button>
             </div>
           </motion.div>
         )}

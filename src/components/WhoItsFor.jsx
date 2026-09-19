@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, Clock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import gsap from "gsap";
@@ -296,7 +296,7 @@ export default function WhoItsFor() {
             grid
             grid-cols-1
 
-            gap-3
+            gap-5
 
             sm:grid-cols-2
 
@@ -308,10 +308,12 @@ export default function WhoItsFor() {
               <div
                 key={`blog-loading-${index}`}
                 className="
-                  h-[405px]
+                  h-[410px]
                   animate-pulse
-                  rounded-[13px]
-                  bg-[#171717]
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-[#121217]
                 "
               />
             ))
@@ -378,21 +380,27 @@ function PersonCard({ person }) {
 
         relative
 
+        flex
+        flex-col
+
         cursor-pointer
 
         overflow-hidden
 
-        rounded-[13px]
+        rounded-2xl
 
-        bg-[#171717]
+        border
+        border-white/10
 
-        transition-transform
+        bg-[#121217]
 
-        duration-500
+        transition-all
 
-        ease-out
+        duration-300
 
         hover:-translate-y-1
+        hover:border-[#7137ff]/40
+        hover:shadow-[0_12px_32px_rgba(113,55,255,0.12)]
       "
     >
       {/* ======================================================
@@ -407,11 +415,13 @@ function PersonCard({ person }) {
 
           overflow-hidden
 
-          sm:h-[250px]
+          bg-[#17171d]
 
-          lg:h-[230px]
+          sm:h-[240px]
 
-          xl:h-[250px]
+          lg:h-[210px]
+
+          xl:h-[230px]
         "
       >
         <img
@@ -443,13 +453,59 @@ function PersonCard({ person }) {
 
             bg-gradient-to-t
 
-            from-black/30
+            from-[#121217]
 
             via-transparent
 
             to-transparent
           "
         />
+
+        <div
+          className="
+            absolute
+            left-3.5
+            top-3.5
+            flex
+            flex-wrap
+            gap-1.5
+          "
+        >
+          {(person.tags || []).slice(0, 2).map((tag) => (
+            <span
+              key={tag}
+              className="
+                rounded-full
+                border
+                border-[#9d5cff]/30
+                bg-[#28104a]/90
+                px-2.5
+                py-0.5
+                text-[9px]
+                font-semibold
+                text-[#b588ff]
+                backdrop-blur-md
+              "
+            >
+              {tag}
+            </span>
+          ))}
+          {(person.tags || []).length > 2 ? (
+            <span
+              className="
+                rounded-full
+                bg-black/60
+                px-2
+                py-0.5
+                text-[9px]
+                text-white/60
+                backdrop-blur-md
+              "
+            >
+              +{person.tags.length - 2}
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* ======================================================
@@ -458,117 +514,91 @@ function PersonCard({ person }) {
 
       <div
         className="
-          min-h-[150px]
+          flex
+          min-h-[190px]
+          flex-1
+          flex-col
+          justify-between
 
-          bg-[#171717]
+          bg-[#121217]
 
-          px-4
-          py-4
+          p-5
         "
       >
-        {/* TITLE */}
-
-        <h3
-          className="
-            text-[14px]
-
-            font-medium
-
-            tracking-[-0.01em]
-
-            text-white
-          "
-        >
-          {person.title}
-        </h3>
-
-        <div
-          className="
-            mt-1.5
-            flex
-            flex-wrap
-            items-center
-            gap-1.5
-            text-[8px]
-            text-white/35
-          "
-        >
-          <span>{person.author || "Lume"}</span>
-          {person.date ? (
-            <>
-              <span>•</span>
-              <span>{person.date}</span>
-            </>
-          ) : null}
-        </div>
-
-        {/* TAGS */}
-
-        <div
-          className="
-            mt-2
-
-            flex
-
-            flex-wrap
-
-            gap-1.5
-          "
-        >
-          {person.tags.map((tag) => (
-            <span
-              key={tag}
-              className="
-                rounded-[2px]
-
-                bg-[#28104a]
-
-                px-2
-                py-[3px]
-
-                text-[7px]
-
-                font-medium
-
-                text-[#9d5cff]
-              "
-            >
-              {tag}
+        <div>
+          <div
+            className="
+              flex
+              flex-wrap
+              items-center
+              gap-2
+              text-[10px]
+              text-white/40
+            "
+          >
+            <span className="flex items-center gap-1">
+              <User size={12} className="text-[#9d5cff]" />
+              {person.author || "Lume"}
             </span>
-          ))}
+            {person.date ? (
+              <>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Calendar size={12} />
+                  {person.date}
+                </span>
+              </>
+            ) : null}
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <Clock size={12} />
+              3 min read
+            </span>
+          </div>
+
+          <h3
+            className="
+              mt-3
+              text-[18px]
+              font-medium
+              leading-[1.25]
+              tracking-[-0.015em]
+              text-white
+              transition-colors
+              group-hover:text-[#c49aff]
+            "
+          >
+            {person.title}
+          </h3>
+
+          <p
+            className="
+              mt-2
+              line-clamp-3
+              text-[12px]
+              leading-[1.6]
+              text-white/55
+            "
+          >
+            {person.description}
+          </p>
         </div>
-
-        {/* DESCRIPTION */}
-
-        <p
-          className="
-            mt-3
-
-            max-w-[220px]
-
-            text-[8px]
-
-            leading-[1.5]
-
-            text-white/40
-          "
-        >
-          {person.description}
-        </p>
-
-        {/* LEARN MORE */}
 
         <div
           className="
-            mt-3
+            mt-5
 
             flex
 
             items-center
+            justify-between
 
-            gap-1
+            border-t
+            border-white/5
 
-            text-[9px]
+            pt-3.5
+
+            text-[11px]
 
             text-white
 
@@ -579,12 +609,18 @@ function PersonCard({ person }) {
             group-hover:gap-2
           "
         >
-          Learn more
+          <span className="text-white/45 underline decoration-white/20 underline-offset-4 transition group-hover:text-white group-hover:decoration-white/60">
+            Quick Preview
+          </span>
 
-          <ArrowRight
-            size={12}
-            strokeWidth={1.5}
-          />
+          <span className="inline-flex items-center gap-1.5 font-medium transition-all group-hover:gap-2.5 group-hover:text-[#b588ff]">
+            Read Story
+
+            <ArrowRight
+              size={13}
+              strokeWidth={1.5}
+            />
+          </span>
         </div>
       </div>
     </article>

@@ -71,7 +71,7 @@ export default function FeaturesSection() {
   ============================================================ */
 
   useLayoutEffect(() => {
-    if (!introRef.current) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
       const chars = gsap.utils.toArray(
@@ -88,14 +88,14 @@ export default function FeaturesSection() {
         ease: "none",
 
         scrollTrigger: {
-          trigger: introRef.current,
-          start: "top 65%",
-          end: "bottom 35%",
+          trigger: sectionRef.current,
+          start: "top 75%",
+          end: "top top",
           scrub: 1,
           invalidateOnRefresh: true,
         },
       });
-    }, introRef);
+    }, sectionRef);
 
     return () => {
       ctx.revert();
@@ -128,9 +128,9 @@ export default function FeaturesSection() {
         ScrollTrigger.create({
           trigger: sectionRef.current,
           start: "top top",
-          end: isDesktop ? `+=${total * 850}` : `+=${total * 480}`,
+          end: isDesktop ? `+=${total * 850}` : `+=${total * 440}`,
           pin: true,
-          scrub: isDesktop ? 1 : 0.6,
+          scrub: isDesktop ? 1 : 0.65,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
@@ -354,16 +354,16 @@ export default function FeaturesSection() {
         ref={introRef}
         className="
           relative
-          flex
+          hidden
           w-full
           items-center
           justify-center
           px-5
-          py-10
+          py-8
           sm:px-6
-          sm:py-14
-          md:py-20
-          lg:min-h-[360px]
+          sm:py-10
+          md:py-10
+          lg:py-10
           max-md:py-6
           max-md:pb-1
           max-sm:py-4
@@ -499,18 +499,22 @@ export default function FeaturesSection() {
           className="
             relative
             flex
-            h-screen
-            min-h-[560px]
+            h-[100svh]
+            min-h-[640px]
             w-full
             items-center
             justify-center
             overflow-hidden
             bg-white
-            pt-20
-            pb-4
-            sm:pt-20
-            md:pt-20
-            md:pb-8
+            pt-5
+            pb-5
+            sm:pt-6
+            sm:pb-6
+            md:h-[100svh]
+            md:min-h-[560px]
+            md:pt-6
+            md:pb-7
+            lg:pt-6
           "
         >
           <div
@@ -518,28 +522,165 @@ export default function FeaturesSection() {
               mx-auto
               flex
               flex-col
-              justify-center
+              justify-start
               items-center
               h-full
               w-full
               max-w-[1400px]
-              gap-2.5
+              gap-3
               sm:gap-4
               px-4
               sm:px-8
               md:grid
+              md:h-full
               md:grid-cols-[0.9fr_1.1fr]
-              md:gap-8
+              md:grid-rows-[auto_minmax(0,1fr)]
+              md:items-stretch
+              md:content-start
+              md:gap-x-8
+              md:gap-y-4
               md:px-12
+              lg:gap-x-12
+              lg:gap-y-5
               lg:px-16
             "
           >
             {/* ==================================================
+                DESKTOP PINNED INTRO (>=md)
+            ================================================== */}
+            <div
+              className="
+                hidden
+                md:grid
+                md:col-span-2
+                md:grid-cols-[0.22fr_1.05fr_0.85fr]
+                md:items-start
+                md:gap-8
+                lg:gap-12
+              "
+            >
+              <div className="shrink-0">
+                <span
+                  className="
+                    inline-flex
+                    w-fit
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-black/50
+                    px-9
+                    py-2
+                    text-[9px]
+                    font-medium
+                  "
+                >
+                  Features
+                </span>
+              </div>
+
+              <h2
+                className="
+                  max-w-[560px]
+                  text-[clamp(34px,3.2vw,50px)]
+                  font-medium
+                  leading-[0.96]
+                  tracking-[-0.04em]
+                  text-black
+                  lg:max-w-[620px]
+                "
+              >
+                A smarter toolkit for
+                <br />
+                <span className="features-focus-text">
+                  <SplitText
+                    text="staying focused."
+                    charClassName="text-[#9da0b3]"
+                  />
+                </span>
+              </h2>
+
+              <p
+                className="
+                  max-w-[390px]
+                  text-[15px]
+                  leading-[1.45]
+                  text-black/50
+                  lg:text-[16px]
+                "
+              >
+                Lume combines smart software with a physical NFC card to make
+                distraction harder, focus easier, and better habits more
+                intentional.
+              </p>
+            </div>
+
+            {/* ==================================================
+                MOBILE PINNED INTRO (<md)
+            ================================================== */}
+            <div className="order-1 flex w-full flex-col items-start md:hidden">
+              <span
+                className="
+                  inline-flex
+                  w-fit
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-black/50
+                  px-8
+                  py-2
+                  text-[9px]
+                  font-medium
+                "
+              >
+                Features
+              </span>
+
+              <h2
+                className="
+                  mt-3
+                  max-w-[340px]
+                  text-[34px]
+                  font-medium
+                  leading-[0.96]
+                  tracking-[-0.045em]
+                  text-black
+                  max-[380px]:text-[31px]
+                "
+              >
+                A smarter toolkit for
+                <br />
+                <span className="features-focus-text">
+                  <SplitText
+                    text="staying focused."
+                    charClassName="text-[#9da0b3]"
+                  />
+                </span>
+              </h2>
+
+              <p
+                className="
+                  mt-3
+                  max-w-[330px]
+                  text-[14px]
+                  leading-[1.55]
+                  text-black/50
+                  max-[380px]:text-[13px]
+                "
+              >
+                Lume combines smart software with a physical NFC card to make
+                distraction harder, focus easier, and better habits more
+                intentional.
+              </p>
+            </div>
+
+            {/* ==================================================
                 MOBILE ACTIVE FEATURE CONTROLLER (<md)
             ================================================== */}
-            <div className="order-2 flex w-full flex-col items-center text-center md:hidden mt-1 sm:mt-2">
+            <div className="order-2 flex w-full flex-col items-center text-center md:hidden">
               {/* STEP PILLS */}
-              <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-3">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3">
                 {FEATURES.map((feat, idx) => {
                   const isCur = activeIndex === idx;
                   return (
@@ -548,7 +689,7 @@ export default function FeaturesSection() {
                       type="button"
                       onClick={() => setActiveIndex(idx)}
                       className={`
-                        h-8 px-3 rounded-full text-[12px] font-semibold transition-all duration-300 flex items-center gap-1.5
+                        min-h-8 px-3 rounded-full text-[12px] font-semibold transition-all duration-300 flex items-center gap-1.5
                         ${
                           isCur
                             ? "bg-gradient-to-r from-[#9747ff] to-[#7437ff] text-white shadow-md shadow-purple-500/30 scale-105"
@@ -590,10 +731,11 @@ export default function FeaturesSection() {
                 flex-col
                 justify-center
                 h-full
-                max-h-[82vh]
+                min-h-0
+                max-h-full
               "
             >
-              <div className="flex flex-col gap-y-2.5 lg:gap-y-4 xl:gap-y-5">
+              <div className="flex flex-col gap-y-2 lg:gap-y-2.5 xl:gap-y-3">
                 {FEATURES.map(
                   (feature, index) => {
                     const isActive =
@@ -605,9 +747,9 @@ export default function FeaturesSection() {
                         className="
                           relative
                           flex
-                          min-h-[44px]
-                          lg:min-h-[58px]
-                          xl:min-h-[70px]
+                          min-h-[40px]
+                          lg:min-h-[46px]
+                          xl:min-h-[52px]
                           items-center
                           gap-3.5
                           lg:gap-5
@@ -619,9 +761,9 @@ export default function FeaturesSection() {
                           className="
                             relative
                             flex
-                            h-[44px]
-                            lg:h-[58px]
-                            xl:h-[70px]
+                            h-[40px]
+                            lg:h-[46px]
+                            xl:h-[52px]
                             w-[4px]
                             lg:w-[5px]
                             shrink-0
@@ -648,8 +790,8 @@ export default function FeaturesSection() {
                             w-5
                             lg:w-6
                             shrink-0
-                            text-[12px]
-                            lg:text-[14px]
+                            text-[11px]
+                            lg:text-[12px]
                             transition-colors
                             duration-300
                             ${
@@ -667,9 +809,9 @@ export default function FeaturesSection() {
                         <div>
                           <h3
                             className={`
-                              text-[17px]
-                              lg:text-[22px]
-                              xl:text-[25px]
+                              text-[15px]
+                              lg:text-[18px]
+                              xl:text-[20px]
                               font-semibold
                               leading-tight
                               transition-colors
@@ -688,12 +830,12 @@ export default function FeaturesSection() {
                             className={`
                               mt-0.5
                               lg:mt-1
-                              max-w-[480px]
-                              text-[12px]
-                              lg:text-[14px]
-                              xl:text-[16px]
+                              max-w-[440px]
+                              text-[11px]
+                              lg:text-[12px]
+                              xl:text-[13px]
                               leading-[1.4]
-                              lg:leading-[1.5]
+                              lg:leading-[1.45]
                               transition-colors
                               duration-300
                               ${
@@ -719,27 +861,30 @@ export default function FeaturesSection() {
 
             <div
               className="
-                order-1
+                order-3
                 md:order-2
 
                 relative
 
                 flex
+                flex-1
 
                 items-center
                 justify-center
 
                 [perspective:1200px]
 
-                h-[310px]
-                sm:h-[370px]
-                md:h-full
-                max-h-[82vh]
+                  h-auto
+                  min-h-[300px]
+                  sm:min-h-[360px]
+                  md:h-full
+                  lg:h-full
+                max-h-full
 
                 w-full
 
-                max-w-[320px]
-                sm:max-w-[400px]
+                max-w-[330px]
+                sm:max-w-[390px]
                 md:max-w-none
               "
             >
@@ -753,9 +898,9 @@ export default function FeaturesSection() {
                   inset-0
                   m-auto
 
-                  h-[88%]
-                  sm:h-[90%]
-                  md:h-[80%]
+                  h-full
+                  sm:h-full
+                  md:h-[78%]
 
                   w-full
 
@@ -789,8 +934,8 @@ export default function FeaturesSection() {
 
                   flex
 
-                  h-[94%]
-                  md:h-[84%]
+                  h-full
+                  md:h-[82%]
 
                   w-full
 
@@ -817,13 +962,13 @@ export default function FeaturesSection() {
                   className="
                     h-auto
 
-                    max-h-[95%]
+                    max-h-[96%]
 
                     w-auto
 
-                    max-w-[85%]
-                    sm:max-w-[80%]
-                    md:max-w-[75%]
+                    max-w-[92%]
+                    sm:max-w-[86%]
+                    md:max-w-[72%]
 
                     origin-bottom
 

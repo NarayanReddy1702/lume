@@ -108,17 +108,16 @@ export default function BlogPage() {
     });
   }, [blogs, activeTag, searchQuery]);
 
-  // Featured article (first marked featured, or the first article in the list)
-  const featuredBlog = useMemo(() => {
-    if (!filteredBlogs.length) return null;
-    return filteredBlogs.find((b) => b.featured) || filteredBlogs[0];
+  // Sorted blogs (featured articles first, then by date)
+  const sortedBlogs = useMemo(() => {
+    return [...filteredBlogs].sort((a, b) => {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      const dateA = new Date(a.publishedAt || 0).getTime();
+      const dateB = new Date(b.publishedAt || 0).getTime();
+      return dateB - dateA;
+    });
   }, [filteredBlogs]);
-
-  // Secondary articles (remaining articles besides featured)
-  const remainingBlogs = useMemo(() => {
-    if (!featuredBlog) return [];
-    return filteredBlogs.filter((b) => (b._id || b.slug) !== (featuredBlog._id || featuredBlog.slug));
-  }, [filteredBlogs, featuredBlog]);
 
   return (
     <div className="relative min-h-screen bg-[#07070a] text-white selection:bg-[#7137ff]/30 selection:text-white">
@@ -227,18 +226,13 @@ export default function BlogPage() {
             LOADING SKELETON STATE
         ============================================================ */}
         {loading && (
-          <div className="space-y-10">
-            {/* Featured skeleton */}
-            <div className="h-[420px] w-full animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]" />
-            {/* Grid skeleton */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="h-[380px] animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"
-                />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-[380px] animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"
+              />
+            ))}
           </div>
         )}
 
@@ -266,126 +260,9 @@ export default function BlogPage() {
         )}
 
         {/* ============================================================
-            FEATURED ARTICLE SPOTLIGHT (Hero Card)
-        ============================================================ */}
-        {!loading && featuredBlog && !searchQuery && activeTag === "All" && (
-          <section className="mb-14">
-            <div className="mb-4 flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-[#9d5cff]">
-                ★ Featured Article
-              </span>
-              <span className="text-[12px] text-white/40">Editorial Pick</span>
-            </div>
-
-            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#121217] transition-all duration-300 hover:border-[#7137ff]/50 hover:shadow-[0_12px_40px_rgba(113,55,255,0.15)]">
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                {/* Image Column */}
-                <div className="relative h-[260px] overflow-hidden sm:h-[340px] lg:col-span-6 lg:h-full">
-                  <img
-                    src={featuredBlog.heroImage}
-                    alt={featuredBlog.title}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent lg:bg-gradient-to-r" />
-
-                  {/* Badges on image */}
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-1.5">
-                    {(featuredBlog.tags || []).slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-[#9d5cff]/30 bg-[#28104a]/90 px-3 py-1 text-[10px] font-semibold text-[#b588ff] backdrop-blur-md"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Content Column */}
-                <div className="flex flex-col justify-between p-6 sm:p-8 lg:col-span-6 lg:p-10">
-                  <div>
-                    {/* Meta info */}
-                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-white/45">
-                      <span className="flex items-center gap-1.5 text-white/70">
-                        <User size={13} className="text-[#9d5cff]" />
-                        {featuredBlog.author}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1.5">
-                        <Calendar size={13} />
-                        {featuredBlog.formattedDate}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock size={13} />
-                        {featuredBlog.readTime}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h2
-                      onClick={() => navigate(`/blog/${featuredBlog.slug}`)}
-                      className="mt-4 cursor-pointer text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.025em] text-white transition-colors group-hover:text-[#c49aff]"
-                    >
-                      {featuredBlog.title}
-                    </h2>
-
-                    {/* Excerpt */}
-                    <p className="mt-3 line-clamp-3 text-[13px] leading-[1.65] text-white/60">
-                      {featuredBlog.excerpt}
-                    </p>
-
-                    {/* Key Sections Preview */}
-                    {featuredBlog.sections && featuredBlog.sections.length > 0 && (
-                      <div className="mt-5 rounded-xl border border-white/5 bg-white/[0.02] p-3.5">
-                        <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
-                          Inside this guide:
-                        </div>
-                        <ul className="mt-2 space-y-1.5">
-                          {featuredBlog.sections.slice(0, 3).map((s, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-center gap-2 text-[12px] text-white/75"
-                            >
-                              <ChevronRight size={12} className="shrink-0 text-[#9d5cff]" />
-                              <span className="line-clamp-1">{s.title}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="mt-8 flex flex-wrap items-center gap-3 pt-6 border-t border-white/10">
-                    <button
-                      type="button"
-                      onClick={() => navigate(`/blog/${featuredBlog.slug}`)}
-                      className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-[12px] font-semibold text-black transition-all hover:bg-[#b588ff] hover:text-white"
-                    >
-                      <span>Read Full Article</span>
-                      <ArrowRight size={14} />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPreviewBlog(featuredBlog)}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-[12px] font-medium text-white/80 transition hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
-                    >
-                      <BookOpen size={14} />
-                      <span>Quick Preview</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-        )}
-
-        {/* ============================================================
             MAIN BLOG GRID (All Articles Details)
         ============================================================ */}
-        {!loading && (
+        {!loading && sortedBlogs.length > 0 && (
           <section>
             <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
               <h2 className="text-[18px] font-medium tracking-tight text-white">
@@ -399,15 +276,13 @@ export default function BlogPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {(searchQuery || activeTag !== "All" ? filteredBlogs : remainingBlogs).map(
-                (blog, index) => (
-                  <BlogCard
-                    key={blog._id || blog.slug || index}
-                    blog={blog}
-                    onPreview={() => setSelectedPreviewBlog(blog)}
-                  />
-                )
-              )}
+              {sortedBlogs.map((blog, index) => (
+                <BlogCard
+                  key={blog._id || blog.slug || index}
+                  blog={blog}
+                  onPreview={() => setSelectedPreviewBlog(blog)}
+                />
+              ))}
             </div>
           </section>
         )}
@@ -463,7 +338,7 @@ export default function BlogPage() {
               </h2>
 
               {/* Meta info */}
-              <div className="mt-3 flex items-center gap-3 text-[11px] text-white/50">
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-white/50 sm:gap-3">
                 <span>By {selectedPreviewBlog.author}</span>
                 <span>•</span>
                 <span>{selectedPreviewBlog.formattedDate}</span>
@@ -520,7 +395,7 @@ export default function BlogPage() {
               )}
 
               {/* Modal Footer CTA */}
-              <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5">
+              <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
                 <button
                   type="button"
                   onClick={() => setSelectedPreviewBlog(null)}
@@ -565,6 +440,7 @@ function BlogCard({ blog, onPreview }) {
         <img
           src={blog.heroImage}
           alt={blog.title}
+          loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent" />
@@ -588,44 +464,57 @@ function BlogCard({ blog, onPreview }) {
       </div>
 
       {/* Card Content */}
-      <div className="flex flex-1 flex-col justify-between p-5">
+      <div className="flex min-h-[190px] flex-1 flex-col justify-between bg-[#121217] p-5">
         <div>
           {/* Meta */}
-          <div className="flex items-center gap-2 text-[10px] text-white/40">
-            <span>{blog.author}</span>
+          <div className="flex flex-wrap items-center gap-2 text-[10px] text-white/40">
+            <span className="flex items-center gap-1">
+              <User size={12} className="text-[#9d5cff]" />
+              {blog.author || "Lume"}
+            </span>
+            {blog.formattedDate ? (
+              <>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Calendar size={12} />
+                  {blog.formattedDate}
+                </span>
+              </>
+            ) : null}
             <span>•</span>
-            <span>{blog.formattedDate}</span>
-            <span>•</span>
-            <span>{blog.readTime}</span>
+            <span className="flex items-center gap-1">
+              <Clock size={12} />
+              {blog.readTime || "3 min read"}
+            </span>
           </div>
 
           {/* Title */}
-          <h3 className="mt-2.5 text-[17px] font-medium leading-[1.3] tracking-[-0.015em] text-white transition-colors group-hover:text-[#c49aff]">
+          <h3 className="mt-3 text-[18px] font-medium leading-[1.25] tracking-[-0.015em] text-white transition-colors group-hover:text-[#c49aff]">
             {blog.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="mt-2 line-clamp-2 text-[12px] leading-[1.6] text-white/55">
+          <p className="mt-2 line-clamp-3 text-[12px] leading-[1.6] text-white/55">
             {blog.excerpt}
           </p>
         </div>
 
-        {/* Card Footer: Section count & Read Article button */}
-        <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-3.5">
+        {/* Card Footer: Quick Preview & Read Story */}
+        <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-3.5 text-[11px] text-white transition-all duration-300 group-hover:gap-2">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               onPreview();
             }}
-            className="text-[11px] text-white/45 underline decoration-white/20 underline-offset-4 transition hover:text-white hover:decoration-white/60"
+            className="text-white/45 underline decoration-white/20 underline-offset-4 transition hover:text-white hover:decoration-white/60"
           >
             Quick Preview
           </button>
 
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-white transition-all group-hover:gap-2.5 group-hover:text-[#b588ff]">
+          <span className="inline-flex items-center gap-1.5 font-medium transition-all group-hover:gap-2.5 group-hover:text-[#b588ff]">
             <span>Read Story</span>
-            <ArrowRight size={13} />
+            <ArrowRight size={13} strokeWidth={1.5} />
           </span>
         </div>
       </div>

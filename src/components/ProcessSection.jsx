@@ -44,11 +44,13 @@ export default function ProcessSection() {
   const panelsRef = useRef([]);
   const dotsRef = useRef([]);
   const progressRef = useRef(null);
+  const activeStepRef = useRef(-1);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const panels = panelsRef.current;
       const dots = dotsRef.current;
+      activeStepRef.current = -1;
 
       // ------------------------------------------
       // INITIAL STATE
@@ -73,15 +75,13 @@ export default function ProcessSection() {
       ScrollTrigger.create({
         trigger: sectionRef.current,
 
-        // Pin the 100vh container
         pin: pinRef.current,
 
         start: "top top",
 
-        // 200vh extra scrolling for 3 steps
-        end: "+=200%",
+        end: () => `+=${(STEPS.length - 1) * window.innerHeight}`,
 
-        scrub: 1,
+        scrub: 0.8,
 
         anticipatePin: 1,
 
@@ -113,23 +113,27 @@ export default function ProcessSection() {
           // DOTS
           // ----------------------------------------
 
-          dots.forEach((dot, index) => {
-            const active = index === currentStep;
-            const completed = index < currentStep;
+          if (currentStep !== activeStepRef.current) {
+            activeStepRef.current = currentStep;
 
-            gsap.to(dot, {
-              scale: active ? 1.5 : 1,
+            dots.forEach((dot, index) => {
+              const active = index === currentStep;
+              const completed = index < currentStep;
 
-              backgroundColor:
-                active || completed
-                  ? "#b9a6ff"
-                  : "rgba(255,255,255,0.18)",
+              gsap.to(dot, {
+                scale: active ? 1.5 : 1,
 
-              duration: 0.25,
+                backgroundColor:
+                  active || completed
+                    ? "#b9a6ff"
+                    : "rgba(255,255,255,0.18)",
 
-              overwrite: true,
+                duration: 0.25,
+
+                overwrite: true,
+              });
             });
-          });
+          }
 
           // ----------------------------------------
           // PANELS
@@ -156,42 +160,35 @@ export default function ProcessSection() {
                 localProgress * 4
               );
 
-              gsap.to(panel, {
+              gsap.set(panel, {
                 opacity: fadeIn,
                 y: 40 - fadeIn * 40,
                 scale: 0.97 + fadeIn * 0.03,
-                duration: 0.3,
-                overwrite: true,
               });
             }
 
             // Previous panels
             else if (index < currentStep) {
-              gsap.to(panel, {
+              gsap.set(panel, {
                 opacity: 0,
                 y: -40,
                 scale: 0.97,
-                duration: 0.3,
-                overwrite: true,
               });
             }
 
             // Future panels
             else {
-              gsap.to(panel, {
+              gsap.set(panel, {
                 opacity: 0,
                 y: 40,
                 scale: 0.97,
-                duration: 0.3,
-                overwrite: true,
               });
             }
           });
         },
       });
 
-      // Refresh after everything is rendered
-      ScrollTrigger.refresh();
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     }, sectionRef);
 
     return () => {
@@ -205,9 +202,6 @@ export default function ProcessSection() {
       ref={sectionRef}
       id="how-it-works"
       className="relative w-full bg-black"
-      style={{
-        height: "300vh",
-      }}
     >
       {/* ============================================
           THIS ELEMENT GETS PINNED
@@ -217,10 +211,12 @@ export default function ProcessSection() {
         ref={pinRef}
         className="
           relative
-          h-screen
+          h-[100svh]
+          min-h-[620px]
           w-full
           overflow-hidden
           bg-black
+          max-sm:min-h-[680px]
         "
       >
         <div
@@ -288,7 +284,7 @@ export default function ProcessSection() {
                 Designed to protect
                 <br />
 
-                <span className="text-white/45">
+                <span className="text-[#9D5CFF]">
                   your attention.
                 </span>
               </h2>
@@ -317,13 +313,13 @@ export default function ProcessSection() {
 
             <div
               className="
-                relative
-                flex
-                h-[440px]
-                sm:h-[500px]
-                md:h-[540px]
-                lg:h-[600px]
-                xl:h-[540px]
+              relative
+              flex
+              h-[470px]
+              sm:h-[500px]
+              md:h-[540px]
+              lg:h-[600px]
+              xl:h-[540px]
                 w-full
                 items-center
               "
@@ -416,7 +412,8 @@ export default function ProcessSection() {
                       justify-between
                       items-center
                       overflow-hidden
-                      p-6
+                      p-4
+                      min-[380px]:p-5
                       sm:p-8
                       md:p-8
                       lg:p-10
@@ -468,9 +465,9 @@ export default function ProcessSection() {
 
                     {/* Phone */}
 
-                    <div className="flex-1 relative w-full h-[220px] sm:h-[280px] md:h-full flex justify-center md:justify-end items-end">
+                    <div className="flex-1 relative w-full h-[250px] sm:h-[280px] md:h-full flex justify-center md:justify-end items-end">
                       <img
-                        className="bottom-0 max-h-[210px] sm:max-h-[270px] md:max-h-[96%] lg:max-h-[98%] h-auto md:h-[94%] lg:h-[96%] w-auto max-w-full object-contain select-none"
+                        className="bottom-0 max-h-[240px] sm:max-h-[270px] md:max-h-[96%] lg:max-h-[98%] h-auto md:h-[94%] lg:h-[96%] w-auto max-w-full object-contain select-none"
                         src={step.img}
                         alt="Lume app preview"
                       />

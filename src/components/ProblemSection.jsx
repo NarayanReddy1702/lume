@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function LumeChoiceSection() {
   const sectionRef = useRef(null);
+  const contentRef = useRef(null);
 
   const textRef = useRef(null);
 
@@ -33,12 +34,14 @@ export default function LumeChoiceSection() {
 
     mm.add(
       {
-        isDesktop: "(min-width: 768px)",
+        isDesktop: "(min-width: 1024px)",
+        isTablet: "(min-width: 768px) and (max-width: 1023px)",
         isMobile: "(max-width: 767px)",
       },
       (context) => {
-        const { isDesktop } = context.conditions;
+        const { isDesktop, isTablet } = context.conditions;
         const chars = gsap.utils.toArray(".choice-text .char");
+        const pinDistance = isDesktop ? "+=280%" : isTablet ? "+=240%" : "+=190%";
 
         const nfcCard = nfcCardRef.current;
         const nfcFlip = nfcFlipRef.current;
@@ -85,6 +88,31 @@ export default function LumeChoiceSection() {
             scale: 0.92,
             rotate: 4,
           });
+        } else if (isTablet) {
+          gsap.set(nfcCard, {
+            opacity: 0,
+            x: 48,
+            y: 0,
+            scale: 0.92,
+            transformPerspective: 1200,
+            transformOrigin: "center center",
+          });
+
+          gsap.set(topCard, {
+            opacity: 0,
+            x: -28,
+            y: -24,
+            scale: 0.92,
+            rotate: -4,
+          });
+
+          gsap.set(bottomCard, {
+            opacity: 0,
+            x: 28,
+            y: 24,
+            scale: 0.92,
+            rotate: 4,
+          });
         } else {
           gsap.set(nfcCard, {
             opacity: 0,
@@ -128,21 +156,38 @@ export default function LumeChoiceSection() {
         });
 
         /* =====================================================
-           TEXT REVEAL
+           PINNED TEXT REVEAL, THEN CARD FLIP
         ===================================================== */
 
-        gsap.to(chars, {
-          color: "#ffffff",
-          stagger: 0.025,
-          duration: 0.5,
-          ease: "power2.out",
+        const pinnedTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: isDesktop ? "top 55%" : "top 70%",
-            end: isDesktop ? "75% 50%" : "60% 40%",
-            scrub: true,
+            start: "top top",
+            end: pinDistance,
+            pin: contentRef.current,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
+
+        pinnedTimeline
+          .to(chars, {
+            color: "#ffffff",
+            stagger: 0.025,
+            duration: 1.4,
+            ease: "none",
+          })
+          .to(nfcFlip, {
+            rotateY: 180,
+            duration: 1.8,
+            ease: "none",
+          })
+          .to(nfcFlip, {
+            rotateY: 180,
+            duration: 0.4,
+            ease: "none",
+          });
 
         /* =====================================================
            NFC ENTRANCE
@@ -157,7 +202,7 @@ export default function LumeChoiceSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: isDesktop ? "top 75%" : "top 65%",
+            start: isDesktop || isTablet ? "top 75%" : "top 70%",
             once: true,
           },
         });
@@ -177,7 +222,7 @@ export default function LumeChoiceSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: isDesktop ? "top 72%" : "top 65%",
+            start: isDesktop || isTablet ? "top 72%" : "top 70%",
             once: true,
           },
         });
@@ -197,7 +242,7 @@ export default function LumeChoiceSection() {
             },
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: isDesktop ? "top 72%" : "top 65%",
+              start: isDesktop || isTablet ? "top 72%" : "top 70%",
               once: true,
             },
           }
@@ -218,7 +263,7 @@ export default function LumeChoiceSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: isDesktop ? "top 70%" : "top 60%",
+            start: isDesktop || isTablet ? "top 70%" : "top 68%",
             once: true,
           },
         });
@@ -238,27 +283,11 @@ export default function LumeChoiceSection() {
             },
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: isDesktop ? "top 70%" : "top 60%",
+              start: isDesktop || isTablet ? "top 70%" : "top 68%",
               once: true,
             },
           }
         );
-
-        /* =====================================================
-           CARD FLIP ON SCROLL
-        ===================================================== */
-
-        gsap.to(nfcFlip, {
-          rotateY: 180,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: isDesktop ? "top 70%" : "top 55%",
-            end: isDesktop ? "center center" : "bottom 90%",
-            scrub: 1.2,
-            invalidateOnRefresh: true,
-          },
-        });
 
         /* =====================================================
            CARDS UPLIFT TOGETHER
@@ -267,8 +296,8 @@ export default function LumeChoiceSection() {
         const upliftTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: isDesktop ? "top 58%" : "top 40%",
-            end: isDesktop ? "bottom 20%" : "bottom bottom",
+            start: isDesktop || isTablet ? "top 58%" : "top 45%",
+            end: isDesktop || isTablet ? "bottom 20%" : "bottom bottom",
             scrub: 1.2,
             invalidateOnRefresh: true,
           },
@@ -304,6 +333,41 @@ export default function LumeChoiceSection() {
               y: -115,
               x: 8,
               scale: 1.02,
+              rotate: 2,
+              ease: "none",
+            },
+            0
+          );
+        } else if (isTablet) {
+          upliftTimeline.to(
+            nfcCard,
+            {
+              y: -78,
+              x: -6,
+              scale: 1.02,
+              ease: "none",
+            },
+            0
+          );
+
+          upliftTimeline.to(
+            topCard,
+            {
+              y: -82,
+              x: -10,
+              scale: 1.01,
+              rotate: -3,
+              ease: "none",
+            },
+            0
+          );
+
+          upliftTimeline.to(
+            bottomCard,
+            {
+              y: -78,
+              x: 6,
+              scale: 1.01,
               rotate: 2,
               ease: "none",
             },
@@ -393,14 +457,14 @@ export default function LumeChoiceSection() {
         overflow-hidden
         bg-black
 
-        max-md:min-h-[1050px]
-        max-md:py-16
+        max-lg:min-h-[100svh]
+        max-lg:py-8
 
-        max-sm:min-h-[900px]
-        max-sm:py-12
+        max-sm:py-6
       "
     >
       <div
+        ref={contentRef}
         className="
           mx-auto
           flex
@@ -410,10 +474,11 @@ export default function LumeChoiceSection() {
           items-center
           px-[5vw]
 
-          max-md:min-h-0
-          max-md:flex-col
-          max-md:items-stretch
-          max-md:px-6
+          max-lg:min-h-[100svh]
+          max-lg:flex-col
+          max-lg:items-stretch
+          max-lg:justify-center
+          max-lg:px-6
 
           max-sm:px-5
         "
@@ -429,11 +494,11 @@ export default function LumeChoiceSection() {
             w-1/2
             pr-[4vw]
 
-            max-md:mb-16
-            max-md:w-full
-            max-md:pr-0
+            max-lg:mb-7
+            max-lg:w-full
+            max-lg:pr-0
 
-            max-sm:mb-12
+            max-sm:mb-5
           "
         >
           <h2
@@ -447,10 +512,10 @@ export default function LumeChoiceSection() {
               leading-[0.98]
               tracking-[-0.035em]
 
-              max-md:text-[48px]
-              max-md:leading-[1.03]
+              max-lg:text-[clamp(34px,6vw,48px)]
+              max-lg:leading-[1.03]
 
-              max-sm:text-[36px]
+              max-sm:text-[clamp(28px,9vw,36px)]
               max-sm:leading-[1.05]
 
               max-[390px]:text-[33px]
@@ -459,7 +524,7 @@ export default function LumeChoiceSection() {
           >
             {/* DESKTOP */}
 
-            <span className="max-md:hidden">
+            <span className="max-lg:hidden">
               <SplitText
                 text="Your phone isn't the problem."
                 charClassName="text-white"
@@ -497,7 +562,7 @@ export default function LumeChoiceSection() {
 
             {/* MOBILE */}
 
-            <span className="hidden max-md:block">
+            <span className="hidden max-lg:block">
               <SplitText
                 text="Your phone isn't"
                 charClassName="text-white"
@@ -564,10 +629,12 @@ export default function LumeChoiceSection() {
             items-center
             justify-center
 
-            max-md:h-[600px]
-            max-md:w-full
+            max-lg:h-[min(52svh,500px)]
+            max-lg:min-h-[330px]
+            max-lg:w-full
 
-            max-sm:h-[520px]
+            max-sm:h-[min(50svh,410px)]
+            max-sm:min-h-[300px]
           "
         >
           <div
@@ -580,13 +647,11 @@ export default function LumeChoiceSection() {
 
               [perspective:1200px]
 
-              max-md:h-[580px]
-              max-md:max-w-[420px]
+              max-lg:h-full
+              max-lg:max-w-[440px]
 
-              max-sm:h-[500px]
               max-sm:max-w-[340px]
 
-              max-[380px]:h-[460px]
               max-[380px]:max-w-[300px]
             "
           >
@@ -608,23 +673,23 @@ export default function LumeChoiceSection() {
                 w-[295px]
 
                 max-md:left-1/2
-                max-md:top-[38%]
+                max-md:top-[36%]
 
                 max-md:ml-[-150px]
 
-                max-md:h-[180px]
-                max-md:w-[300px]
+                max-md:h-[156px]
+                max-md:w-[260px]
 
-                max-sm:top-[38%]
+                max-sm:top-[36%]
 
-                max-sm:ml-[-135px]
+                max-sm:ml-[-122px]
 
-                max-sm:h-[162px]
-                max-sm:w-[270px]
+                max-sm:h-[146px]
+                max-sm:w-[244px]
 
-                max-[380px]:ml-[-120px]
-                max-[380px]:h-[144px]
-                max-[380px]:w-[240px]
+                max-[380px]:ml-[-108px]
+                max-[380px]:h-[128px]
+                max-[380px]:w-[216px]
               "
             >
               <div
@@ -735,17 +800,17 @@ export default function LumeChoiceSection() {
                 max-md:left-2
                 max-md:top-[2%]
 
-                max-md:h-[185px]
-                max-md:w-[260px]
+                max-md:h-[150px]
+                max-md:w-[220px]
 
                 max-sm:left-1
                 max-sm:top-[2%]
 
-                max-sm:h-[162px]
-                max-sm:w-[225px]
+                max-sm:h-[136px]
+                max-sm:w-[198px]
 
-                max-[380px]:h-[148px]
-                max-[380px]:w-[200px]
+                max-[380px]:h-[124px]
+                max-[380px]:w-[180px]
               "
             >
               <div
@@ -820,17 +885,17 @@ export default function LumeChoiceSection() {
                 max-md:right-2
                 max-md:bottom-[2%]
 
-                max-md:h-[185px]
-                max-md:w-[260px]
+                max-md:h-[150px]
+                max-md:w-[220px]
 
                 max-sm:right-1
                 max-sm:bottom-[2%]
 
-                max-sm:h-[162px]
-                max-sm:w-[225px]
+                max-sm:h-[136px]
+                max-sm:w-[198px]
 
-                max-[380px]:h-[148px]
-                max-[380px]:w-[200px]
+                max-[380px]:h-[124px]
+                max-[380px]:w-[180px]
               "
             >
               <div

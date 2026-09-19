@@ -12,8 +12,9 @@ export default function Hero() {
         className="
           relative
           block
-          min-h-screen
-          overflow-hidden
+          min-h-[100svh]
+          overflow-x-hidden
+          overflow-y-visible
           bg-cover
           bg-center
           bg-no-repeat
@@ -22,7 +23,7 @@ export default function Hero() {
           pb-14
           sm:pt-28
 
-          md:hidden
+          lg:hidden
         "
         style={{
           backgroundImage: "url('/bg.png')",
@@ -243,25 +244,24 @@ export default function Hero() {
         className="
           relative
           hidden
-          min-h-screen
+          h-[100svh]
+          min-h-[680px]
+          max-h-[980px]
           overflow-hidden
           bg-cover
           bg-center
           bg-no-repeat
           px-6
-          pt-36
-          pb-24
-          lg:pt-40
-          lg:pb-32
+          py-0
 
-          md:block
+          lg:block
         "
         style={{
           backgroundImage: "url('/bg.png')",
         }}
       >
-        <div className="relative mx-auto max-w-7xl">
-          <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
+        <div className="relative mx-auto h-full max-w-7xl">
+          <div className="absolute left-0 right-0 top-[22%] z-30 flex items-start justify-between gap-10">
             {/* LEFT TITLE */}
             <motion.div
               initial={{
@@ -275,15 +275,15 @@ export default function Hero() {
               transition={{
                 duration: 0.8,
               }}
-              className="max-w-xs"
+              className="max-w-xs lg:max-w-sm"
             >
-              <h1 className="font-display text-6xl font-semibold leading-[1.05]">
+              <h1 className="font-display text-[52px] font-semibold leading-[1.03] lg:text-6xl">
                 Block
                 <br />
                 Distractions
               </h1>
 
-              <p className="mt-2 font-display text-4xl italic text-lume-lilac/90">
+              <p className="mt-2 font-display text-[34px] italic text-lume-lilac/90 lg:text-4xl">
                 Build focus
               </p>
             </motion.div>
@@ -304,10 +304,11 @@ export default function Hero() {
               }}
               className="
                 mt-2
-                max-w-[320px]
+                max-w-[300px]
                 text-right
                 text-sm
                 text-white/40
+                lg:max-w-[340px]
               "
             >
               Outlast the noise of your feed. Deck lume gives your apps
@@ -318,17 +319,17 @@ export default function Hero() {
           {/* =================================================
               PHONE + FLOATING CARDS
           ================================================== */}
-          <div className="relative mt-4 flex justify-center">
+          <div className="absolute inset-x-0 bottom-0 top-[15%] flex justify-center">
             {/* GIF PHONE */}
             <motion.div
               initial={{
                 opacity: 0,
-                y: -210,
+                y: 36,
                 scale: 0.95,
               }}
               animate={{
                 opacity: 1,
-                y: -260,
+                y: -12,
                 scale: 1,
               }}
               transition={{
@@ -343,19 +344,24 @@ export default function Hero() {
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  w-[450px]
+                  max-h-[86svh]
+                  w-[330px]
+                  lg:w-[470px]
+                  xl:w-[500px]
                   object-contain
                 "
               />
+
+
             </motion.div>
 
             {/* AVAILABLE NOW */}
-            <div className="absolute bottom-[28rem] left-0 xl:-left-6">
+            <div className="absolute bottom-8 left-0 z-20 scale-90 lg:scale-100 xl:-left-6">
               <AvailableNowBadges />
             </div>
 
             {/* FOCUS IMPACT */}
-            <div className="absolute right-0 top-36 md:right-0 lg:-right-6 xl:-right-14">
+            <div className="absolute bottom-14 right-0 z-20 scale-90 lg:-right-6 lg:scale-100 xl:-right-14">
               <FocusImpactCard />
             </div>
           </div>

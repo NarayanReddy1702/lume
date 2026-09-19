@@ -195,7 +195,7 @@ export default function BenefitsSection() {
             className="
               mt-5
               max-w-[650px]
-              text-[clamp(36px,4vw,60px)]
+              text-[clamp(36px,4vw,40px)]
               font-medium
               leading-[0.95]
               tracking-[-0.04em]

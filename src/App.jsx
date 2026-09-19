@@ -22,6 +22,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import RealFrictionSection from "./components/RealFrictionSection.jsx";
 import BusinessFocusSection from "./components/BusinessFocusSection.jsx";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.jsx";
 
 
 
@@ -46,6 +47,12 @@ function Home() {
             block: "start",
           });
         }
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant",
       });
     }
   }, [location]);
@@ -238,6 +245,29 @@ function BlogRoute() {
 }
 
 
+function PrivacyPolicyRoute() {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, []);
+
+  return (
+    <SmoothScroll>
+      <div className="relative min-h-screen bg-void overflow-hidden">
+        <Navbar animateOnMount={false} />
+
+        <main className="relative">
+          <PrivacyPolicyPage />
+        </main>
+
+        <Footer />
+      </div>
+    </SmoothScroll>
+  );
+}
+
 /* ============================================================
    APP ROUTES
 ============================================================ */
@@ -284,6 +314,10 @@ export default function App() {
 
       {/* INDIVIDUAL PURCHASE */}
       <Route
+        path="/forme"
+        element={<PurchaseRoute audience="me" />}
+      />
+      <Route
         path="/for-me"
         element={<PurchaseRoute audience="me" />}
       />
@@ -291,6 +325,10 @@ export default function App() {
       {/* FAMILY PURCHASE */}
       <Route
         path="/for-family"
+        element={<PurchaseRoute audience="family" />}
+      />
+      <Route
+        path="/forfamily"
         element={<PurchaseRoute audience="family" />}
       />
 
@@ -308,6 +346,16 @@ export default function App() {
       <Route
         path="/blog/:slug"
         element={<BlogDetails />}
+      />
+
+      {/* PRIVACY POLICY */}
+      <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicyRoute />}
+      />
+      <Route
+        path="/privacy"
+        element={<PrivacyPolicyRoute />}
       />
 
     </Routes>

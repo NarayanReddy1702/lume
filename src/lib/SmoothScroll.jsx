@@ -13,6 +13,8 @@ gsap.registerPlugin(ScrollTrigger)
  */
 export default function SmoothScroll({ children }) {
   useEffect(() => {
+    let isActive = true
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -24,12 +26,31 @@ export default function SmoothScroll({ children }) {
     // Tell ScrollTrigger to re-measure whenever Lenis moves the page
     lenis.on('scroll', ScrollTrigger.update)
 
+    const refresh = () => {
+      if (isActive) {
+        ScrollTrigger.refresh()
+      }
+    }
+
+    window.addEventListener('load', refresh)
+    window.addEventListener('resize', refresh)
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(refresh)
+    }
+
     // Drive Lenis from GSAP's ticker so both stay on one clock
     const update = (time) => lenis.raf(time * 1000)
     gsap.ticker.add(update)
     gsap.ticker.lagSmoothing(0)
 
+    requestAnimationFrame(refresh)
+
     return () => {
+      isActive = false
+      window.removeEventListener('load', refresh)
+      window.removeEventListener('resize', refresh)
+      lenis.off?.('scroll', ScrollTrigger.update)
       gsap.ticker.remove(update)
       lenis.destroy()
     }

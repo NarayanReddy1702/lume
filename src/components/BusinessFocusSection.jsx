@@ -92,7 +92,7 @@ export default function BusinessFocusSection() {
   return (
     <section id="business" className="w-full bg-white text-[#24242d]">
       <BusinessHero />
-      <ProcessSection />
+      {/* <ProcessSection /> */}
       <Testimonials />
       <BusinessContact />
       <TrustStrip />
@@ -102,10 +102,10 @@ export default function BusinessFocusSection() {
 
 function BusinessHero() {
   return (
-    <div className="relative flex min-h-screen w-full items-center overflow-hidden bg-black px-5 pb-20 pt-28 text-white sm:px-8 lg:px-10">
+    <div className="relative flex min-h-[100svh] w-full items-center overflow-hidden bg-black px-5 py-24 text-white sm:px-8 lg:px-10 lg:py-20">
       <div className="pointer-events-none absolute left-[31%] top-1/2 h-[360px] w-[360px] -translate-y-1/2 rounded-full bg-[#7c5cff]/12 blur-[100px]" />
 
-      <div className="relative mx-auto grid w-full max-w-[1120px] items-center gap-16 md:grid-cols-[0.95fr_1.05fr] lg:gap-28">
+      <div className="relative mx-auto grid w-full max-w-[1180px] items-center gap-12 md:grid-cols-[0.95fr_1.05fr] md:gap-20 lg:gap-32 xl:gap-40">
         <motion.div
           initial={{
             opacity: 0,
@@ -124,9 +124,9 @@ function BusinessHero() {
           className="flex justify-center md:justify-end"
         >
           <img
-            src="/videos/video1.gif"
-            alt="Lume app preview"
-            className="h-auto w-[280px] select-none object-contain sm:w-[340px] lg:w-[410px]"
+            src="/CardBack.png"
+            alt="Lume card back"
+            className="h-auto max-h-[62svh] w-[260px] select-none object-contain sm:w-[320px] lg:w-[380px]"
             draggable="false"
           />
         </motion.div>

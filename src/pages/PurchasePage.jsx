@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Check, Send, X } from "lucide-react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { Check, Info, Send, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -54,17 +54,122 @@ const testimonials = [
   },
 ];
 
-const rows = [
-  ["Block distracting apps", true, true, true],
-  ["Daily limits", true, true, true],
-  ["Focus sessions", true, true, true],
-  ["Easy to bypass wifi", true, true, false],
-  ["Physical friction", false, false, true],
-  ["NFC card required in strict mode", false, false, true],
-  ["Strict focus mode", false, false, true],
-  ["Prevent app deletion during session", false, false, true],
-  ["Limited emergency exits", false, false, true],
-  ["Habit system built into the app", false, false, true],
+const comparisonRows = [
+  {
+    group: "Control",
+    items: [
+      {
+        matter: "Blocks distracting apps",
+        why: "Stops the biggest time leaks.",
+        detail: "Choose the apps that pull you away. Lume keeps those distractions out of reach during focus time.",
+      },
+      {
+        matter: "App limits and schedules",
+        why: "Helps you set healthy boundaries.",
+        detail: "Set daily limits or planned focus windows so your phone follows the rhythm you choose.",
+      },
+      {
+        matter: "Strict focus mode",
+        why: "Locks distractions so you can go deep.",
+        detail: "When strict mode is active, Lume adds real friction before blocked apps can open again.",
+      },
+      {
+        matter: "Hard to bypass",
+        why: "The harder it is to break, the more it works.",
+        detail: "Lume is designed around a physical action, making impulsive bypasses less automatic.",
+      },
+    ],
+  },
+  {
+    group: "Friction",
+    items: [
+      {
+        matter: "Requires physical action",
+        why: "A physical step breaks autopilot.",
+        detail: "The card creates a pause between impulse and action, which gives intention a chance to win.",
+      },
+      {
+        matter: "NFC card trigger",
+        why: "One tap starts. One tap ends.",
+        detail: "A simple card tap makes starting and ending focus feel concrete without digging through settings.",
+      },
+      {
+        matter: "Instant override protection",
+        why: "Prevents impulsive 'just one minute' traps.",
+        detail: "Removing one-tap exits keeps focus sessions from collapsing the moment boredom appears.",
+      },
+    ],
+  },
+  {
+    group: "Behavior",
+    items: [
+      {
+        matter: "Focus sessions",
+        why: "Structure helps you go deeper.",
+        detail: "Start sessions for study, work, reading, creating, or family time and keep distractions contained.",
+      },
+      {
+        matter: "Focus history",
+        why: "Track patterns over time.",
+        detail: "See how your focus habits change instead of guessing what worked.",
+      },
+      {
+        matter: "Focus score",
+        why: "One number to measure real progress.",
+        detail: "A simple progress signal makes consistency easier to understand and repeat.",
+      },
+      {
+        matter: "Habit system and streaks",
+        why: "Build consistency that lasts.",
+        detail: "Streaks and habit feedback help focus become something you practice daily.",
+      },
+      {
+        matter: "Insights and analytics",
+        why: "Understand what's working.",
+        detail: "Use your own behavior data to refine limits, schedules, and focus sessions.",
+      },
+    ],
+  },
+  {
+    group: "Family",
+    items: [
+      {
+        matter: "Parent controls",
+        why: "Guide without taking away their phone.",
+        detail: "Create boundaries that support better habits without constant arguments or monitoring.",
+      },
+      {
+        matter: "Multiple profiles",
+        why: "One account. Multiple kids.",
+        detail: "Keep separate routines and limits for different family members.",
+      },
+    ],
+  },
+  {
+    group: "Practical",
+    items: [
+      {
+        matter: "Works on iOS",
+        why: "Seamless experience.",
+        detail: "Designed for the phones people already use every day.",
+      },
+      {
+        matter: "Works on Android",
+        why: "Seamless experience.",
+        detail: "Use Lume across common Android devices without changing your routine.",
+      },
+      {
+        matter: "One-time payment",
+        why: "No recurring charges ever.",
+        detail: "Pay once for the system instead of adding another monthly subscription.",
+      },
+      {
+        matter: "No subscription",
+        why: "Pay once. Use forever.",
+        detail: "Lume is built to be owned, not rented.",
+      },
+    ],
+  },
 ];
 
 export default function PurchasePage({ audience = "me" }) {
@@ -120,12 +225,56 @@ export default function PurchasePage({ audience = "me" }) {
   return (
     <div className="bg-white text-[#282832]">
       {heroProduct ? (
-        <ProductHero options={productOptions} product={heroProduct} category={category} />
+        <ProductHero
+          options={productOptions}
+          product={heroProduct}
+          category={category}
+          audience={audience}
+        />
       ) : (
-        <ProductDataState category={category} isLoading={isLoading} error={error} />
+        <ProductDataState
+          category={category}
+          isLoading={isLoading}
+          error={error}
+          audience={audience}
+        />
       )}
       <Testimonials />
       <Comparison />
+    </div>
+  );
+}
+
+function ProductSwitcher({ activeAudience }) {
+  const navigate = useNavigate();
+
+  const tabs = [
+    { label: "For me", path: "/forme", key: "me" },
+    { label: "For Family", path: "/for-family", key: "family" },
+    { label: "Business", path: "/business", key: "business" },
+  ];
+
+  return (
+    <div className="mx-auto mb-8 sm:mb-10 flex justify-center">
+      <div className="flex max-w-full flex-wrap items-center justify-center rounded-[14px] border border-[#e5e5eb] bg-white p-1 sm:inline-flex sm:p-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+        {tabs.map((tab) => {
+          const isActive = tab.key === activeAudience;
+          return (
+            <button
+              key={tab.label}
+              type="button"
+              onClick={() => navigate(tab.path)}
+              className={`rounded-[10px] px-4 py-2 sm:px-7 sm:py-2.5 text-[12px] sm:text-[13px] font-medium transition-all duration-200 ${
+                isActive
+                  ? "bg-[#f4f0ff] text-[#7137ff] font-semibold"
+                  : "text-[#3a3a46] hover:bg-black/[0.04] hover:text-black"
+              }`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -158,7 +307,7 @@ function formatPrice(value) {
   return `Rs ${Number(value || 0).toLocaleString("en-IN")}`;
 }
 
-function ProductDataState({ category, isLoading, error }) {
+function ProductDataState({ category, isLoading, error, audience }) {
   const title = isLoading
     ? "Loading product details..."
     : error
@@ -171,7 +320,9 @@ function ProductDataState({ category, isLoading, error }) {
       : "Create or activate this product in the admin panel to show it here.";
 
   return (
-    <section className="px-5 pb-24 pt-32 sm:px-8 lg:px-10">
+    <section className="px-5 pb-24 pt-28 sm:pt-32 sm:px-8 lg:px-10">
+      <ProductSwitcher activeAudience={audience} />
+
       <div className="mx-auto max-w-[760px] rounded-[8px] border border-[#e9e9ed] bg-white p-8 text-center">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#9e8cff]">
           {category} plan
@@ -187,7 +338,7 @@ function ProductDataState({ category, isLoading, error }) {
   );
 }
 
-function ProductHero({ options, product, category }) {
+function ProductHero({ options, product, category, audience }) {
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -230,7 +381,9 @@ function ProductHero({ options, product, category }) {
   }
 
   return (
-    <section className="px-5 pb-24 pt-32 sm:px-8 lg:px-10">
+    <section className="px-5 pb-24 pt-28 sm:pt-32 sm:px-8 lg:px-10">
+      <ProductSwitcher activeAudience={audience} />
+
       <div className="mx-auto grid max-w-[1120px] items-start gap-9 lg:grid-cols-[1fr_0.95fr]">
         <motion.div
           initial={{
@@ -374,7 +527,7 @@ function PlanOption({ option, selected, onSelect }) {
           : "border-[#e9e9ed] bg-white hover:border-[#cfc6ff]"
       }`}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4 min-[420px]:flex-nowrap">
         <span
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
             selected
@@ -407,7 +560,7 @@ function PlanOption({ option, selected, onSelect }) {
           </span>
         </span>
 
-        <span className="shrink-0 text-right">
+        <span className="ml-9 shrink-0 text-left min-[420px]:ml-0 min-[420px]:text-right">
           <span className="block text-[12px] font-semibold text-[#27272f]">
             {option.price}
           </span>
@@ -527,35 +680,25 @@ function Comparison() {
   return (
     <section className="px-5 py-20 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-[1120px]">
-        <h2 className="text-center text-[28px] font-semibold tracking-[-0.03em] text-[#3a3a44]">
-          Choose what you want to compare with
-        </h2>
-        <p className="mt-2 text-center text-[11px] text-[#9b9ba5] sm:hidden">
-          ← Swipe horizontally to view full comparison →
+        <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8a39ff]">
+          Why Lume
         </p>
-
-        <div className="mt-6 overflow-x-auto rounded-[8px] border border-[#dfdfe5] bg-white">
-          <div className="grid min-w-[760px] grid-cols-[1.3fr_1fr_1fr_1fr_1.8fr]">
-            <HeaderCell align="left">
-              <span className="block text-[9px] font-medium text-[#9d9da8]">
-                Feature
-              </span>
-              <span className="mt-2 block max-w-[160px] text-[24px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#30303a]">
-                See how Lume is different.
-              </span>
-              <span className="mt-2 block max-w-[150px] text-[10px] leading-relaxed text-[#9b9ba5]">
-                Built for deep work. Designed to make distraction harder.
-              </span>
-            </HeaderCell>
+        <h2 className="mx-auto mt-3 max-w-[620px] text-center text-[34px] font-semibold leading-[1.02] tracking-[-0.04em] text-[#3a3a44] sm:text-[44px]">
+          What matters when you protect your focus.
+        </h2>
+        <p className="mx-auto mt-4 max-w-[560px] text-center text-[13px] leading-relaxed text-[#777784]">
+          No gimmicks, no clutter. Just the parts that decide whether a focus
+          system actually works in daily life.
+        </p>
+        <div className="mt-10 overflow-visible rounded-[8px] border border-[#dfdfe5] bg-white shadow-[0_14px_36px_rgba(20,20,28,0.04)]">
+          <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(88px,0.72fr)_minmax(88px,0.72fr)_minmax(0,1.25fr)]">
+            <HeaderCell align="left">What matters</HeaderCell>
             <HeaderCell>
-              Screen Time /
-              <br />
-              Digital Wellbeing
+              Built-in phone tools
               <span className="mt-1 block text-[10px] font-normal text-[#9b9ba5]">
-                Built into your phone
+                iPhone / Android
               </span>
             </HeaderCell>
-            <HeaderCell>Other Applications</HeaderCell>
             <HeaderCell highlight>
               <img
                 src="/black-logo.png"
@@ -563,13 +706,24 @@ function Comparison() {
                 className="mx-auto mb-1 w-24"
               />
               <span className="text-[10px] font-normal text-[#777784]">
-                Behavior system
+                Physical + digital focus system
               </span>
             </HeaderCell>
-            <HeaderCell>Why it matters</HeaderCell>
+            <HeaderCell align="left">Why it matters</HeaderCell>
 
-            {rows.map((row) => (
-              <ComparisonRow key={row[0]} row={row} />
+            {comparisonRows.map((section) => (
+              <Fragment key={section.group}>
+                <div className="col-span-4 border-b border-[#dfdfe5] bg-[#fbfbfd] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#8a39ff]">
+                  {section.group}
+                </div>
+
+                {section.items.map((item) => (
+                  <ComparisonMatterRow
+                    key={`${section.group}-${item.matter}`}
+                    item={item}
+                  />
+                ))}
+              </Fragment>
             ))}
           </div>
         </div>
@@ -581,7 +735,7 @@ function Comparison() {
 function HeaderCell({ children, highlight = false, align = "center" }) {
   return (
     <div
-      className={`flex min-h-[140px] flex-col justify-center border-b border-r border-[#dfdfe5] px-5 py-6 text-[13px] font-semibold text-[#4a4a55] last:border-r-0 ${
+      className={`flex min-h-[96px] min-w-0 flex-col justify-center border-b border-r border-[#dfdfe5] px-3 py-5 text-[11px] font-semibold text-[#4a4a55] last:border-r-0 sm:px-5 sm:text-[12px] ${
         highlight ? "bg-[#f2e9ff]" : "bg-white"
       } ${align === "left" ? "items-start text-left" : "items-center text-center"}`}
     >
@@ -590,27 +744,38 @@ function HeaderCell({ children, highlight = false, align = "center" }) {
   );
 }
 
-function ComparisonRow({ row }) {
-  const [label, screenTime, apps, lume] = row;
+function ComparisonMatterRow({ item }) {
+  const builtIn = getBuiltInStatus(item.matter);
+  const lume = getLumeStatus(item.matter);
 
   return (
     <>
       <BodyCell align="left">
-        <span className="underline decoration-[#b9b9c1] underline-offset-2">
-          {label}
+        <span className="inline-flex items-center gap-2">
+          <span>{item.matter}</span>
+          <span className="group relative inline-flex">
+            <Info
+              size={13}
+              strokeWidth={1.8}
+              className="cursor-help text-[#8d8d97] transition group-hover:text-[#7c5cff]"
+              aria-label={`${item.matter} details`}
+            />
+            <span className="pointer-events-none absolute left-1/2 top-6 z-20 w-[230px] -translate-x-1/2 rounded-[8px] border border-[#dfd7ff] bg-white px-3 py-2 text-[10px] leading-relaxed text-[#666670] opacity-0 shadow-[0_16px_40px_rgba(20,20,28,0.14)] transition group-hover:opacity-100">
+              {item.detail}
+            </span>
+          </span>
         </span>
       </BodyCell>
       <BodyCell>
-        <StatusIcon active={screenTime} />
-      </BodyCell>
-      <BodyCell>
-        <StatusIcon active={apps} />
+        <StatusIcon status={builtIn} />
       </BodyCell>
       <BodyCell highlight>
-        <StatusIcon active={lume} />
+        <StatusIcon status={lume} />
       </BodyCell>
-      <BodyCell>
-        <span className="text-[10px] text-[#9b9ba5]">Built into your phone</span>
+      <BodyCell align="left">
+        <span className="text-[10px] leading-relaxed text-[#85858f]">
+          {item.why}
+        </span>
       </BodyCell>
     </>
   );
@@ -619,7 +784,7 @@ function ComparisonRow({ row }) {
 function BodyCell({ children, highlight = false, align = "center" }) {
   return (
     <div
-      className={`flex min-h-[54px] items-center border-b border-r border-[#dfdfe5] px-5 text-[11px] text-[#777784] last:border-r-0 ${
+      className={`flex min-h-[54px] min-w-0 items-center border-b border-r border-[#dfdfe5] px-3 text-[10px] text-[#777784] last:border-r-0 sm:px-5 sm:text-[11px] ${
         highlight ? "bg-[#f2e9ff]" : "bg-white"
       } ${align === "left" ? "justify-start text-left" : "justify-center text-center"}`}
     >
@@ -628,14 +793,56 @@ function BodyCell({ children, highlight = false, align = "center" }) {
   );
 }
 
-function StatusIcon({ active }) {
+function StatusIcon({ status }) {
+  if (status === "partial" || status === "basic" || status === "free") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-[#fff8e7] px-2 py-1 text-[9px] font-medium text-[#a06a00]">
+        <span className="h-2 w-2 rounded-full border border-current" />
+        {status === "free" ? "Free" : status === "basic" ? "Basic" : "Partial"}
+      </span>
+    );
+  }
+
   return (
     <span
       className={`flex h-7 w-7 items-center justify-center rounded-full text-white ${
-        active ? "bg-[#43d27b]" : "bg-[#ff493b]"
+        status ? "bg-[#43d27b]" : "bg-[#ff493b]"
       }`}
     >
-      {active ? <Check size={15} /> : <X size={15} />}
+      {status ? <Check size={15} /> : <X size={15} />}
     </span>
   );
+}
+
+function getBuiltInStatus(matter) {
+  const statusByMatter = {
+    "Blocks distracting apps": true,
+    "App limits and schedules": true,
+    "Strict focus mode": "partial",
+    "Hard to bypass": false,
+    "Requires physical action": false,
+    "NFC card trigger": false,
+    "Instant override protection": false,
+    "Focus sessions": "partial",
+    "Focus history": "basic",
+    "Focus score": false,
+    "Habit system and streaks": false,
+    "Insights and analytics": "basic",
+    "Parent controls": false,
+    "Multiple profiles": false,
+    "Works on iOS": true,
+    "Works on Android": true,
+    "One-time payment": "free",
+    "No subscription": "free",
+  };
+
+  return statusByMatter[matter] ?? false;
+}
+
+function getLumeStatus(matter) {
+  const unavailable = new Set([
+    "Instant override protection",
+  ]);
+
+  return !unavailable.has(matter);
 }

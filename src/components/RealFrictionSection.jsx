@@ -271,6 +271,7 @@ export default function RealFrictionSection() {
               text-[8px]
               font-medium
               text-white
+              mt-9
             "
           >
             Real friction
@@ -284,7 +285,7 @@ export default function RealFrictionSection() {
         <div className="mt-5 text-center">
           <h2
             className="
-              text-[clamp(40px,4.8vw,74px)]
+              text-[clamp(40px,4.8vw,44px)]
               font-medium
               leading-[0.92]
               tracking-[-0.05em]
