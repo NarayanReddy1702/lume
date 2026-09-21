@@ -51,6 +51,10 @@ select {
   color: rgba(255, 255, 255, 0.28);
 }
 
+.features-focus-text .char {
+  color: #000;
+}
+
 /* respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

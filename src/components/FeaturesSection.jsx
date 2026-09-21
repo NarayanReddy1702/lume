@@ -55,52 +55,15 @@ const FEATURES = [
 
 export default function FeaturesSection() {
   const sectionRef = useRef(null);
-  const introRef = useRef(null);
 
   const imageRef = useRef(null);
   const imageWrapRef = useRef(null);
   const imageBgRef = useRef(null);
 
-  const progressRef = useRef(null);
-
   const [activeIndex, setActiveIndex] =
     useState(0);
 
-  /* ============================================================
-     INTRO TEXT SCROLL ANIMATION
-  ============================================================ */
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const chars = gsap.utils.toArray(
-        ".features-focus-text .char"
-      );
-
-      gsap.set(chars, {
-        color: "#9da0b3",
-      });
-
-      gsap.to(chars, {
-        color: "#000000",
-        stagger: 0.05,
-        ease: "none",
-
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          end: "top top",
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, []);
 
   /* ============================================================
      MAIN PINNED FEATURE SCROLL
@@ -120,14 +83,9 @@ export default function FeaturesSection() {
         const { isDesktop } = context.conditions;
         const total = FEATURES.length;
 
-        gsap.set(progressRef.current, {
-          scaleX: 0,
-          transformOrigin: "left center",
-        });
-
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: "top top",
+          start: isDesktop ? "top 72px" : "top top",
           end: isDesktop ? `+=${total * 850}` : `+=${total * 440}`,
           pin: true,
           scrub: isDesktop ? 1 : 0.65,
@@ -135,11 +93,6 @@ export default function FeaturesSection() {
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
-
-            /* PROGRESS BAR */
-            gsap.set(progressRef.current, {
-              scaleX: progress,
-            });
 
             /* ACTIVE ITEM */
             const index = Math.min(
@@ -340,181 +293,33 @@ export default function FeaturesSection() {
   return (
     <section
       id="features"
+      ref={sectionRef}
       className="
+        relative
         w-full
         bg-white
         text-black
       "
     >
-      {/* ========================================================
-          INTRO
-      ======================================================== */}
-
-      <div
-        ref={introRef}
-        className="
-          relative
-          hidden
-          w-full
-          items-center
-          justify-center
-          px-5
-          py-8
-          sm:px-6
-          sm:py-10
-          md:py-10
-          lg:py-10
-          max-md:py-6
-          max-md:pb-1
-          max-sm:py-4
-          max-sm:pb-0
-        "
-      >
-        <div
-          className="
-            flex
-            w-full
-            max-w-[1400px]
-            items-center
-            justify-between
-            gap-x-20
-            px-4
-            sm:px-8
-            lg:px-16
-
-            max-lg:gap-x-10
-
-            max-md:flex-col
-            max-md:items-start
-            max-md:gap-y-3.5
-            max-sm:gap-y-2.5
-            max-md:px-2
-            max-sm:px-0
-          "
-        >
-          {/* LABEL */}
-
-          <div className="shrink-0">
-            <span
-              className="
-                inline-flex
-                w-fit
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-black/50
-                px-9
-                py-2
-                text-[9px]
-                font-medium
-
-                max-sm:px-7
-              "
-            >
-              Features
-            </span>
-          </div>
-
-          {/* HEADING */}
-
-          <h2
-            className="
-              max-w-[620px]
-
-              text-[clamp(38px,4vw,60px)]
-
-              font-medium
-
-              leading-[0.95]
-
-              tracking-[-0.045em]
-
-              max-lg:max-w-[520px]
-
-              max-md:max-w-full
-
-              max-sm:text-[38px]
-              max-sm:leading-[0.98]
-
-              max-[380px]:text-[34px]
-            "
-          >
-            <span className="text-black">
-              A smarter toolkit for
-            </span>
-
-            <br />
-
-            <span className="features-focus-text">
-              <SplitText
-                text="staying focused."
-                charClassName="text-[#9da0b3]"
-              />
-            </span>
-          </h2>
-
-          {/* DESCRIPTION */}
-
-          <p
-            className="
-              max-w-[390px]
-
-              text-[18px]
-
-              leading-[1.6]
-
-              text-black/50
-
-              max-lg:max-w-[330px]
-              max-lg:text-[16px]
-
-              max-md:max-w-[520px]
-
-              max-sm:text-[15px]
-            "
-          >
-            Lume combines smart software with a
-            physical NFC card to make distraction
-            harder, focus easier, and better habits
-            more intentional.
-          </p>
-        </div>
-      </div>
-
-      {/* ========================================================
-          PINNED FEATURES
-      ======================================================== */}
-
-      <div
-        ref={sectionRef}
-        className="
-          relative
-          w-full
-          bg-white
-          text-black
-        "
-      >
         <div
           className="
             relative
             flex
             h-[100svh]
-            min-h-[640px]
+            min-h-[600px]
             w-full
             items-center
             justify-center
             overflow-hidden
             bg-white
-            pt-5
-            pb-5
-            sm:pt-6
-            sm:pb-6
+            py-6
+            sm:py-8
             md:h-[100svh]
             md:min-h-[560px]
-            md:pt-6
-            md:pb-7
-            lg:pt-6
+            md:pb-3
+            md:pt-14
+            lg:pb-4
+            lg:pt-12
           "
         >
           <div
@@ -534,7 +339,7 @@ export default function FeaturesSection() {
               md:grid
               md:h-full
               md:grid-cols-[0.9fr_1.1fr]
-              md:grid-rows-[auto_minmax(0,1fr)]
+              md:grid-rows-[auto_auto]
               md:items-stretch
               md:content-start
               md:gap-x-8
@@ -582,20 +387,20 @@ export default function FeaturesSection() {
               <h2
                 className="
                   max-w-[560px]
-                  text-[clamp(34px,3.2vw,50px)]
+                  text-[clamp(28px,2.7vw,42px)]
                   font-medium
-                  leading-[0.96]
-                  tracking-[-0.04em]
+                  leading-[1.02]
+                  tracking-[-0.035em]
                   text-black
-                  lg:max-w-[620px]
+                  lg:max-w-[600px]
                 "
               >
                 A smarter toolkit for
                 <br />
-                <span className="features-focus-text">
+                <span className="features-focus-text block">
                   <SplitText
                     text="staying focused."
-                    charClassName="text-[#9da0b3]"
+                    charClassName="text-black"
                   />
                 </span>
               </h2>
@@ -603,10 +408,10 @@ export default function FeaturesSection() {
               <p
                 className="
                   max-w-[390px]
-                  text-[15px]
-                  leading-[1.45]
+                  text-[14px]
+                  leading-[1.4]
                   text-black/50
-                  lg:text-[16px]
+                  lg:text-[15px]
                 "
               >
                 Lume combines smart software with a physical NFC card to make
@@ -654,7 +459,7 @@ export default function FeaturesSection() {
                 <span className="features-focus-text">
                   <SplitText
                     text="staying focused."
-                    charClassName="text-[#9da0b3]"
+                    charClassName="text-black"
                   />
                 </span>
               </h2>
@@ -680,7 +485,7 @@ export default function FeaturesSection() {
             ================================================== */}
             <div className="order-2 flex w-full flex-col items-center text-center md:hidden">
               {/* STEP PILLS */}
-              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-4 mb-3">
                 {FEATURES.map((feat, idx) => {
                   const isCur = activeIndex === idx;
                   return (
@@ -729,13 +534,15 @@ export default function FeaturesSection() {
                 md:flex
                 order-1
                 flex-col
-                justify-center
+                justify-start
                 h-full
                 min-h-0
                 max-h-full
+                md:pl-4
+                lg:pl-6
               "
             >
-              <div className="flex flex-col gap-y-2 lg:gap-y-2.5 xl:gap-y-3">
+              <div className="flex flex-col gap-y-3 lg:gap-y-3.5 xl:gap-y-6">
                 {FEATURES.map(
                   (feature, index) => {
                     const isActive =
@@ -747,12 +554,12 @@ export default function FeaturesSection() {
                         className="
                           relative
                           flex
-                          min-h-[40px]
-                          lg:min-h-[46px]
-                          xl:min-h-[52px]
+                          min-h-[38px]
+                          lg:min-h-[42px]
+                          xl:min-h-[46px]
                           items-center
-                          gap-3.5
-                          lg:gap-5
+                          gap-8
+                          lg:gap-9
                         "
                       >
                         {/* ACTIVE BAR */}
@@ -761,9 +568,9 @@ export default function FeaturesSection() {
                           className="
                             relative
                             flex
-                            h-[40px]
-                            lg:h-[46px]
-                            xl:h-[52px]
+                            h-[38px]
+                            lg:h-[42px]
+                            xl:h-[46px]
                             w-[4px]
                             lg:w-[5px]
                             shrink-0
@@ -810,8 +617,8 @@ export default function FeaturesSection() {
                           <h3
                             className={`
                               text-[15px]
-                              lg:text-[18px]
-                              xl:text-[20px]
+                              lg:text-[17px]
+                              xl:text-[18px]
                               font-semibold
                               leading-tight
                               transition-colors
@@ -833,7 +640,7 @@ export default function FeaturesSection() {
                               max-w-[440px]
                               text-[11px]
                               lg:text-[12px]
-                              xl:text-[13px]
+                              xl:text-[12px]
                               leading-[1.4]
                               lg:leading-[1.45]
                               transition-colors
@@ -877,8 +684,8 @@ export default function FeaturesSection() {
                   h-auto
                   min-h-[300px]
                   sm:min-h-[360px]
-                  md:h-full
-                  lg:h-full
+                  md:h-[min(60vh,520px)]
+                  lg:h-[min(60vh,540px)]
                 max-h-full
 
                 w-full
@@ -894,31 +701,18 @@ export default function FeaturesSection() {
                 ref={imageBgRef}
                 className="
                   absolute
-
                   inset-0
                   m-auto
-
                   h-full
-                  sm:h-full
-                  md:h-[78%]
-
                   w-full
-
                   overflow-hidden
-
-                  rounded-[24px]
-
+                  rounded-[28px]
                   bg-gradient-to-br
-
                   from-[#e0d8ff]
-
                   via-[#d7cbff]
-
                   to-[#cbbbff]
-
                   shadow-lg
                   shadow-purple-500/10
-
                   will-change-transform
                 "
               />
@@ -929,24 +723,17 @@ export default function FeaturesSection() {
                 ref={imageWrapRef}
                 className="
                   relative
-
                   z-10
-
                   flex
-
                   h-full
-                  md:h-[82%]
-
                   w-full
-
                   items-center
-
                   justify-center
-
-                  rounded-[24px]
-
+                  p-4
+                  sm:p-6
+                  md:p-8
+                  rounded-[28px]
                   [transform-style:preserve-3d]
-
                   will-change-transform
                 "
               >
@@ -961,21 +748,14 @@ export default function FeaturesSection() {
                   }
                   className="
                     h-auto
-
-                    max-h-[96%]
-
+                    max-h-[98%]
                     w-auto
-
-                    max-w-[92%]
-                    sm:max-w-[86%]
-                    md:max-w-[72%]
-
+                    max-w-[96%]
+                    sm:max-w-[92%]
+                    md:max-w-[86%]
                     origin-bottom
-
                     object-contain
-
                     will-change-[transform,opacity]
-
                     select-none
                   "
                   draggable="false"
@@ -983,58 +763,7 @@ export default function FeaturesSection() {
               </div>
             </div>
           </div>
-
-          {/* ====================================================
-              PROGRESS BAR
-          ==================================================== */}
-
-          <div
-            className="
-              absolute
-
-              bottom-8
-              left-1/2
-
-              hidden
-
-              h-[2px]
-
-              w-[180px]
-
-              -translate-x-1/2
-
-              overflow-hidden
-
-              rounded-full
-
-              bg-black/10
-
-              md:block
-            "
-          >
-            <div
-              ref={progressRef}
-              className="
-                h-full
-
-                w-full
-
-                origin-left
-
-                scale-x-0
-
-                rounded-full
-
-                bg-gradient-to-r
-
-                from-[#9747ff]
-
-                to-[#7437ff]
-              "
-            />
-          </div>
         </div>
-      </div>
     </section>
   );
 }

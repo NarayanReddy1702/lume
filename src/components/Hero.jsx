@@ -19,9 +19,9 @@ export default function Hero() {
           bg-center
           bg-no-repeat
           px-5
-          pt-24
-          pb-14
-          sm:pt-28
+          pt-20
+          pb-8
+          sm:pt-24
 
           lg:hidden
         "
@@ -120,8 +120,8 @@ export default function Hero() {
             className="
               relative
               z-10
-              mt-1
-              sm:mt-2
+              -mt-16
+              sm:-mt-12
               flex
               justify-center
             "
@@ -134,7 +134,7 @@ export default function Hero() {
               }}
               animate={{
                 opacity: 1,
-                y: -25,
+                y: -10,
                 scale: 1,
               }}
               transition={{
@@ -149,13 +149,13 @@ export default function Hero() {
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  w-[335px]
-                  sm:w-[370px]
-                  max-w-[92vw]
+                  w-[395px]
+                  sm:w-[430px]
+                  max-w-[104vw]
                   object-contain
 
-                  max-[390px]:w-[305px]
-                  max-[350px]:w-[275px]
+                  max-[390px]:w-[370px]
+                  max-[350px]:w-[335px]
                 "
               />
             </motion.div>
@@ -216,15 +216,17 @@ export default function Hero() {
             className="
               relative
               z-30
-              -mt-4
+              mt-3
               flex
               w-full
               justify-center
+              px-3
             "
           >
             <div
               className="
                 origin-top
+                w-fit
                 scale-[0.93]
 
                 max-[390px]:scale-[0.83]
@@ -361,7 +363,7 @@ export default function Hero() {
             </div>
 
             {/* FOCUS IMPACT */}
-            <div className="absolute bottom-14 right-0 z-20 scale-90 lg:-right-6 lg:scale-100 xl:-right-14">
+            <div className="absolute bottom-14 right-6 z-20 scale-90 lg:right-8 lg:scale-100 xl:right-1">
               <FocusImpactCard />
             </div>
           </div>

@@ -39,7 +39,7 @@ export default function LumeChoiceSection() {
         isMobile: "(max-width: 767px)",
       },
       (context) => {
-        const { isDesktop, isTablet } = context.conditions;
+        const { isDesktop, isTablet, isMobile } = context.conditions;
         const chars = gsap.utils.toArray(".choice-text .char");
         const pinDistance = isDesktop ? "+=280%" : isTablet ? "+=240%" : "+=190%";
 
@@ -162,7 +162,7 @@ export default function LumeChoiceSection() {
         const pinnedTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top top",
+            start: isMobile ? "top 56px" : "top top",
             end: pinDistance,
             pin: contentRef.current,
             scrub: 1,
@@ -457,10 +457,10 @@ export default function LumeChoiceSection() {
         overflow-hidden
         bg-black
 
-        max-lg:min-h-[100svh]
+        max-lg:min-h-0
         max-lg:py-8
 
-        max-sm:py-6
+        max-sm:py-5
       "
     >
       <div
@@ -474,13 +474,15 @@ export default function LumeChoiceSection() {
           items-center
           px-[5vw]
 
-          max-lg:min-h-[100svh]
+          max-lg:min-h-0
           max-lg:flex-col
           max-lg:items-stretch
           max-lg:justify-center
           max-lg:px-6
+          max-lg:pt-16
 
           max-sm:px-5
+          max-sm:pt-14
         "
       >
         {/* =====================================================
@@ -494,11 +496,11 @@ export default function LumeChoiceSection() {
             w-1/2
             pr-[4vw]
 
-            max-lg:mb-7
+            max-lg:mb-5
             max-lg:w-full
             max-lg:pr-0
 
-            max-sm:mb-5
+            max-sm:mb-3
           "
         >
           <h2
@@ -629,12 +631,12 @@ export default function LumeChoiceSection() {
             items-center
             justify-center
 
-            max-lg:h-[min(52svh,500px)]
-            max-lg:min-h-[330px]
+            max-lg:h-[360px]
+            max-lg:min-h-0
             max-lg:w-full
 
-            max-sm:h-[min(50svh,410px)]
-            max-sm:min-h-[300px]
+            max-sm:h-[330px]
+            max-sm:min-h-0
           "
         >
           <div
@@ -664,32 +666,32 @@ export default function LumeChoiceSection() {
               className="
                 absolute
 
-                left-[18%]
-                top-[28%]
+                left-[24%]
+                top-[31%]
 
-                z-10
+                z-20
 
                 h-[175px]
                 w-[295px]
 
                 max-md:left-1/2
-                max-md:top-[36%]
+                max-md:top-[33%]
 
                 max-md:ml-[-150px]
 
                 max-md:h-[156px]
                 max-md:w-[260px]
 
-                max-sm:top-[36%]
+                max-sm:top-[28%]
 
-                max-sm:ml-[-122px]
+                max-sm:ml-[-118px]
 
-                max-sm:h-[146px]
-                max-sm:w-[244px]
+                max-sm:h-[142px]
+                max-sm:w-[236px]
 
-                max-[380px]:ml-[-108px]
-                max-[380px]:h-[128px]
-                max-[380px]:w-[216px]
+                max-[380px]:ml-[-105px]
+                max-[380px]:h-[126px]
+                max-[380px]:w-[210px]
               "
             >
               <div
@@ -789,28 +791,28 @@ export default function LumeChoiceSection() {
               className="
                 absolute
 
-                left-0
-                top-[9%]
+                left-[4%]
+                top-[6%]
 
                 z-30
 
                 h-[155px]
                 w-[200px]
 
-                max-md:left-2
-                max-md:top-[2%]
+                max-md:left-4
+                max-md:top-[4%]
 
                 max-md:h-[150px]
                 max-md:w-[220px]
 
-                max-sm:left-1
+                max-sm:left-2
                 max-sm:top-[2%]
 
-                max-sm:h-[136px]
-                max-sm:w-[198px]
+                max-sm:h-[116px]
+                max-sm:w-[172px]
 
-                max-[380px]:h-[124px]
-                max-[380px]:w-[180px]
+                max-[380px]:h-[104px]
+                max-[380px]:w-[156px]
               "
             >
               <div
@@ -840,7 +842,7 @@ export default function LumeChoiceSection() {
                     max-md:p-4
 
                     max-sm:rounded-[14px]
-                    max-sm:p-3.5
+                    max-sm:p-3
                   "
                 >
                   <p className="text-[8px] text-white/40">
@@ -849,16 +851,16 @@ export default function LumeChoiceSection() {
 
                   <p
                     ref={topNumberRef}
-                    className="mt-4 text-[25px] font-light text-white max-sm:mt-2 max-sm:text-[22px]"
+                    className="mt-4 text-[25px] font-light text-white max-sm:mt-1.5 max-sm:text-[19px]"
                   >
                     0%
                   </p>
 
-                  <p className="mt-1 text-[12px] text-white/90 max-sm:text-[11px]">
+                  <p className="mt-1 text-[12px] text-white/90 max-sm:text-[9px]">
                     Users stay focused longer
                   </p>
 
-                  <p className="mt-1.5 text-[8px] leading-[1.4] text-white/35 max-sm:text-[7.5px]">
+                  <p className="mt-1.5 text-[8px] leading-[1.4] text-white/35 max-sm:text-[6.5px]">
                     Small moments of friction lead to better attention.
                   </p>
                 </div>
@@ -874,28 +876,28 @@ export default function LumeChoiceSection() {
               className="
                 absolute
 
-                bottom-[5%]
-                right-[5%]
+                bottom-[6%]
+                right-[8%]
 
                 z-30
 
                 h-[152px]
                 w-[217px]
 
-                max-md:right-2
-                max-md:bottom-[2%]
+                max-md:right-4
+                max-md:bottom-[4%]
 
                 max-md:h-[150px]
                 max-md:w-[220px]
 
-                max-sm:right-1
-                max-sm:bottom-[2%]
+                max-sm:right-2
+                max-sm:bottom-[5%]
 
-                max-sm:h-[136px]
-                max-sm:w-[198px]
+                max-sm:h-[116px]
+                max-sm:w-[172px]
 
-                max-[380px]:h-[124px]
-                max-[380px]:w-[180px]
+                max-[380px]:h-[104px]
+                max-[380px]:w-[156px]
               "
             >
               <div
@@ -925,7 +927,7 @@ export default function LumeChoiceSection() {
                     max-md:p-4
 
                     max-sm:rounded-[14px]
-                    max-sm:p-3.5
+                    max-sm:p-3
                   "
                 >
                   <p className="text-[7px] text-white/40">
@@ -934,16 +936,16 @@ export default function LumeChoiceSection() {
 
                   <p
                     ref={bottomNumberRef}
-                    className="mt-4 text-[23px] font-light text-white max-sm:mt-2 max-sm:text-[22px]"
+                    className="mt-4 text-[23px] font-light text-white max-sm:mt-1.5 max-sm:text-[19px]"
                   >
                     0%
                   </p>
 
-                  <p className="mt-1 text-[11px] text-white/90 max-sm:text-[11px]">
+                  <p className="mt-1 text-[11px] text-white/90 max-sm:text-[9px]">
                     Avg. screen time
                   </p>
 
-                  <p className="mt-1.5 text-[7px] leading-[1.4] text-white/35 max-sm:text-[7.5px]">
+                  <p className="mt-1.5 text-[7px] leading-[1.4] text-white/35 max-sm:text-[6.5px]">
                     Break the scroll before it becomes a habit.
                   </p>
                 </div>

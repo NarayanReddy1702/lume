@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import ProcessSection from "./ProcessSection.jsx";
+import CustomizeVideoSection from "./CustomizeVideoSection.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://lume-backend-sy6r.onrender.com/api";
 
@@ -92,7 +93,7 @@ export default function BusinessFocusSection() {
   return (
     <section id="business" className="w-full bg-white text-[#24242d]">
       <BusinessHero />
-      {/* <ProcessSection /> */}
+      <CustomizeVideoSection />
       <Testimonials />
       <BusinessContact />
       <TrustStrip />
@@ -124,7 +125,7 @@ function BusinessHero() {
           className="flex justify-center md:justify-end"
         >
           <img
-            src="/CardBack.png"
+            src="/CardFront.png"
             alt="Lume card back"
             className="h-auto max-h-[62svh] w-[260px] select-none object-contain sm:w-[320px] lg:w-[380px]"
             draggable="false"
@@ -151,22 +152,26 @@ function BusinessHero() {
             Corporate &amp; bulk orders
           </span>
 
-          <h1 className="mt-5 text-[38px] font-medium leading-[0.96] tracking-[-0.045em] text-white sm:text-[48px]">
-            One tap to remove
-            <br />
-            every distraction.
+          <h1 className="mt-5 font-display text-[38px] font-medium leading-[1.02] tracking-[-0.04em] text-white sm:text-[48px]">
+            Lume For Your Brand
           </h1>
 
-          <p className="mt-5 text-[12px] leading-relaxed text-white/48 sm:text-[13px]">
-            Lume is a small NFC card that locks distracting apps until you tap
-            it. Equip your team, students, or clients with a focus tool they
-            can actually keep on their desk.
-          </p>
+          <div className="font-body mt-5 space-y-3 text-[12px] leading-relaxed text-white/60 sm:text-[13px]">
+            <p>
+              Lume helps organizations create healthier digital habits, improve focus,
+              and support a better work-life balance.
+            </p>
 
-          <p className="mt-4 text-[12px] leading-relaxed text-white/45">
-            Add your logo, ship it in branded packaging, and make it a gift
-            people are glad to get.
-          </p>
+            <p className="text-white/50">
+              Designed for modern teams, Lume makes it easy for employees to stay focused,
+              productive, and connected across their devices.
+            </p>
+
+            <p className="text-white/50">
+              Bring Lume to your organization with flexible branding options and
+              solutions built to fit your team&apos;s needs.
+            </p>
+          </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3 md:justify-start">
             <span className="text-[12px] tracking-[0.18em] text-[#b9a6ff]">

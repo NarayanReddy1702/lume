@@ -21,9 +21,10 @@ export default function Footer() {
         <div
           className="
             grid
-            grid-cols-1
-            gap-12
-            md:grid-cols-2
+            grid-cols-2
+            gap-x-8
+            gap-y-10
+            md:grid-cols-4
             lg:grid-cols-[1.8fr_0.75fr_0.75fr_0.75fr_1fr]
             lg:gap-8
           "
@@ -33,7 +34,7 @@ export default function Footer() {
               BRAND
           ================================================== */}
 
-          <div>
+          <div className="col-span-2 md:col-span-4 lg:col-span-1">
             {/* LOGO */}
 
             <img className="w-32 text-black" src="/black-logo.png" alt="" />
@@ -49,9 +50,9 @@ export default function Footer() {
                 text-[#777784]
               "
             >
-              Lorem ipsum dolor sit amet
-              <br />
-              consectetur adipiscing elit aliquam
+              Lume pairs a physical NFC card with smart app controls to help
+              you block distractions, protect deep work, and build calmer
+              phone habits.
             </p>
 
             {/* SOCIAL ICONS */}
@@ -94,11 +95,10 @@ export default function Footer() {
           <FooterColumn
             title="Product"
             links={[
-              "Features",
-              "Pricing",
-              "Case studies",
-              "Reviews",
-              "Updates",
+              "Home",
+              "Feature",
+              "Benefits",
+              "Blogs",
             ]}
           />
 
@@ -109,12 +109,10 @@ export default function Footer() {
           <FooterColumn
             title="Company"
             links={[
-              "About",
-              "Contact us",
-              "Privacy Policy",
-              "Careers",
-              "Culture",
-              "Blog",
+              "Business",
+              "For me",
+              "For Family",
+              "Pricing",
             ]}
           />
 
@@ -126,10 +124,9 @@ export default function Footer() {
             title="Support"
             links={[
               "Getting started",
-              "Help center",
-              "Server status",
-              "Report a bug",
-              "Chat support",
+              "FAQ",
+              "Contact",
+              "Privacy Policy",
             ]}
           />
 
@@ -145,7 +142,7 @@ export default function Footer() {
                 text-[#30303a]
               "
             >
-              Contacts us
+              Contact us
             </h3>
 
             <div className="mt-4 flex flex-col gap-3">
@@ -261,11 +258,20 @@ export default function Footer() {
 
 function FooterColumn({ title, links }) {
   const getHref = (link) => {
-    if (link === "Blog") return "/blog";
+    if (link === "Home") return "/";
+    if (link === "Blogs") return "/blogs";
+    if (link === "Contact") return "/contact";
     if (link === "Contact us") return "/contact";
     if (link === "Privacy Policy") return "/privacy-policy";
+    if (link === "Feature") return "/#features";
     if (link === "Features") return "/#features";
-    if (link === "Pricing") return "/#pricing";
+    if (link === "Benefits") return "/#benefits";
+    if (link === "Pricing") return "/forme";
+    if (link === "Business") return "/business";
+    if (link === "For me") return "/forme";
+    if (link === "For Family") return "/for-family";
+    if (link === "FAQ") return "/#faq";
+    if (link === "Bulk orders") return "/#business";
     return null;
   };
 

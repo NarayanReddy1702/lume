@@ -22,7 +22,7 @@ const LINKS = [
   },
   {
     name: "Pricing",
-    target: "pricing",
+    path: "/forme",
   },
   {
     name: "Blog",
@@ -40,6 +40,12 @@ export default function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState(() => {
+    if (typeof window === "undefined") return "home";
+    return window.location.hash
+      ? window.location.hash.slice(1)
+      : "home";
+  });
   const location = useLocation();
   const navigate = useNavigate();
   const isLight = theme === "light";
@@ -52,11 +58,20 @@ export default function Navbar({
       return location.pathname === link.path;
     }
     if (location.pathname === "/" && link.target) {
-      if (!location.hash && link.target === "home") return true;
-      return location.hash === `#${link.target}`;
+      return activeSection === link.target;
     }
     return false;
   };
+
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    setActiveSection(
+      location.hash
+        ? location.hash.slice(1)
+        : "home"
+    );
+  }, [location.pathname, location.hash]);
 
   /* ============================================================
      NAVBAR BACKGROUND
@@ -133,6 +148,24 @@ useEffect(() => {
       currentSection = "home";
     }
 
+    const hashTarget = window.location.hash.slice(1);
+    const hashSection = sectionIds.includes(hashTarget)
+      ? document.getElementById(hashTarget)
+      : null;
+
+    if (hashSection) {
+      const hashRect = hashSection.getBoundingClientRect();
+      const hashSectionVisible =
+        hashRect.top < window.innerHeight &&
+        hashRect.bottom > 0;
+
+      if (hashSectionVisible) {
+        currentSection = hashTarget;
+      }
+    }
+
+    setActiveSection(currentSection);
+
     const newUrl =
       currentSection === "home"
         ? window.location.pathname
@@ -192,12 +225,6 @@ useEffect(() => {
     }
 
     const target = link.target;
-    const hashOnlyTargets = new Set(["pricing"]);
-
-    if (hashOnlyTargets.has(target)) {
-      window.history.replaceState(null, "", `${window.location.pathname}#${target}`);
-      return;
-    }
 
     if (location.pathname !== "/") {
       navigate(target === "home" ? "/" : `/#${target}`);
@@ -205,6 +232,7 @@ useEffect(() => {
     }
 
     if (target === "home") {
+      setActiveSection("home");
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -222,6 +250,8 @@ useEffect(() => {
     */
 
     const newUrl = `${window.location.pathname}#${target}`;
+
+    setActiveSection(target);
 
     window.history.replaceState(
       null,

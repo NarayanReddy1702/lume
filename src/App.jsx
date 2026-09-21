@@ -139,15 +139,11 @@ function CalculatorRoute() {
   }, []);
 
   return (
-    <SmoothScroll>
-      <div className="relative min-h-screen bg-[#07070a] overflow-hidden">
-        <Navbar animateOnMount={false} />
+    <div className="relative h-[100svh] w-full bg-[#07070a] overflow-hidden">
+      <Navbar animateOnMount={false} />
 
-        <CalculatorPage />
-
-        <Footer />
-      </div>
-    </SmoothScroll>
+      <CalculatorPage />
+    </div>
   );
 }
 
