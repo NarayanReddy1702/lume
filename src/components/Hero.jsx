@@ -149,13 +149,13 @@ export default function Hero() {
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  w-[395px]
-                  sm:w-[430px]
-                  max-w-[104vw]
+                  w-[460px]
+                  sm:w-[510px]
+                  max-w-[114vw]
                   object-contain
 
-                  max-[390px]:w-[370px]
-                  max-[350px]:w-[335px]
+                  max-[390px]:w-[420px]
+                  max-[350px]:w-[380px]
                 "
               />
             </motion.div>
@@ -321,7 +321,7 @@ export default function Hero() {
           {/* =================================================
               PHONE + FLOATING CARDS
           ================================================== */}
-          <div className="absolute inset-x-0 bottom-0 top-[15%] flex justify-center">
+          <div className="absolute inset-x-0 bottom-0 top-[10%] flex justify-center">
             {/* GIF PHONE */}
             <motion.div
               initial={{
@@ -346,10 +346,11 @@ export default function Hero() {
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  max-h-[86svh]
-                  w-[330px]
-                  lg:w-[470px]
-                  xl:w-[500px]
+                  max-h-[93svh]
+                  w-[410px]
+                  lg:w-[580px]
+                  xl:w-[630px]
+                  2xl:w-[680px]
                   object-contain
                 "
               />
@@ -363,7 +364,7 @@ export default function Hero() {
             </div>
 
             {/* FOCUS IMPACT */}
-            <div className="absolute bottom-14 right-6 z-20 scale-90 lg:right-8 lg:scale-100 xl:right-1">
+            <div className="absolute bottom-14 right-2 z-20 scale-90 lg:right-4 lg:scale-100 xl:-right-6">
               <FocusImpactCard />
             </div>
           </div>

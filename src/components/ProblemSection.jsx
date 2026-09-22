@@ -69,7 +69,7 @@ export default function LumeChoiceSection() {
             x: 70,
             y: 0,
             scale: 0.92,
-            transformPerspective: 1200,
+            zIndex: 10,
             transformOrigin: "center center",
           });
 
@@ -79,6 +79,7 @@ export default function LumeChoiceSection() {
             y: -30,
             scale: 0.92,
             rotate: -4,
+            zIndex: 40,
           });
 
           gsap.set(bottomCard, {
@@ -87,6 +88,7 @@ export default function LumeChoiceSection() {
             y: 30,
             scale: 0.92,
             rotate: 4,
+            zIndex: 40,
           });
         } else if (isTablet) {
           gsap.set(nfcCard, {
@@ -94,7 +96,7 @@ export default function LumeChoiceSection() {
             x: 48,
             y: 0,
             scale: 0.92,
-            transformPerspective: 1200,
+            zIndex: 10,
             transformOrigin: "center center",
           });
 
@@ -104,6 +106,7 @@ export default function LumeChoiceSection() {
             y: -24,
             scale: 0.92,
             rotate: -4,
+            zIndex: 40,
           });
 
           gsap.set(bottomCard, {
@@ -112,6 +115,7 @@ export default function LumeChoiceSection() {
             y: 24,
             scale: 0.92,
             rotate: 4,
+            zIndex: 40,
           });
         } else {
           gsap.set(nfcCard, {
@@ -119,7 +123,7 @@ export default function LumeChoiceSection() {
             x: 0,
             y: 20,
             scale: 0.96,
-            transformPerspective: 1200,
+            zIndex: 10,
             transformOrigin: "center center",
           });
 
@@ -129,6 +133,7 @@ export default function LumeChoiceSection() {
             y: 20,
             scale: 0.96,
             rotate: -2,
+            zIndex: 40,
           });
 
           gsap.set(bottomCard, {
@@ -137,6 +142,7 @@ export default function LumeChoiceSection() {
             y: 20,
             scale: 0.96,
             rotate: 2,
+            zIndex: 40,
           });
         }
 
@@ -307,7 +313,7 @@ export default function LumeChoiceSection() {
           upliftTimeline.to(
             nfcCard,
             {
-              y: -115,
+              y: -85,
               x: -8,
               scale: 1.03,
               ease: "none",
@@ -318,7 +324,7 @@ export default function LumeChoiceSection() {
           upliftTimeline.to(
             topCard,
             {
-              y: -120,
+              y: -90,
               x: -15,
               scale: 1.02,
               rotate: -3,
@@ -330,7 +336,7 @@ export default function LumeChoiceSection() {
           upliftTimeline.to(
             bottomCard,
             {
-              y: -115,
+              y: -85,
               x: 8,
               scale: 1.02,
               rotate: 2,
@@ -647,8 +653,6 @@ export default function LumeChoiceSection() {
               w-full
               max-w-[560px]
 
-              [perspective:1200px]
-
               max-lg:h-full
               max-lg:max-w-[440px]
 
@@ -669,7 +673,7 @@ export default function LumeChoiceSection() {
                 left-[24%]
                 top-[31%]
 
-                z-20
+                z-10
 
                 h-[175px]
                 w-[295px]
@@ -794,7 +798,9 @@ export default function LumeChoiceSection() {
                 left-[4%]
                 top-[6%]
 
-                z-30
+                z-40
+                isolate
+                pointer-events-none
 
                 h-[155px]
                 w-[200px]
@@ -879,7 +885,9 @@ export default function LumeChoiceSection() {
                 bottom-[6%]
                 right-[8%]
 
-                z-30
+                z-40
+                isolate
+                pointer-events-none
 
                 h-[152px]
                 w-[217px]
