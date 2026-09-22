@@ -10,9 +10,9 @@ const STEPS = [
     n: "01",
     title: (
       <>
-        Lock distractions before they
+       Open Your App .. Setup Your 
         <br />
-        begin
+        <span className="whitespace-nowrap">profile (Onboardining)</span>
       </>
     ),
     body: "Choose the apps that pull you away from what matters. Once locked, they stay locked.",
@@ -21,17 +21,26 @@ const STEPS = [
   },
   {
     n: "02",
-    title: (<>
-      Unlock with <br /> intention</>),
+    title: (
+      <>
+        Shedule your time (Setup 
+        <br />
+        <span className="whitespace-nowrap"> Your Session and block Section)</span>
+      </>
+    ),
     body: "Instead of another tap, reach for your Lume Card. That small pause turns every unlock into a choice.",
     // img:"/iPhone4.png"
     img: "./images/works/4.gif"
   },
   {
     n: "03",
-    title: (<>
-      Watch better <br /> habits <br /> take shape
-    </>),
+    title: (
+      <>
+        Unblock your 
+        <br />
+        <span className="whitespace-nowrap">with card</span>
+      </>
+    ),
     body: "Track your sessions, streaks, and progress over time. Small choices today, lasting change tomorrow.",
     // img:"/iPhone3.png"
     img: "./images/works/5.gif"
