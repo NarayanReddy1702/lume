@@ -22,6 +22,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import RealFrictionSection from "./components/RealFrictionSection.jsx";
 import BusinessFocusSection from "./components/BusinessFocusSection.jsx";
+import BusinessCTASection from "./components/BusinessCTASection.jsx";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.jsx";
 
 
@@ -74,6 +75,8 @@ function Home() {
           <StatsSection />
           <RealFrictionSection/>
           <WhoItsFor />
+
+          <BusinessCTASection />
 
           <FAQSection />
         </main>

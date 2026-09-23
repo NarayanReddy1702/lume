@@ -187,7 +187,7 @@ export default function WhoItsFor() {
 
             gap-8
 
-            lg:grid-cols-[0.28fr_1.35fr_0.9fr]
+            lg:grid-cols-[auto_1.35fr_1fr]
             lg:items-start
           "
         >
@@ -206,9 +206,10 @@ export default function WhoItsFor() {
                 border-white/50
 
                 px-6
-                py-2
+                py-2.5
 
-                text-[9px]
+                text-[13px]
+                sm:text-[14px]
                 font-medium
                 tracking-wide
 
@@ -269,13 +270,14 @@ export default function WhoItsFor() {
           <div>
             <p
               className="
-                max-w-[320px]
+                max-w-[380px]
 
-                text-[11px]
+                text-[15px]
+                sm:text-[16px]
 
-                leading-[1.55]
+                leading-[1.65]
 
-                text-white/45
+                text-white/65
               "
             >
               From students to creators and professionals,

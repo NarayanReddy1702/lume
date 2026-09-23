@@ -177,23 +177,29 @@ export default function LumeChoiceSection() {
           },
         });
 
+        const textDuration = chars.length > 0 ? (chars.length - 1) * 0.025 + 1.4 : 3.2;
+
         pinnedTimeline
-          .to(chars, {
-            color: "#ffffff",
-            stagger: 0.025,
-            duration: 1.4,
-            ease: "none",
-          })
-          .to(nfcFlip, {
-            rotateY: 180,
-            duration: 1.8,
-            ease: "none",
-          })
-          .to(nfcFlip, {
-            rotateY: 180,
-            duration: 0.4,
-            ease: "none",
-          });
+          .to(
+            chars,
+            {
+              color: "#ffffff",
+              stagger: 0.025,
+              duration: 1.4,
+              ease: "none",
+            },
+            "sync"
+          )
+          .to(
+            nfcFlip,
+            {
+              rotateY: 180,
+              duration: textDuration,
+              ease: "none",
+            },
+            "sync"
+          )
+          .to({}, { duration: 0.4 });
 
         /* =====================================================
            NFC ENTRANCE

@@ -1,12 +1,12 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const BENEFITS = [
   {
     id: "focus",
     label: "Intentional Living",
     icon: "✣",
-    image: "./images/benefits/benefit1.png",
+    image: "/images/benefits/benefit1.png",
     title: "Be here. Not everywhere.",
     subtitle: "",
     description:
@@ -22,7 +22,7 @@ const BENEFITS = [
     id: "mindful",
     label: "Control",
     icon: "☯",
-    image: "./images/benefits/benefit2.png",
+    image: "/images/benefits/benefit2.png",
     title: "Choose. Don’t react.",
     subtitle: "",
     description:
@@ -38,7 +38,7 @@ const BENEFITS = [
     id: "sleep",
     label: "Sleep",
     icon: "◔",
-    image: "./images/benefits/benefit3.png",
+    image: "/images/benefits/benefit3.png",
     title: "Put the day down.",
     subtitle: "",
     description:
@@ -54,7 +54,7 @@ const BENEFITS = [
     id: "presence",
     label: "Presence",
     icon: "◒",
-    image: "./images/benefits/benefit4.png",
+    image: "/images/benefits/benefit4.png",
     title: "Make time for your life.",
     subtitle: "",
     description:
@@ -70,73 +70,7 @@ const BENEFITS = [
 export default function BenefitsSection() {
   const [activeTab, setActiveTab] = useState(0);
 
-  const imageRef = useRef(null);
-  const contentRef = useRef(null);
-  const animationRef = useRef(null);
-
   const activeBenefit = BENEFITS[activeTab];
-
-  // =====================================================
-  // CHANGE CONTENT ANIMATION
-  // =====================================================
-
-  useLayoutEffect(() => {
-    if (!imageRef.current || !contentRef.current) return;
-
-    // Kill previous animation
-    if (animationRef.current) {
-      animationRef.current.kill();
-    }
-
-    const image = imageRef.current;
-    const content = contentRef.current;
-
-    const tl = gsap.timeline();
-
-    animationRef.current = tl;
-
-    // -----------------------------------------------------
-    // EXIT
-    // -----------------------------------------------------
-
-    tl.to(
-      [image, content],
-      {
-        opacity: 0,
-        y: 20,
-        duration: 0.22,
-        ease: "power2.in",
-      }
-    );
-
-    // -----------------------------------------------------
-    // ENTER
-    // -----------------------------------------------------
-
-    tl.set([image, content], {
-      opacity: 0,
-      y: 30,
-    });
-
-    tl.to(
-      [image, content],
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.65,
-        ease: "power3.out",
-        stagger: 0.05,
-      }
-    );
-
-    return () => {
-      tl.kill();
-    };
-  }, [activeTab]);
-
-  // =====================================================
-  // TAB CLICK
-  // =====================================================
 
   const handleTabChange = (index) => {
     if (index === activeTab) return;
@@ -315,29 +249,40 @@ export default function BenefitsSection() {
               md:h-[350px]
             "
           >
-            {/* IMAGE */}
-
-            <img
-              ref={imageRef}
-              key={activeBenefit.image}
-              src={activeBenefit.image}
-              alt={activeBenefit.title}
-              className="
-                absolute
-                inset-0
-                h-full
-                w-full
-                object-cover
-              "
-            />
+            {/* STACKED PRELOADED IMAGES WITH SMOOTH CROSS-FADE */}
+            {BENEFITS.map((benefit, index) => {
+              const isActive = activeTab === index;
+              return (
+                <img
+                  key={benefit.id}
+                  src={benefit.image}
+                  alt={benefit.title}
+                  className={`
+                    absolute
+                    inset-0
+                    h-full
+                    w-full
+                    object-cover
+                    transition-all
+                    duration-500
+                    ease-out
+                    ${
+                      isActive
+                        ? "opacity-100 scale-100 z-10"
+                        : "opacity-0 scale-[1.03] z-0 pointer-events-none"
+                    }
+                  `}
+                />
+              );
+            })}
 
             {/* DARK OVERLAY */}
-
             <div
               className="
                 pointer-events-none
                 absolute
                 inset-0
+                z-20
                 bg-gradient-to-r
                 from-black/10
                 via-transparent
@@ -346,13 +291,13 @@ export default function BenefitsSection() {
             />
 
             {/* PURPLE GLOW */}
-
             <div
               className="
                 pointer-events-none
                 absolute
                 -bottom-20
                 -left-20
+                z-20
                 h-[180px]
                 w-[180px]
                 rounded-full
@@ -366,94 +311,94 @@ export default function BenefitsSection() {
               TEXT CONTENT
           ================================================= */}
 
-          <div
-            ref={contentRef}
-            className="
-              max-w-[430px]
-            "
-          >
-            {/* TITLE */}
+          <div className="min-h-[260px] max-w-[430px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeBenefit.id}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+              >
+                {/* TITLE */}
+                <h3
+                  className="
+                    text-[26px]
+                    font-medium
+                    tracking-[-0.025em]
+                    md:text-[30px]
+                  "
+                >
+                  {activeBenefit.title}
+                </h3>
 
-            <h3
-              className="
-                text-[26px]
-                font-medium
-                tracking-[-0.025em]
-                md:text-[30px]
-              "
-            >
-              {activeBenefit.title}
-            </h3>
-
-            {/* SUBTITLE */}
-
-            <p
-              className="
-                mt-1
-                text-[12px]
-                text-white/75
-              "
-            >
-              {activeBenefit.subtitle}
-            </p>
-
-            {/* DESCRIPTION */}
-
-            <p
-              className="
-                mt-5
-                text-[12px]
-                leading-[1.6]
-                text-white/40
-              "
-            >
-              {activeBenefit.description}
-            </p>
-
-            {/* POINTS */}
-
-            <div className="mt-6 flex flex-col gap-2.5">
-              {activeBenefit.points.map(
-                (point) => (
-                  <div
-                    key={point}
+                {/* SUBTITLE */}
+                {activeBenefit.subtitle && (
+                  <p
                     className="
-                      flex
-                      items-center
-                      gap-2
+                      mt-1
+                      text-[12px]
+                      text-white/75
                     "
                   >
-                    {/* PURPLE CHECK */}
+                    {activeBenefit.subtitle}
+                  </p>
+                )}
 
-                    <span
+                {/* DESCRIPTION */}
+                <p
+                  className="
+                    mt-5
+                    text-[12px]
+                    leading-[1.6]
+                    text-white/40
+                  "
+                >
+                  {activeBenefit.description}
+                </p>
+
+                {/* POINTS */}
+                <div className="mt-6 flex flex-col gap-2.5">
+                  {activeBenefit.points.map((point) => (
+                    <div
+                      key={point}
                       className="
                         flex
-                        h-[13px]
-                        w-[13px]
-                        shrink-0
                         items-center
-                        justify-center
-                        rounded-full
-                        bg-[#7137ff]
-                        text-[8px]
-                        text-white
+                        gap-2
                       "
                     >
-                      ✓
-                    </span>
+                      {/* PURPLE CHECK */}
+                      <span
+                        className="
+                          flex
+                          h-[13px]
+                          w-[13px]
+                          shrink-0
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-[#7137ff]
+                          text-[8px]
+                          text-white
+                        "
+                      >
+                        ✓
+                      </span>
 
-                    <span
-                      className="
-                        text-[10px]
-                        text-white/85
-                      "
-                    >
-                      {point}
-                    </span>
-                  </div>
-                )
-              )}
-            </div>
+                      <span
+                        className="
+                          text-[10px]
+                          text-white/85
+                        "
+                      >
+                        {point}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
