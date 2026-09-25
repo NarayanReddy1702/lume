@@ -264,11 +264,10 @@ function ProductSwitcher({ activeAudience }) {
               key={tab.label}
               type="button"
               onClick={() => navigate(tab.path)}
-              className={`rounded-[10px] px-4 py-2 sm:px-7 sm:py-2.5 text-[12px] sm:text-[13px] font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-[#f4f0ff] text-[#7137ff] font-semibold"
-                  : "text-[#3a3a46] hover:bg-black/[0.04] hover:text-black"
-              }`}
+              className={`rounded-[10px] px-4 py-2 sm:px-7 sm:py-2.5 text-[12px] sm:text-[13px] font-medium transition-all duration-200 ${isActive
+                ? "bg-[#f4f0ff] text-[#7137ff] font-semibold"
+                : "text-[#3a3a46] hover:bg-black/[0.04] hover:text-black"
+                }`}
             >
               {tab.label}
             </button>
@@ -413,11 +412,10 @@ function ProductHero({ options, product, category, audience }) {
                 key={`${src}-${index}`}
                 type="button"
                 onClick={() => setActiveImageIndex(index)}
-                className={`overflow-hidden rounded-[7px] bg-[#8f8f95] ${
-                  index === activeImageIndex
-                    ? "ring-2 ring-[#7c5cff] ring-offset-2"
-                    : ""
-                }`}
+                className={`overflow-hidden rounded-[7px] bg-[#8f8f95] ${index === activeImageIndex
+                  ? "ring-2 ring-[#7c5cff] ring-offset-2"
+                  : ""
+                  }`}
               >
                 <img
                   src={src}
@@ -521,19 +519,17 @@ function PlanOption({ option, selected, onSelect }) {
     <button
       type="button"
       onClick={onSelect}
-      className={`w-full rounded-[8px] border p-4 text-left transition-colors ${
-        selected
-          ? "border-[#7c5cff] bg-[#f4efff]"
-          : "border-[#e9e9ed] bg-white hover:border-[#cfc6ff]"
-      }`}
+      className={`w-full rounded-[8px] border p-4 text-left transition-colors ${selected
+        ? "border-[#7c5cff] bg-[#f4efff]"
+        : "border-[#e9e9ed] bg-white hover:border-[#cfc6ff]"
+        }`}
     >
       <div className="flex flex-wrap items-center gap-4 min-[420px]:flex-nowrap">
         <span
-          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-            selected
-              ? "border-[#7c5cff] bg-[#7c5cff]"
-              : "border-[#d8d8de]"
-          }`}
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selected
+            ? "border-[#7c5cff] bg-[#7c5cff]"
+            : "border-[#d8d8de]"
+            }`}
         >
           {selected && (
             <span className="h-1.5 w-1.5 rounded-full bg-white" />
@@ -543,11 +539,10 @@ function PlanOption({ option, selected, onSelect }) {
         <span className="min-w-0 flex-1">
           {option.badge && (
             <span
-              className={`mb-1 inline-flex rounded-full px-2 py-1 text-[7px] font-bold uppercase tracking-wide text-white ${
-                option.badgeTone === "green"
-                  ? "bg-[#31bf70]"
-                  : "bg-[#7c5cff]"
-              }`}
+              className={`mb-1 inline-flex rounded-full px-2 py-1 text-[7px] font-bold uppercase tracking-wide text-white ${option.badgeTone === "green"
+                ? "bg-[#31bf70]"
+                : "bg-[#7c5cff]"
+                }`}
             >
               {option.badge}
             </span>
@@ -735,9 +730,8 @@ function Comparison() {
 function HeaderCell({ children, highlight = false, align = "center" }) {
   return (
     <div
-      className={`flex min-h-[96px] min-w-0 flex-col justify-center border-b border-r border-[#dfdfe5] px-3 py-5 text-[11px] font-semibold text-[#4a4a55] last:border-r-0 sm:px-5 sm:text-[12px] ${
-        highlight ? "bg-[#f2e9ff]" : "bg-white"
-      } ${align === "left" ? "items-start text-left" : "items-center text-center"}`}
+      className={`flex min-h-[96px] min-w-0 flex-col justify-center border-b border-r border-[#dfdfe5] px-3 py-5 text-[11px] font-semibold text-[#4a4a55] last:border-r-0 sm:px-5 sm:text-[12px] ${highlight ? "bg-[#f2e9ff]" : "bg-white"
+        } ${align === "left" ? "items-start text-left" : "items-center text-center"}`}
     >
       {children}
     </div>
@@ -784,9 +778,8 @@ function ComparisonMatterRow({ item }) {
 function BodyCell({ children, highlight = false, align = "center" }) {
   return (
     <div
-      className={`flex min-h-[54px] min-w-0 items-center border-b border-r border-[#dfdfe5] px-3 text-[10px] text-[#777784] last:border-r-0 sm:px-5 sm:text-[11px] ${
-        highlight ? "bg-[#f2e9ff]" : "bg-white"
-      } ${align === "left" ? "justify-start text-left" : "justify-center text-center"}`}
+      className={`flex min-h-[54px] min-w-0 items-center border-b border-r border-[#dfdfe5] px-3 text-[10px] text-[#777784] last:border-r-0 sm:px-5 sm:text-[11px] ${highlight ? "bg-[#f2e9ff]" : "bg-white"
+        } ${align === "left" ? "justify-start text-left" : "justify-center text-center"}`}
     >
       {children}
     </div>
@@ -805,9 +798,8 @@ function StatusIcon({ status }) {
 
   return (
     <span
-      className={`flex h-7 w-7 items-center justify-center rounded-full text-white ${
-        status ? "bg-[#43d27b]" : "bg-[#ff493b]"
-      }`}
+      className={`flex h-7 w-7 items-center justify-center rounded-full text-white ${status ? "bg-[#43d27b]" : "bg-[#ff493b]"
+        }`}
     >
       {status ? <Check size={15} /> : <X size={15} />}
     </span>

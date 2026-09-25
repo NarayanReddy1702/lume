@@ -209,11 +209,10 @@ export default function BlogPage() {
                   key={tag}
                   type="button"
                   onClick={() => setActiveTag(tag)}
-                  className={`rounded-full px-4 py-1.5 text-[11px] font-medium transition-all ${
-                    isActive
-                      ? "border border-[#9d5cff] bg-[#7137ff] text-white shadow-[0_0_16px_rgba(113,55,255,0.4)]"
-                      : "border border-white/10 bg-white/[0.02] text-white/60 hover:border-white/25 hover:bg-white/[0.06] hover:text-white"
-                  }`}
+                  className={`rounded-full px-4 py-1.5 text-[11px] font-medium transition-all ${isActive
+                    ? "border border-[#9d5cff] bg-[#7137ff] text-white shadow-[0_0_16px_rgba(113,55,255,0.4)]"
+                    : "border border-white/10 bg-white/[0.02] text-white/60 hover:border-white/25 hover:bg-white/[0.06] hover:text-white"
+                    }`}
                 >
                   {tag}
                 </button>
