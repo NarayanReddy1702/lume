@@ -379,30 +379,26 @@ function PersonCard({ person }) {
       }}
       className="
         group
-
         relative
-
         flex
         flex-col
-
         cursor-pointer
-
         overflow-hidden
-
         rounded-2xl
-
         border
         border-white/10
-
         bg-[#121217]
-
-        transition-all
-
+        transition-[transform,border-color,box-shadow]
         duration-300
-
+        ease-out
         hover:-translate-y-1
         hover:border-[#7137ff]/40
         hover:shadow-[0_12px_32px_rgba(113,55,255,0.12)]
+        after:absolute
+        after:inset-x-0
+        after:-bottom-2
+        after:h-2
+        after:content-['']
       "
     >
       {/* ======================================================
@@ -412,17 +408,11 @@ function PersonCard({ person }) {
       <div
         className="
           relative
-
           h-[230px]
-
           overflow-hidden
-
-          bg-[#17171d]
-
+          bg-[#121217]
           sm:h-[240px]
-
           lg:h-[210px]
-
           xl:h-[230px]
         "
       >
@@ -432,15 +422,10 @@ function PersonCard({ person }) {
           className="
             h-full
             w-full
-
             object-cover
-
             transition-transform
-
             duration-700
-
             ease-out
-
             group-hover:scale-[1.06]
           "
         />
@@ -448,17 +433,11 @@ function PersonCard({ person }) {
         <div
           className="
             pointer-events-none
-
             absolute
-
             inset-0
-
             bg-gradient-to-t
-
             from-[#121217]
-
-            via-transparent
-
+            via-[#121217]/40
             to-transparent
           "
         />
@@ -516,14 +495,15 @@ function PersonCard({ person }) {
 
       <div
         className="
+          relative
+          z-10
+          -mt-1
           flex
           min-h-[190px]
           flex-1
           flex-col
           justify-between
-
           bg-[#121217]
-
           p-5
         "
       >
@@ -567,6 +547,7 @@ function PersonCard({ person }) {
               tracking-[-0.015em]
               text-white
               transition-colors
+              duration-200
               group-hover:text-[#c49aff]
             "
           >
@@ -589,38 +570,27 @@ function PersonCard({ person }) {
         <div
           className="
             mt-5
-
             flex
-
             items-center
             justify-between
-
             border-t
             border-white/5
-
             pt-3.5
-
             text-[11px]
-
             text-white
-
-            transition-all
-
-            duration-300
-
-            group-hover:gap-2
           "
         >
           <span className="text-white/45 underline decoration-white/20 underline-offset-4 transition group-hover:text-white group-hover:decoration-white/60">
             Quick Preview
           </span>
 
-          <span className="inline-flex items-center gap-1.5 font-medium transition-all group-hover:gap-2.5 group-hover:text-[#b588ff]">
-            Read Story
+          <span className="inline-flex items-center gap-1.5 font-medium transition-colors duration-200 group-hover:text-[#b588ff]">
+            <span>Read Story</span>
 
             <ArrowRight
               size={13}
               strokeWidth={1.5}
+              className="transition-transform duration-300 ease-out group-hover:translate-x-1"
             />
           </span>
         </div>

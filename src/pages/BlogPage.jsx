@@ -432,17 +432,17 @@ function BlogCard({ blog, onPreview }) {
   return (
     <article
       onClick={() => navigate(`/blog/${blog.slug}`)}
-      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#121217] transition-all duration-300 hover:-translate-y-1 hover:border-[#7137ff]/40 hover:shadow-[0_12px_32px_rgba(113,55,255,0.12)]"
+      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#121217] transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-[#7137ff]/40 hover:shadow-[0_12px_32px_rgba(113,55,255,0.12)] after:absolute after:inset-x-0 after:-bottom-2 after:h-2 after:content-['']"
     >
       {/* Cover Image */}
-      <div className="relative h-[210px] w-full overflow-hidden bg-[#17171d]">
+      <div className="relative h-[210px] w-full overflow-hidden bg-[#121217]">
         <img
           src={blog.heroImage}
           alt={blog.title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121217] via-[#121217]/40 to-transparent" />
 
         {/* Tags */}
         <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-1.5">
@@ -462,8 +462,8 @@ function BlogCard({ blog, onPreview }) {
         </div>
       </div>
 
-      {/* Card Content */}
-      <div className="flex min-h-[190px] flex-1 flex-col justify-between bg-[#121217] p-5">
+      {/* Card Content - with -mt-1 and z-10 to completely eliminate subpixel seam */}
+      <div className="relative z-10 -mt-1 flex min-h-[190px] flex-1 flex-col justify-between bg-[#121217] p-5">
         <div>
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-2 text-[10px] text-white/40">
@@ -488,7 +488,7 @@ function BlogCard({ blog, onPreview }) {
           </div>
 
           {/* Title */}
-          <h3 className="mt-3 text-[18px] font-medium leading-[1.25] tracking-[-0.015em] text-white transition-colors group-hover:text-[#c49aff]">
+          <h3 className="mt-3 text-[18px] font-medium leading-[1.25] tracking-[-0.015em] text-white transition-colors duration-200 group-hover:text-[#c49aff]">
             {blog.title}
           </h3>
 
@@ -499,7 +499,7 @@ function BlogCard({ blog, onPreview }) {
         </div>
 
         {/* Card Footer: Quick Preview & Read Story */}
-        <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-3.5 text-[11px] text-white transition-all duration-300 group-hover:gap-2">
+        <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-3.5 text-[11px] text-white">
           <button
             type="button"
             onClick={(e) => {
@@ -511,9 +511,13 @@ function BlogCard({ blog, onPreview }) {
             Quick Preview
           </button>
 
-          <span className="inline-flex items-center gap-1.5 font-medium transition-all group-hover:gap-2.5 group-hover:text-[#b588ff]">
+          <span className="inline-flex items-center gap-1.5 font-medium transition-colors duration-200 group-hover:text-[#b588ff]">
             <span>Read Story</span>
-            <ArrowRight size={13} strokeWidth={1.5} />
+            <ArrowRight
+              size={13}
+              strokeWidth={1.5}
+              className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+            />
           </span>
         </div>
       </div>
