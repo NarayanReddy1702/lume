@@ -120,9 +120,10 @@ export default function Hero() {
             className="
               relative
               z-10
-              -mt-16
-              sm:-mt-12
+              -mt-14
+              sm:-mt-10
               flex
+              w-full
               justify-center
             "
           >
@@ -142,20 +143,17 @@ export default function Hero() {
                 delay: 0.15,
                 ease: "easeOut",
               }}
-              className="relative z-10"
+              className="relative z-10 flex w-full justify-center"
             >
               <img
                 src="/videos/video1.gif"
                 alt="Lume App Preview"
                 className="
                   h-auto
-                  w-[460px]
-                  sm:w-[510px]
-                  max-w-[114vw]
+                  w-full
+                  max-w-[360px]
+                  sm:max-w-[400px]
                   object-contain
-
-                  max-[390px]:w-[420px]
-                  max-[350px]:w-[380px]
                 "
               />
             </motion.div>
@@ -179,7 +177,8 @@ export default function Hero() {
             className="
               relative
               z-30
-              -mt-2
+              -mt-6
+              sm:-mt-4
               flex
               w-full
               justify-center
